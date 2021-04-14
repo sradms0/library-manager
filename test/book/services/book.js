@@ -15,6 +15,8 @@ const bookData = require('../../data/books.json');
 const genreData = require('../../data/genres.json');
 
 
+chai.use(require('chai-as-promised'));
+
 describe('(Re)Create test database', () => {
   before('testing books', async () => {
     sequelize.options.logging = false;
@@ -74,4 +76,31 @@ describe('services.book.create', () => {
 
     expect(count === 1 && wasCreated).to.be.true;
   });
+
+  it('it should throw an error when an empty title is given', async () => {
+    await expect(bookService.create({ title: '', author: 'author' })).to.be.rejectedWith('"Title" is required');
+  });
+
+  it('it should throw an error when a title property doesn\'t exist', async () => {
+    await expect(bookService.create({ author: 'author' })).to.be.rejectedWith('"Title" field is required');
+  });
+
+  it('it should throw an error when an empty author is given', async () => {
+    await expect(bookService.create({ title: 'title', author: '' })).to.be.rejectedWith('"Author" is required');
+  });
+
+  it('it should throw an error when an author property doesn\'t exist', async () => {
+    await expect(bookService.create({ author: 'author' })).to.be.rejectedWith('"Author" field is required');
+  });
+
+  it('it should throw an error when both empty title and author is given', async () => {
+    await expect(bookService.create({ title: '', author: '' }))
+          .to.be.rejectedWith('Validation error: "Title" is required,\nValidation error: "Author" is required');
+  });
+
+  it('it should throw an error when both title and author properties don\'t exist', async () => {
+    await expect(bookService.create({ title: '', author: '' }))
+          .to.be.rejectedWith('Validation error: "Title" field is required,\nValidation error: "Author" field is required');
+  });
 });
+
