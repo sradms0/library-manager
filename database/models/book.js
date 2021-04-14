@@ -9,14 +9,18 @@ module.exports = sequelize => {
   Book.init({
     title: {
       type: Sequelize.STRING,
+      allowNull: false,
       validate: {
-        notEmpty: { msg: '"Title" is required' }
+        notEmpty: { msg: '"Title" is required' },
+        notNull: { msg: '"Title" field is required' }
       }
     },
     author: {
       type: Sequelize.STRING,
+      allowNull: false,
       validate: {
-        notEmpty: { msg: '"Author" is required' }
+        notEmpty: { msg: '"Author" is required' },
+        notNull: { msg: '"Author" field is required' }
       }
     },
     genre: Sequelize.STRING,
