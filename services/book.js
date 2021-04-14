@@ -11,4 +11,6 @@ const { Book } = require('../database/models');
  * @returns { Promise }
  *
 */
-exports.readAll = function() {}
+exports.readAll = function() {
+  return Book.findAll();
+}
