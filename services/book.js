@@ -12,7 +12,9 @@ const { Book } = require('../database/models');
  * @returns { Promise }
  *
 */
-exports.create = function(data) {}
+exports.create = function(data) {
+  return Book.create(data);
+}
 
 /**
  * Read all books.
