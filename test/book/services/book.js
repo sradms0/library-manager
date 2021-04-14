@@ -90,7 +90,7 @@ describe('services.book.create', () => {
   });
 
   it('it should throw an error when an author property doesn\'t exist', async () => {
-    await expect(bookService.create({ author: 'author' })).to.be.rejectedWith('"Author" field is required');
+    await expect(bookService.create({ title: 'title' })).to.be.rejectedWith('"Author" field is required');
   });
 
   it('it should throw an error when both empty title and author is given', async () => {
@@ -99,8 +99,8 @@ describe('services.book.create', () => {
   });
 
   it('it should throw an error when both title and author properties don\'t exist', async () => {
-    await expect(bookService.create({ title: '', author: '' }))
-          .to.be.rejectedWith('Validation error: "Title" field is required,\nValidation error: "Author" field is required');
+    await expect(bookService.create({}))
+          .to.be.rejectedWith('notNull Violation: "Title" field is required,\nnotNull Violation: "Author" field is required');
   });
 });
 
