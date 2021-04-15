@@ -17,6 +17,14 @@ exports.create = function(data) {
 }
 
 /**
+ * Read one book by primary key
+ * @param pk - the primary key of the book to read
+ * @returns { Promise }
+ *
+*/
+exports.readByPk = function(pk) {}
+
+/**
  * Read all books.
  * @returns { Promise }
  *
