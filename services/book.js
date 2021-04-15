@@ -22,7 +22,9 @@ exports.create = function(data) {
  * @returns { Promise }
  *
 */
-exports.readByPk = function(pk) {}
+exports.readByPk = function(pk) {
+  return Book.findByPk(pk);
+}
 
 /**
  * Read all books.
