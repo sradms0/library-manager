@@ -22,31 +22,83 @@ chai.use(chaiHttp);
 
 testOps.loadTestDb();
 
-const fetchBookTrs = browser => browser.querySelectorAll('tbody tr');
-const visitRoute = (browser, route) => browser.visit(`http://localhost:3000/${route}`);
-const visitBooksRoute = browser => visitRoute(browser, 'books');
+/**
+ * Finds all table rows containing book data
+ * @param {Browser} browser - zombie instance
+ * @returns {NodeList} List of a book table rows 
+*/
+function fetchBookTrs(browser) {
+  return browser.querySelectorAll('tbody tr');
+}
+
+/**
+ * Navigates to desired route when server is running
+ * @param {Browser} browser - zombie instance
+ * @param {String} route - route to visit
+ * @return {Promise} zombie.Browser.visit
+*/
+function visitRoute(browser, route) {
+  return browser.visit(`http://localhost:3000/${route}`);
+}
+
+/**
+ * Navigates to /books route
+ * @param {Browser} browser - zombie instance
+ * @return {Promise} zombie.Browser.visit
+*/
+function visitBooksRoute(browser){
+ return visitRoute(browser, 'books');
+}
+
+/**
+ * @callback dbOpCb
+ */
+/**
+ * @callback visitCb
+ * @param {Browser} browser - zombie instance for visiting
+*/
+
+/**
+ * Generates function for data operations before a test runs
+ * @param {Object} data - container to store return value from dbOpCB
+ * @param {dbOpCb} dbOpCb - callback that runs database operations before test
+ * @param {Browser} browser - zombie instance for visitCB to run
+ * @param {visitCb} visitCb - callback that visits a route
+ * @return {function(): void} mocha.before
+*/
+function genOperateAndVisitRoute(data, dbOpCb, browser, visitCb) {
+  return () => before('', async () => {
+    chai.request(server);
+    const dbOpCbRes = await dbOpCb();
+    if (data) data.value = dbOpCbRes;
+    return visitCb(browser);
+  });
+};
+
 
 describe('views.book.index', () => {
   const browser = new Browser();
-  let allBooks;
+  const allBooks = { value: null };
 
-  before('', async () => {
-    chai.request(server);
-    allBooks = await bookService.readAll();
-    return visitBooksRoute(browser);
-  });
+  genOperateAndVisitRoute(
+    allBooks, 
+    async () => await bookService.readAll(), 
+    browser, 
+    visitBooksRoute
+  )();
   it('it should show all books sorted', () => {
-    const titles = allBooks.map(b => b.title).sort(),
+    const titles = allBooks.value.map(b => b.title).sort(),
           DOMTitles = [...fetchBookTrs(browser)].map(tr => tr.firstChild.textContent);
     const allFound = DOMTitles.length === titles && titles.every((t,i) => t === DOMTitles?.[i]);
     expect(allFound).to.be.true;
   });
 
-  before('', () => {
-    chai.request(server);
-    allBooks.slice(0,-1).forEach(async b => await b.destroy());
-    return visitBooksRoute(browser);
-  });
+  genOperateAndVisitRoute(
+    null, 
+    () => allBooks.value.slice(0,-1).forEach(async b => await b.destroy()),
+    browser, 
+    visitBooksRoute
+  )();
   it('it should show one book when all but one books are removed', async () => {
     const onlyTitle = (await bookService.readAll())?.[0]?.title,
           DOMTitles = [...fetchBookTrs(browser)].map(tr => tr.firstChild.textContent),
@@ -55,12 +107,13 @@ describe('views.book.index', () => {
     const lastFound = !DOMTitles.length && onlyTitle === onlyDOMTitle;
     expect(lastFound).to.true;
   });
-  
-  before('', async () => {
-    chai.request(server);
-    await Book.destroy({ where:{}, truncate:true });
-    return visitBooksRoute(browser);
-  });
+
+  genOperateAndVisitRoute(
+    null, 
+    async () => await Book.destroy({ where:{}, truncate:true }),
+    browser, 
+    visitBooksRoute
+  )();
   it('it should show no books when all books are removed', async () => {
     const noBooks = await bookService.readAll();
     expect(fetchBookTrs(browser)).to.have.length(0);
