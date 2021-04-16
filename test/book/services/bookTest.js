@@ -30,7 +30,7 @@ describe('services.book.readAll', () => {
   });
 
   it('it should return should return all books in ascending title-order', async () => {
-    const books = await bookService.readAll({ order: ['title', 'ACS'] });
+    const books = await bookService.readAll({ order: [['title', 'ASC']] });
     const sortedBookData = [...bookData]
       .sort((b1, b2) => {
             const b1L = b1.title.toLowerCase(), 
