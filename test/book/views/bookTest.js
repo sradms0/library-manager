@@ -80,42 +80,48 @@ describe('views.book.index', () => {
   const browser = new Browser();
   const allBooks = { value: null };
 
-  genOperateAndVisitRoute(
-    allBooks, 
-    async () => await bookService.readAll(), 
-    browser, 
-    visitBooksRoute
-  )();
-  it('it should show all books sorted', () => {
-    const titles = allBooks.value.map(b => b.title).sort(),
-          DOMTitles = [...fetchBookTrs(browser)].map(tr => tr.firstChild.textContent);
-    const allFound = DOMTitles.length === titles && titles.every((t,i) => t === DOMTitles?.[i]);
-    expect(allFound).to.be.true;
+  describe('',() => {
+    genOperateAndVisitRoute(
+      allBooks, 
+      async () => await bookService.readAll({ order: [['title', 'ASC']] }), 
+      browser, 
+      visitBooksRoute
+    )();
+    it('it should show all books sorted', () => {
+      const titles = allBooks.value.map(b => b.title),
+            trs = [...fetchBookTrs(browser)],
+            DOMTitles = [...fetchBookTrs(browser)].map(tr => tr.firstChild.textContent);
+      const allFound = DOMTitles.length === titles.length && titles.every((t,i) => t === DOMTitles?.[i]);
+      expect(allFound).to.be.true;
+    });
   });
 
-  genOperateAndVisitRoute(
-    null, 
-    () => allBooks.value.slice(0,-1).forEach(async b => await b.destroy()),
-    browser, 
-    visitBooksRoute
-  )();
-  it('it should show one book when all but one books are removed', async () => {
-    const onlyTitle = (await bookService.readAll())?.[0]?.title,
-          DOMTitles = [...fetchBookTrs(browser)].map(tr => tr.firstChild.textContent),
-          onlyDOMTitle = DOMTitles?.pop();
-
-    const lastFound = !DOMTitles.length && onlyTitle === onlyDOMTitle;
-    expect(lastFound).to.true;
+  describe('', () => {
+    genOperateAndVisitRoute(
+      null, 
+      () => allBooks.value.slice(0,-1).forEach(async b => await b.destroy()),
+      browser, 
+      visitBooksRoute
+    )();
+    it('it should show one book when all but one books are removed', async () => {
+      const onlyTitle = (await bookService.readAll())?.[0]?.title,
+            DOMTitles = [...fetchBookTrs(browser)].map(tr => tr.firstChild.textContent),
+            onlyDOMTitle = DOMTitles?.pop();
+      const lastFound = !DOMTitles.length && onlyTitle === onlyDOMTitle;
+      expect(lastFound).to.true;
+    });
   });
 
-  genOperateAndVisitRoute(
-    null, 
-    async () => await Book.destroy({ where:{}, truncate:true }),
-    browser, 
-    visitBooksRoute
-  )();
-  it('it should show no books when all books are removed', async () => {
-    const noBooks = await bookService.readAll();
-    expect(fetchBookTrs(browser)).to.have.length(0);
+  describe('', () => {
+    genOperateAndVisitRoute(
+      null, 
+      async () => await Book.destroy({ where:{}, truncate:true }),
+      browser, 
+      visitBooksRoute
+    )();
+    it('it should show no books when all books are removed', async () => {
+      const noBooks = await bookService.readAll();
+      expect(fetchBookTrs(browser)).to.have.length(0);
+    });
   });
 });

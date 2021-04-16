@@ -12,5 +12,6 @@ const { asyncHandler } = require('../lib/errorHandling');
  *
 */
 exports.readAll = asyncHandler(async function(req, res) {
-  res.render('book/index', {});
+  const allBooks = await bookService.readAll({ order: [['title', 'ASC']] });
+  res.render('book/index', {books: allBooks});
 });
