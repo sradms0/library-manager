@@ -4,10 +4,13 @@
  * @module controllers/book
 */
 
-const { book: bookController } = require('../services');
+const { book: bookService } = require('../services');
+const { asyncHandler } = require('../lib/errorHandling');
 
 /**
- * Reads all books and renders all books to '/views/books/index'
+ * Reads all books and renders all books to '/views/book/index'
  *
 */
-exports.readAll = function(req, res) {}
+exports.readAll = asyncHandler(async function(req, res) {
+  res.render('book/index', {});
+});

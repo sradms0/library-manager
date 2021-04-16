@@ -5,31 +5,19 @@ process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const { book: bookService } = require('../../../services');
+const { testOperations: testOps } = require('../../lib');
 const { expect } = chai;
 
-const { loader } = require('../../../seed/books');
 const { sequelize } = require('../../../database/models');
 const { models: {Book} } = sequelize;
 
 const bookData = require('../../data/books.json');
-const genreData = require('../../data/genres.json');
 
 
 chai.use(require('chai-as-promised'));
 
-describe('(Re)Create test database', () => {
-  before('testing books', async () => {
-    sequelize.options.logging = false;
-    await sequelize.sync({ force:true });
-    loader.load(bookData, genreData, false);
-  });
 
-  it('test-books loaded', async () => {
-    const books = await Book.findAll();
-    expect(books.length).to.eql(bookData.length);
-  });
-});
-
+testOps.loadTestDb();
 
 describe('services.book.readAll', () => {
   it('it should return a Promise', () => {
