@@ -6,12 +6,12 @@
 
 const { expect } = require('chai');
 
-const { loader } = require('../../seed/books');
-const { sequelize } = require('../../database/models');
+const { loader } = require('$seed/books');
+const { sequelize } = require('$database/models');
 const { models: {Book} } = sequelize;
 
-const bookData = require('../data/books.json');
-const genreData = require('../data/genres.json');
+const bookData = require('$test/data/books.json');
+const genreData = require('$test/data/genres.json');
 
 /**
  * Overwrites previous test-database and re-seeds data for testing.

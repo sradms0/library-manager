@@ -4,7 +4,7 @@
  * @module seed/lib/asyncHandler
 */
 
-const { asyncUtil: {asyncHandlerGenerator} } = require('@appLib');
+const { asyncUtil: {asyncHandlerGenerator} } = require('$root/lib');
 
 /**
  * Asynchronous function wrapper for data-seeding
