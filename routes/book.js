@@ -10,6 +10,6 @@ const router = express.Router();
 router.get('/', bookController.readAll);
 
 /* GET one book. */
-router.get('/:bookId', bookController.readByPk);
+router.get('/:id', bookController.readByPk);
 
 module.exports = router;
