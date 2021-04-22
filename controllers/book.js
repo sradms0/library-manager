@@ -24,5 +24,7 @@ exports.readAll = asyncHandler(async function(req, res) {
 exports.readByPk = asyncHandler(async function(req, res) {
   const { id } = req.params;
   const book = await bookService.readByPk(id);
-  res.status(book ? 200 : 404).end();
+  res
+    .status(book ? 200 : 404)
+    .render('book/update', { book });
 });

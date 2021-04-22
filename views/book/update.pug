@@ -4,3 +4,15 @@ block content
   h1 Update Book
 
   form()
+    p
+      label(for='title') Title
+      input.book-detail(name='title' type='text' id='title' value=`${book.title}`)
+    p
+      label(for='author') Author
+      input.book-detail(name='author' type='text' id='author' value=`${book.author}`)
+    p
+      label(for='genre') Genre
+      input.book-detail(name='genre' type='text' id='genre' value=`${book.genre}`)
+    p
+      label(for='year') Year
+      input.book-detail(name='year' type='text' id='year' value=`${book.year}`)
