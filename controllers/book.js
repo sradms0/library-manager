@@ -15,3 +15,12 @@ exports.readAll = asyncHandler(async function(req, res) {
   const allBooks = await bookService.readAll({ order: [['title', 'ASC']] });
   res.render('book/index', {books: allBooks});
 });
+
+/**
+ * Reads one book by primary key and renders book to '/views/book/update-book'.
+ * Sets `res.status` to 404 when a book is not found.
+ *
+*/
+exports.readByPk = asyncHandler(async function(req, res) {
+  res.end();
+});

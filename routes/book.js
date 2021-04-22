@@ -9,4 +9,7 @@ const router = express.Router();
 /* GET books listing. */
 router.get('/', bookController.readAll);
 
+/* GET one book. */
+router.get('/:bookId', bookController.readByPk);
+
 module.exports = router;
