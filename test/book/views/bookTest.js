@@ -48,6 +48,15 @@ function visitBooksRoute(browser){
  return visitRoute(browser, 'books');
 }
 
+/**
+ * Navigates to /books/:id route
+ * @param {Browser} browser - zombie instance
+ * @return {Promise} zombie.Browser.visit
+*/
+function visitOneBookRoute(browser, id){
+  return visitRoute(browser, `books/${id}`);
+}
+
 
 describe('views.book.index', () => {
   const browser = new Browser();
@@ -87,5 +96,34 @@ describe('views.book.index', () => {
     await visitBooksRoute(browser);
     const bs = fetchBookTrs(browser);
     expect(bs).to.have.length(0);
+  });
+});
+
+
+describe('views.book.update', () => {
+  const browser = new Browser();
+  let requester;
+
+  before('reload', async () => {
+    await testOps.loadTestDb();
+    requester = await chai.request(server).keepOpen();
+  });
+
+  after('close', () => {
+    requester.close();
+  });
+
+  it('it should shows details of one book', async () => {
+    const id = 1,
+          book = (await bookService.readByPk(id))?.toJSON(),
+          keys = ['title', 'author', 'genre', 'year'];
+
+    await visitOneBookRoute(browser, id);
+    const bookDetailIs = browser.querySelectorAll('p input.book-detail');
+
+    expect(bookDetailIs).to.have.length(4);
+    bookDetailIs.forEach((detail, idx) => 
+      expect(detail.textContent).to.eql(book[ keys[idx] ])
+    );
   });
 });
