@@ -16,17 +16,8 @@ const genreData = require('../data/genres.json');
 /**
  * Overwrites previous test-database and re-seeds data for testing.
 */
-exports.loadTestDb = function () {
-  describe('(Re)Create test database', () => {
-    before('testing books', async () => {
-      sequelize.options.logging = false;
-      await sequelize.sync({ force:true });
-      loader.load(bookData, genreData, false);
-    });
-
-    it('test-books loaded', async () => {
-      const books = await Book.findAll();
-      expect(books.length).to.eql(bookData.length);
-    });
-  });
+exports.loadTestDb = async function () {
+  sequelize.options.logging = false;
+  await sequelize.sync({ force:true });
+  await loader.load(bookData, genreData, false);
 }

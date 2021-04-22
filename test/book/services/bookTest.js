@@ -4,22 +4,25 @@ process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
-const { book: bookService } = require('../../../services');
-const { testOperations: testOps } = require('../../lib');
+const { book: bookService } = require('$services');
+const { loader } = require('$seed/books');
+const { testOperations: testOps } = require('$test/lib');
 const { expect } = chai;
 
-const { sequelize } = require('../../../database/models');
+const { sequelize } = require('$database/models');
 const { models: {Book} } = sequelize;
 
-const bookData = require('../../data/books.json');
-
+const bookData = require('$test/data/books.json');
+const genreData = require('$test/data/genres.json');
 
 chai.use(require('chai-as-promised'));
 
 
-testOps.loadTestDb();
-
 describe('services.book.readAll', () => {
+  before('reload', async () => {
+    await testOps.loadTestDb();
+  });
+
   it('it should return a Promise', () => {
     expect(bookService.readAll() instanceof Promise).to.be.true;
   });
@@ -30,18 +33,18 @@ describe('services.book.readAll', () => {
   });
 
   it('it should return should return all books in ascending title-order', async () => {
-    const books = await bookService.readAll({ order: [['title', 'ASC']] });
+    const books = await bookService.readAll({ order: [[ 'title', 'ASC' ]] });
     const sortedBookData = [...bookData]
       .sort((b1, b2) => {
-            const b1L = b1.title.toLowerCase(), 
-                  b2L = b2.title.toLowerCase();
-            if (b1L < b2L) return -1;
-            if (b1L > b2L) return 1;
-            return 0;
-          });
-    books.forEach((dbBook, idx) => 
+        const b1L = b1.title.toLowerCase(), 
+              b2L = b2.title.toLowerCase();
+        if (b1L < b2L) return -1;
+        if (b1L > b2L) return 1;
+        return 0;
+      });
+    books.forEach((dbBook, idx) => {
       expect(dbBook.title).to.eql(sortedBookData[idx].title)
-    );
+    });
   });
 });
 

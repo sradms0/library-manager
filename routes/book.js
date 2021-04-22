@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const { book: bookController } = require('../controllers');
+const { book: bookController } = require('$controllers');
 
 const router = express.Router();
 

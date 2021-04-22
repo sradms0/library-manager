@@ -4,8 +4,8 @@
  * @module controllers/book
 */
 
-const { book: bookService } = require('../services');
-const { asyncHandler } = require('../lib/errorHandling');
+const { book: bookService } = require('$services');
+const { asyncHandler } = require('$root/lib/errorHandling');
 
 /**
  * Reads all books and renders all books to '/views/book/index'

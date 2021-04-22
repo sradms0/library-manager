@@ -8,5 +8,5 @@ const { data: {books, genres}, loader: bookLoader } = bookSeeder;
 
 asyncHandler(async () => {
   await sequelize.sync();
-  bookLoader.load(books, genres);
+  await bookLoader.load(books, genres);
 })();

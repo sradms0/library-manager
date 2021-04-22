@@ -4,8 +4,9 @@
  * @module books/loader
 */
 
-const { asyncHandler } = require('../lib/asyncHandler');
-const { sequelize } = require('../../database/models');
+const { asyncUtil: {asyncForEach} } = require('$root/lib');
+const { asyncHandler } = require('$seed/lib/asyncHandler');
+const { sequelize } = require('$database/models');
 
 /**
  * Creates books with genres from JSON data and saves new books to the database.
@@ -13,15 +14,17 @@ const { sequelize } = require('../../database/models');
  * @param genreData - JSON book-genre data
  * 
 */
-exports.load = function(bookData, genreData, logging=true) {
-  bookData.forEach(i => {
-    const idx = Math.floor(Math.random() * genreData.length);
-    i.genre = genreData[idx].genre;
+exports.load = async function(bookData, genreData, logging=true) {
+  sequelize.options.logging = logging;
 
-    asyncHandler(async () => {
-      await sequelize.models.Book.create(i);
-      if (logging) console.log(`added book: ${i.title}`);
+  await asyncForEach(bookData, async book => {
+    const idx = Math.floor(Math.random() * genreData.length);
+    book.genre = genreData[idx].genre;
+
+    await asyncHandler(async () => {
+      if (logging) console.log(`creating book: ${book.title}`);
+      await sequelize.models.Book.create(book);
+      if (logging) console.log(` -- saved`);
     })();
   });
-  if (logging) console.log('books loaded');
 };

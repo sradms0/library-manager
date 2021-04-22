@@ -4,7 +4,8 @@
  * @module services/book
 */
 
-const { Book } = require('../database/models');
+//const { Book } = require('../database/models');
+const { Book } = require('$database/models')
 
 /**
  * Create one book
