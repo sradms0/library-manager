@@ -120,10 +120,9 @@ describe('views.book.update', () => {
 
     await visitOneBookRoute(browser, id);
     const bookDetailIs = browser.querySelectorAll('p input.book-detail');
-
     expect(bookDetailIs).to.have.length(4);
     bookDetailIs.forEach((detail, idx) => 
-      expect(detail.textContent).to.eql(book[ keys[idx] ])
+      expect(detail.value).to.eql(book[ keys[idx] ]+'')
     );
   });
 });
