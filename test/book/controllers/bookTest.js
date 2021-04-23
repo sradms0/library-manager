@@ -21,6 +21,24 @@ const proxyquire = require('proxyrequire')
 chai.use(require('sinon-chai'));
 chai.use(require('chai-as-promised'));
 
+
+describe('controllers.book.readAll', () => {
+  before('reload', async () => {
+    await testOps.loadTestDb();
+  });
+  
+  it('it should render book/index and pass an all books object', async () => {
+    const res = mockResponse(),
+          id = 1,
+          req = mockRequest({ params: {id} }),
+          books = await bookService.readAll({ order: [['title', 'ASC']] });
+
+    await bookController.readAll(req, res);
+    expect(res.render).to.have.been.calledWith('book/index', { books });
+  });
+});
+
+
 describe('controllers.book.readByPk', () => {
   before('reload', async () => {
     await testOps.loadTestDb();
@@ -46,6 +64,5 @@ describe('controllers.book.readByPk', () => {
       .to.equal(`Book with id ${id} does not exist`);
   });
 });
-
 
 
