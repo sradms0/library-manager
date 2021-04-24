@@ -97,6 +97,16 @@ describe('controllers.book.readAll', () => {
 });
 
 
+describe('controllers.book.readNew', () => {
+  it('it should render book/new', async () => {
+    const res = mockResponse(),
+          req = mockRequest();
+    await bookController.readNew(req, res);
+    expect(res.render).to.have.been.calledWith('book/new');
+  });
+});
+
+
 describe('controllers.book.readByPk', () => {
   before('reload', async () => {
     await testOps.loadTestDb();

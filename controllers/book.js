@@ -26,6 +26,11 @@ exports.readAll = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads a new book, rendering '/views/book/new'
+*/
+exports.readNew = function(req, res) {};
+
+/**
  * Reads one book by primary key and renders book to '/views/book/update-book'.
  * Sets `res.status` to 404 when a book is not found.
  *
