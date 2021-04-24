@@ -99,12 +99,9 @@ describe('views.book.index', () => {
 
   it('it should direct the user to /book/:id when clicking on a book', async () => {
     await visitBooksRoute(browser);
-    let id = fetchBookTrs(browser)
-              ?.[0].querySelector('a')
-              ?.href.split('/').pop();
-    id = parseInt(id);
-
-    await expect(browser.clickLink('a')).to.not.be.rejectedWith();
+    const firstBookHref = fetchBookTrs(browser)?.[0].querySelector('a')?.href;
+    await browser.clickLink('a');
+    expect(browser.location._url).to.equal(firstBookHref);
   });
 });
 
