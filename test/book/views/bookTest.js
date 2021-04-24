@@ -4,7 +4,6 @@ process.env.NODE_ENV = 'test';
 
 const Browser = require('zombie');
 const chai = require('chai');
-const chaiHttp = require('chai-http');
 const { testOperations: testOps } = require('$test/lib');
 const { expect } = chai;
 const server = require('$root/bin/www');
@@ -17,8 +16,8 @@ const { models: {Book} } = sequelize;
 const bookData = require('$test/data/books.json');
 const genreData = require('$test/data/genres.json');
 
-
-chai.use(chaiHttp);
+chai.use(require('chai-as-promised'));
+chai.use(require('chai-http'));
 
 /**
  * Finds all table rows containing book data
@@ -96,6 +95,16 @@ describe('views.book.index', () => {
     await visitBooksRoute(browser);
     const bs = fetchBookTrs(browser);
     expect(bs).to.have.length(0);
+  });
+
+  it('it should direct the user to /book/:id when clicking on a book', async () => {
+    await visitBooksRoute(browser);
+    let id = fetchBookTrs(browser)
+              ?.[0].querySelector('a')
+              ?.href.split('/').pop();
+    id = parseInt(id);
+
+    await expect(browser.clickLink('a')).to.not.be.rejectedWith();
   });
 });
 
