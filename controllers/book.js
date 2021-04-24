@@ -13,6 +13,7 @@ const { asyncHandler } = require('$root/lib/errorHandling');
 exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
   await bookService.create(body);
+  res.redirect('/books');
 });
 
 /**
