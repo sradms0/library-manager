@@ -10,7 +10,10 @@ const { asyncHandler } = require('$root/lib/errorHandling');
 /**
  * Creates a new book
 */
-exports.create = asyncHandler(async function(req, res) {});
+exports.create = asyncHandler(async function(req, res) {
+  const { body } = req;
+  await bookService.create(body);
+});
 
 /**
  * Reads all books and renders all books to '/views/book/index'

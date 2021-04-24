@@ -64,7 +64,7 @@ describe('controllers.book.create', () => {
       .to.equal('Validation error: "Title" is required');
   });
 
-  it('it should throw an error when neither both title and author aren\'t given', async () => {
+  it('it should throw an error when both title and author aren\'t given', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: {title: '', author: ''} });
     expect(await bookController.create(req, res, err => err.message))
