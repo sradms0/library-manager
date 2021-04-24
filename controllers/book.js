@@ -8,6 +8,11 @@ const { book: bookService } = require('$services');
 const { asyncHandler } = require('$root/lib/errorHandling');
 
 /**
+ * Creates a new book
+*/
+exports.create = asyncHandler(async function(req, res) {});
+
+/**
  * Reads all books and renders all books to '/views/book/index'
  *
 */

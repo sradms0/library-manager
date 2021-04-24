@@ -21,6 +21,57 @@ const proxyquire = require('proxyrequire')
 chai.use(require('sinon-chai'));
 chai.use(require('chai-as-promised'));
 
+describe('controllers.book.create', () => {
+  beforeEach('reload', async () => {
+    await testOps.loadTestDb();
+  });
+
+  it('it should create one book when only required attributes are given', async () => {
+    const id = 100,
+          res = mockResponse(),
+          req = mockRequest({ body: {id: 100, title: 'title', author: 'author'} });
+    await bookController.create(req, res);
+    expect(await bookService.readByPk(id)).to.not.be.null;
+  });
+
+  it('it should create one book when all attributes are given', async () => {
+    const id = 100,
+          res = mockResponse(),
+          req = mockRequest({ 
+            body: {
+              id: 100, 
+              title: 'title', 
+              author: 'author',
+              genre: 'genre',
+              year: 1,
+            }
+          });
+    await bookController.create(req, res);
+    expect(await bookService.readByPk(id)).to.not.be.null;
+  });
+
+  it('it should throw an error when only a title is given', async () => {
+    const res = mockResponse(),
+          req = mockRequest({ body: {title: 'title', author: ''} });
+    expect(await bookController.create(req, res, err => err.message))
+      .to.equal('Validation error: "Author" is required');
+  });
+
+  it('it should throw an error when only an author is given', async () => {
+    const res = mockResponse(),
+          req = mockRequest({ body: {title: '', author: 'author'} });
+    expect(await bookController.create(req, res, err => err.message))
+      .to.equal('Validation error: "Title" is required');
+  });
+
+  it('it should throw an error when neither both title and author aren\'t given', async () => {
+    const res = mockResponse(),
+          req = mockRequest({ body: {title: '', author: ''} });
+    expect(await bookController.create(req, res, err => err.message))
+      .to.equal('Validation error: "Title" is required,\nValidation error: "Author" is required');
+  });
+});
+
 
 describe('controllers.book.readAll', () => {
   before('reload', async () => {
@@ -64,5 +115,4 @@ describe('controllers.book.readByPk', () => {
       .to.equal(`Book with id ${id} does not exist`);
   });
 });
-
 
