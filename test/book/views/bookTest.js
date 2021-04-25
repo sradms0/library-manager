@@ -193,6 +193,18 @@ describe('views.book.new', () => {
       .find(a => a.textContent === 'new title')?.textContent;
     expect(newBookTitle).to.eql('new title');
   });
+
+  it('it should have a cancel link that brings the user back to /books', async () => {
+    const extractRoute = url => url.match(/\/books$/g);
+
+    await visitNewBookRoute(browser);
+    const cancelA = browser.querySelector('a.button');
+    await browser.clickLink(cancelA);
+
+    const [ cancelAHrefRoute ] = extractRoute(cancelA?.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(cancelAHrefRoute);
+  })
 });
 
 
