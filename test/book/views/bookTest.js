@@ -48,6 +48,15 @@ function visitBooksRoute(browser){
 }
 
 /**
+ * Navigates to /books/new route
+ * @param {Browser} browser - zombie instance
+ * @return {Promise} zombie.Browser.visit
+*/
+function visitNewBookRoute(browser){
+  return visitRoute(browser, 'books/new');
+}
+
+/**
  * Navigates to /books/:id route
  * @param {Browser} browser - zombie instance
  * @return {Promise} zombie.Browser.visit
@@ -102,6 +111,69 @@ describe('views.book.index', () => {
     const firstBookHref = fetchBookTrs(browser)?.[0].querySelector('a')?.href;
     await browser.clickLink('a');
     expect(browser.location._url).to.equal(firstBookHref);
+  });
+});
+
+
+describe('views.book.new', () => {
+  const browser = new Browser();
+  let requester;
+
+  beforeEach('reload', async () => {
+    requester = await chai.request(server).keepOpen();
+  });
+
+  afterEach('close', () => {
+    requester.close();
+  });
+
+  it('it should display a form for creating a new book', async () => {
+    await visitNewBookRoute(browser);
+    const form = browser.querySelector('form');
+    expect(form).to.not.be.null;
+  });
+
+  it('it should display a form with a post method', async () => {
+    await visitNewBookRoute(browser);
+    const form = browser.querySelector('form');
+    expect(form?.method).to.eql('post')
+  });
+
+  it('it should display a form with an action of /books/new', async () => {
+    await visitNewBookRoute(browser);
+    const form = browser.querySelector('form');
+    expect(form?.action).to.eql('/books/new');
+  });
+
+  it('it should show fields for creating a new book', async () => {
+    await visitNewBookRoute(browser);
+    const bookDetailIs = browser.querySelectorAll('form p input.book-detail'),
+          keys = ['title', 'author', 'genre', 'year'];
+    const allFieldsMatch = [...bookDetailIs].every((detail, idx) => 
+      detail.name === keys[idx]+''
+    );
+    expect(bookDetailIs.length && allFieldsMatch).to.be.true;
+  });
+
+  it('it should display a button to submit the new-book form', async () => {
+    await visitNewBookRoute(browser);
+    const submitI = browser.querySelector('form input[type="submit"]');
+    expect(submitI).to.not.be.null;
+  });
+
+  it('it should submit the form, creating a new book', async () => {
+    await visitNewBookRoute(browser);
+    const form = browser.querySelector('form');
+    browser.fill('input[name=title]', 'new title');
+    browser.fill('input[name=author]', 'new author');
+    browser.fill('input[name=genre]', 'new genre');
+    browser.fill('input[name=year]', '1');
+    form?.submit();
+
+    await visitBooksRoute(browser);
+    const newBookTitle = [...browser.querySelectorAll('td a')]
+      .find(a => a.textContent === 'new title')?.textContent;
+    expect(newBookTitle).to.eql('new title');
   });
 });
 

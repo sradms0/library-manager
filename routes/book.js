@@ -9,10 +9,13 @@ const router = express.Router();
 /* GET books listing. */
 router.get('/', bookController.readAll);
 
+/* GET new book. */
+router.get('/new', bookController.readNew);
+
 /* GET one book. */
 router.get('/:id', bookController.readByPk);
 
-/* GET new book. */
-router.get('/new', bookController.readNew);
+/* POST one book. */
+router.post('/:id', bookController.create);
 
 module.exports = router;
