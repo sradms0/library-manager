@@ -112,6 +112,13 @@ describe('views.book.index', () => {
     await browser.clickLink('a');
     expect(browser.location._url).to.equal(firstBookHref);
   });
+
+  it('it should have an anchor element to bring the user to /books/new', async () => {
+    await visitBooksRoute(browser);
+    const createBookA = browser.querySelector('p a');
+    await browser.clickLink(createBookA);
+    expect(browser.location._url).to.equal('/books/new');
+  });
 });
 
 
