@@ -12,10 +12,10 @@ router.get('/', bookController.readAll);
 /* GET new book. */
 router.get('/new', bookController.readNew);
 
+/* POST one book. */
+router.post('/new', bookController.create);
+
 /* GET one book. */
 router.get('/:id', bookController.readByPk);
-
-/* POST one book. */
-router.post('/:id', bookController.create);
 
 module.exports = router;
