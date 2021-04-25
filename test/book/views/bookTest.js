@@ -142,7 +142,8 @@ describe('views.book.new', () => {
   it('it should display a form with an action of /books/new', async () => {
     await visitNewBookRoute(browser);
     const form = browser.querySelector('form');
-    expect(form?.action).to.eql('/books/new');
+    const [ action ] = form?.action?.match(/\/books\/new$/g);
+    expect(action).to.eql('/books/new');
   });
 
   it('it should show fields for creating a new book', async () => {
