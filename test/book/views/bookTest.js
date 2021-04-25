@@ -107,17 +107,27 @@ describe('views.book.index', () => {
   });
 
   it('it should direct the user to /book/:id when clicking on a book', async () => {
+    const extractRoute = url => url?.match(/\/books\/(\d+)$/g);
+
     await visitBooksRoute(browser);
-    const firstBookHref = fetchBookTrs(browser)?.[0].querySelector('a')?.href;
-    await browser.clickLink('a');
-    expect(browser.location._url).to.equal(firstBookHref);
+    const firstBookA = fetchBookTrs(browser)?.[0].querySelector('a');
+    await browser.clickLink(firstBookA);
+
+    const [ firstBookAHrefRoute ] = extractRoute(firstBookA.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(firstBookAHrefRoute);
   });
 
   it('it should have an anchor element to bring the user to /books/new', async () => {
+    const extractRoute = url => url?.match(/\/books\/new$/g);
+
     await visitBooksRoute(browser);
     const createBookA = browser.querySelector('p a');
     await browser.clickLink(createBookA);
-    expect(browser.location._url).to.equal('/books/new');
+
+    const [ createBookAHrefRoute ] = extractRoute(createBookA.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(createBookAHrefRoute);
   });
 });
 
