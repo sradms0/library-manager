@@ -210,22 +210,78 @@ describe('views.book.new', () => {
 describe('views.book.update', () => {
   const browser = new Browser();
   let requester;
+  let form, id, book, keys;
 
   before('reload', async () => {
     await testOps.loadTestDb();
     requester = await chai.request(server).keepOpen();
+    id = 1,
+    book = (await bookService.readByPk(id))?.toJSON(),
+    keys = ['title', 'author', 'genre', 'year'];
+  });
+
+  beforeEach('', async () => {
+    await visitOneBookRoute(browser, id);
+    form = browser.querySelector('form');
   });
 
   after('close', () => {
     requester.close();
   });
 
-  it('it should shows details of one book', async () => {
-    const id = 1,
-          book = (await bookService.readByPk(id))?.toJSON(),
-          keys = ['title', 'author', 'genre', 'year'];
+  it('it should display a form for updating a new book', async () => {
+    expect(form).to.not.be.null;
+  });
+
+  it('it should display a form with a post method', async () => {
+    expect(form?.method).to.eql('post')
+  });
+
+  it('it should display a form with an action of /books/:id/detail', async () => {
+    const [ action ] = form?.action?.match(/\/books\/\d+\/update$/g);
+    expect(action).to.eql(`/books/${id}/update`);
+  });
+
+  it('it should display a button to submit the update-book form', async () => {
+    const submitI = browser.querySelector('form input[type="submit"]');
+    expect(submitI).to.not.be.null;
+  });
+
+  it('it should have a cancel link that brings the user back to /books', async () => {
+    const extractRoute = url => url.match(/\/books$/g);
 
     await visitOneBookRoute(browser, id);
+    const cancelA = browser.querySelector('a.button');
+    await browser.clickLink(cancelA);
+
+    const [ cancelAHrefRoute ] = extractRoute(cancelA?.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(cancelAHrefRoute);
+  })
+
+  it('it should submit the form, updating the existing book', async () => {
+    const updated = { 
+      title: 'updated title', 
+      author: 'updated author', 
+      genre: 'updated genre', 
+      year: 1
+    };
+    const form = browser.querySelector('form');
+    Object.keys(updated).forEach(key => 
+      browser.fill(`input[name=${key}]`, updated[key])
+    );
+    form?.submit();
+
+    await visitBooksRoute(browser);
+    const updatedBookTds = [...fetchBookTrs(browser)]
+                            .find(tr => tr.firstChild.textContent === updated.title)?.children;
+    const updatedVals = Object.values(updated);
+    updatedBookTds?.forEach((td, idx) => 
+      expect(td.textContent).to.equal(updatedVals[idx])
+    );
+  });
+
+  it('it should shows details of one book', async () => {
     const bookDetailIs = browser.querySelectorAll('p input.book-detail');
     expect(bookDetailIs).to.have.length(4);
     bookDetailIs.forEach((detail, idx) => 

@@ -12,6 +12,9 @@ router.get('/', bookController.readAll);
 /* GET one book. */
 router.get('/:id/detail', bookController.readByPk);
 
+/* POST update existing book. */
+router.get('/:id/detail', bookController.update);
+
 /* GET new book. */
 router.get('/new', bookController.readNew);
 
