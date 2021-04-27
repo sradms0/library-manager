@@ -16,6 +16,6 @@ router.get('/new', bookController.readNew);
 router.post('/new', bookController.create);
 
 /* GET one book. */
-router.get('/:id', bookController.readByPk);
+router.get('/detail/:id', bookController.readByPk);
 
 module.exports = router;

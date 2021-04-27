@@ -62,7 +62,7 @@ function visitNewBookRoute(browser){
  * @return {Promise} zombie.Browser.visit
 */
 function visitOneBookRoute(browser, id){
-  return visitRoute(browser, `books/${id}`);
+  return visitRoute(browser, `books/detail/${id}`);
 }
 
 
