@@ -43,3 +43,14 @@ exports.readByPk = asyncHandler(async function(req, res) {
   if (!book) throw new Error(`Book with id ${id} does not exist`);
   res.render('book/update', { book });
 });
+
+/**
+ * Updates an existing book, redirecting to /books after.
+*/
+exports.update = asyncHandler(async function(req, res) {
+  const { id } = req.params, { body } = req;
+  const book = await bookService.readByPk(id);
+  if (!book) throw new Error(`Book with id ${id} does not exist`);
+  await bookService.update(book, body);
+  res.redirect('/books');
+});
