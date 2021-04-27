@@ -34,3 +34,13 @@ exports.readByPk = function(pk) {
 exports.readAll = function(order={}) {
   return Book.findAll(order);
 }
+
+/**
+ * Updates one book
+ * @param { Book } book - the book instance to update.
+ * @param { Object } data - the data to update the book instance with.
+ * @returns { Promise }
+*/
+exports.update = function(book, data) {
+  return new Promise((res, rej) => res(null));
+}
