@@ -106,13 +106,12 @@ describe('views.book.index', () => {
     expect(bs).to.have.length(0);
   });
 
-  it('it should direct the user to /book/:id when clicking on a book', async () => {
-    const extractRoute = url => url?.match(/\/books\/(\d+)$/g);
+  it('it should direct the user to /books/detail/:id when clicking on a book', async () => {
+    const extractRoute = url => url?.match(/\/books\/detail\/(\d+)$/g);
 
     await visitBooksRoute(browser);
     const firstBookA = fetchBookTrs(browser)?.[0].querySelector('a');
     await browser.clickLink(firstBookA);
-
     const [ firstBookAHrefRoute ] = extractRoute(firstBookA.href),
           [ urlRoute ] = extractRoute(browser.location._url);
     expect(urlRoute).to.equal(firstBookAHrefRoute);
