@@ -212,20 +212,17 @@ describe('views.book.update', () => {
   let requester;
   let form, id, book, keys;
 
-  before('reload', async () => {
+  beforeEach('', async () => {
     await testOps.loadTestDb();
-    requester = await chai.request(server).keepOpen();
+    requester = await chai.request(server).keepOpen(),
     id = 1,
     book = (await bookService.readByPk(id))?.toJSON(),
     keys = ['title', 'author', 'genre', 'year'];
-  });
-
-  beforeEach('', async () => {
     await visitOneBookRoute(browser, id);
     form = browser.querySelector('form');
   });
 
-  after('close', () => {
+  afterEach('close', () => {
     requester.close();
   });
 
@@ -249,8 +246,6 @@ describe('views.book.update', () => {
 
   it('it should have a cancel link that brings the user back to /books', async () => {
     const extractRoute = url => url.match(/\/books$/g);
-
-    await visitOneBookRoute(browser, id);
     const cancelA = browser.querySelector('a.button');
     await browser.clickLink(cancelA);
 
@@ -266,19 +261,22 @@ describe('views.book.update', () => {
       genre: 'updated genre', 
       year: 1
     };
-    const form = browser.querySelector('form');
     Object.keys(updated).forEach(key => 
       browser.fill(`input[name=${key}]`, updated[key])
     );
-    form?.submit();
-
+    form.submit();
+    await browser.wait();
     await visitBooksRoute(browser);
     const updatedBookTds = [...fetchBookTrs(browser)]
                             .find(tr => tr.firstChild.textContent === updated.title)?.children;
     const updatedVals = Object.values(updated);
-    updatedBookTds?.forEach((td, idx) => 
-      expect(td.textContent).to.equal(updatedVals[idx])
-    );
+
+    let found = 0;
+    [...updatedBookTds ]?.forEach((td, idx) => {
+      found++;
+      expect(td.textContent).to.equal(updatedVals[idx]+'')
+    });
+    expect(found).to.equal(updatedBookTds.length);
   });
 
   it('it should shows details of one book', async () => {
