@@ -8,7 +8,7 @@ table
   tbody
     each book in books
       tr
-        td: a(href=`/books/detail/${book.id}`)= book.title
+        td: a(href=`/books/${book.id}/detail`)= book.title
         td= book.author
         td= book.genre
         td= book.year
