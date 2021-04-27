@@ -133,3 +133,69 @@ describe('controllers.book.readByPk', () => {
   });
 });
 
+
+describe('controllers.book.update', () => {
+  let updated, id;
+
+  before('reload', async () => {
+    await testOps.loadTestDb();
+    id = 1;
+    updated =  {
+      title: 'updated title', 
+      author: 'updated author',
+      genre: 'updated genre',
+      year: 1,
+    }
+  });
+
+  it('it should throw an error when a non-existent book update is attempted', async() => {
+    const res = mockResponse(),
+          badId = -1,
+          req = mockRequest({ params: {id: badId} }),
+          book = await bookService.readByPk(id);
+
+    expect(await bookController.update(req, res, err => err.message))
+      .to.equal(`Book with id ${badId} does not exist`);
+  });
+
+  it('it should update one book when all attributes are given', async () => {
+    const res = mockResponse(),
+          req = mockRequest({ body: updated, params: {id} });
+
+    await bookController.update(req, res);
+    const updatedBook = (await bookService.readByPk(id))?.toJSON();
+    Object.keys(updated).forEach(key => 
+      expect(updated[key]).to.equal(updatedBook[key])
+    );
+  });
+
+  it('it should redirect the user to /books after a book is updated', async () => {
+    const res = mockResponse(),
+          req = mockRequest({ body: updated, params: {id} });
+    await bookController.update(req, res);
+    expect(res.redirect).to.have.been.calledWith('/books');
+  })
+
+  it('it should throw an error when only a title is given', async () => {
+    const sansAuthor = { ...updated, author: '' };
+    const res = mockResponse(),
+          req = mockRequest({ body: sansAuthor, params: {id} });
+    expect(await bookController.update(req, res, err => err.message))
+      .to.equal('Validation error: "Author" is required');
+  });
+
+  it('it should throw an error when only an author is given', async () => {
+    const sansTitle = { ...updated, title: '' };
+    const res = mockResponse(),
+          req = mockRequest({ body: sansTitle, params: {id}});
+    expect(await bookController.update(req, res, err => err.message))
+      .to.equal('Validation error: "Title" is required');
+  });
+
+  it('it should throw an error when both title and author aren\'t given', async () => {
+    const res = mockResponse(),
+          req = mockRequest({ body: {title: '', author: ''}, params: {id}});
+    expect(await bookController.update(req, res, err => err.message))
+      .to.equal('Validation error: "Title" is required,\nValidation error: "Author" is required');
+  });
+});
