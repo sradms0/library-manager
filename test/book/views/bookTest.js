@@ -62,7 +62,7 @@ function visitNewBookRoute(browser){
  * @return {Promise} zombie.Browser.visit
 */
 function visitOneBookRoute(browser, id){
-  return visitRoute(browser, `books/detail/${id}`);
+  return visitRoute(browser, `books/${id}/detail`);
 }
 
 
@@ -106,8 +106,8 @@ describe('views.book.index', () => {
     expect(bs).to.have.length(0);
   });
 
-  it('it should direct the user to /books/detail/:id when clicking on a book', async () => {
-    const extractRoute = url => url?.match(/\/books\/detail\/(\d+)$/g);
+  it('it should direct the user to /books/:id/detail when clicking on a book', async () => {
+    const extractRoute = url => url?.match(/\/books\/(\d+)\/detail$/g);
 
     await visitBooksRoute(browser);
     const firstBookA = fetchBookTrs(browser)?.[0].querySelector('a');
