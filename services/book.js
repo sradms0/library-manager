@@ -42,5 +42,5 @@ exports.readAll = function(order={}) {
  * @returns { Promise }
 */
 exports.update = function(book, data) {
-  return new Promise((res, rej) => res(null));
+  return book.update(data);
 }
