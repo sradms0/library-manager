@@ -185,8 +185,8 @@ describe('views.book.new', () => {
     browser.fill('input[name=author]', 'new author');
     browser.fill('input[name=genre]', 'new genre');
     browser.fill('input[name=year]', '1');
-    form?.submit();
-
+    form.submit();
+    await browser.wait();
     await visitBooksRoute(browser);
     const newBookTitle = [...browser.querySelectorAll('td a')]
       .find(a => a.textContent === 'new title')?.textContent;
