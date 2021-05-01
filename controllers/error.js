@@ -17,3 +17,13 @@ exports.route = function(req, res, next) {
   return next(error);
 }
 
+/**
+ * Handles all errors, setting an error.status code if there is none.
+ * `res.status` is set to error.status and view/error is then rendered.
+ * @param { Object } error - the error object to assess.
+ * @param { Object } req - routing request object.
+ * @param { Object } res - routing response object.
+ * @param { Function } next - the middleware called before this function.
+*/
+exports.global = function(error, req, res, next) {}
+
