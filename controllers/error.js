@@ -25,5 +25,8 @@ exports.route = function(req, res, next) {
  * @param { Object } res - routing response object.
  * @param { Function } next - the middleware called before this function.
 */
-exports.global = function(error, req, res, next) {}
+exports.global = function(error, req, res, next) {
+  error.status = error.status || 500;
+  res.status(error.status).render('error', { error });
+}
 
