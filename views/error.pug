@@ -1,3 +1,7 @@
 extends ./layout
 
 block content
+  h1#error-message=error.message
+  h2#error-status=error.status
+  unless error.status === 404
+    pre#error-stack=error.stack
