@@ -4,5 +4,6 @@
  * @module controllers
 */
 module.exports = {
-  book: require('./book')
+  book: require('./book'),
+  error: require('./error')
 };
