@@ -6,6 +6,7 @@ const path = require('path');
 const logger = require('morgan');
 
 const { book: bookRouter } = require('./routes');
+const { error: errorController } = require('$controllers');
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/books', bookRouter);
+app.use(errorController.route, errorController.global);
 
 module.exports = app;
