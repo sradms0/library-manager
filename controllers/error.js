@@ -11,5 +11,9 @@
  * @param { Object } res - routing response object.
  * @param { Function } next - to call the next middleware (meant for global error handler).
 */
-exports.route = function(req, res, next) {}
+exports.route = function(req, res, next) {
+  const error = new Error('Page Not Found');
+  error.status = 404;
+  return next(error);
+}
 
