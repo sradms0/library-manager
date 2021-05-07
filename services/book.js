@@ -44,3 +44,6 @@ exports.readAll = function(order={}) {
 exports.update = function(book, data) {
   return book.update(data);
 }
+
+/** Quick access to model */
+exports.model = Book;
