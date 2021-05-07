@@ -55,27 +55,33 @@ describe('controllers.book.create', () => {
           req = mockRequest({ body: {title: 'title', author: 'author'} });
     await bookController.create(req, res);
     expect(res.redirect).to.have.been.calledWith('/books');
-  })
-
-  it('it should throw an error when only a title is given', async () => {
-    const res = mockResponse(),
-          req = mockRequest({ body: {title: 'title', author: ''} });
-    expect(await bookController.create(req, res, err => err.message))
-      .to.equal('Validation error: "Author" is required');
   });
 
-  it('it should throw an error when only an author is given', async () => {
-    const res = mockResponse(),
-          req = mockRequest({ body: {title: '', author: 'author'} });
-    expect(await bookController.create(req, res, err => err.message))
-      .to.equal('Validation error: "Title" is required');
+  it('it should call res.render with prev. data when only a title is given (from validation error)', async () => {
+    const book = {title: 'title', author: ''},
+          errors = ['"Author" is required'],
+          res = mockResponse(),
+          req = mockRequest({ body: book });
+    await bookController.create(req, res);
+    expect(res.render).to.have.been.calledWith('/book/new', { dataValues: {id: null, ...book }, errors });
   });
 
-  it('it should throw an error when both title and author aren\'t given', async () => {
-    const res = mockResponse(),
-          req = mockRequest({ body: {title: '', author: ''} });
-    expect(await bookController.create(req, res, err => err.message))
-      .to.equal('Validation error: "Title" is required,\nValidation error: "Author" is required');
+  it('it should call res.render with prev. data when only an author is given (from validation error)', async () => {
+    const book = {title: '', author: 'author'},
+          errors = ['"Title" is required'],
+          res = mockResponse(),
+          req = mockRequest({ body: book });
+    await bookController.create(req, res);
+    expect(res.render).to.have.been.calledWith('/book/new', { dataValues: {id: null, ...book }, errors });
+  });
+
+  it('it should call res.render with prev. data when neither title or author are given (from validation error)', async () => {
+    const book = {title: '', author: ''},
+          errors = ['"Title" is required', '"Author" is required'],
+          res = mockResponse(),
+          req = mockRequest({ body:  book });
+    await bookController.create(req, res);
+    expect(res.render).to.have.been.calledWith('/book/new', { dataValues: {id: null, ...book }, errors });
   });
 });
 
