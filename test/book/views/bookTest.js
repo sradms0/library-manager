@@ -157,7 +157,50 @@ describe('views.book.new', () => {
     const [ cancelAHrefRoute ] = extractRoute(cancelA?.href),
           [ urlRoute ] = extractRoute(browser.location._url);
     expect(urlRoute).to.equal(cancelAHrefRoute);
-  })
+  });
+
+  describe('error validation rendering', () => {
+    const getErrorElements = browser => browser.querySelectorAll('.error');
+    let form, errorElements;
+
+    beforeEach('', async () => {
+      await testOps.visitNewBookRoute(browser);
+      form = browser.querySelector('form');
+    });
+
+    it('it should not submit the form and show validation errors when only a title is given for creating a new book', async () => {
+      browser.fill('input[name=title]', 'new title');
+      form.submit();
+      await browser.wait();
+
+      errorElements = [...getErrorElements(browser)];
+      const errorShows = errorElements.length === 1 && errorElements?.[0].textContent === '"Author" is required';
+
+      expect(errorShows).to.be.true;
+    });
+
+    it('it should not submit the form and show validation errors when only an author is given for creating a new book', async () => {
+      browser.fill('input[name=author]', 'new author');
+      form.submit();
+      await browser.wait();
+
+      errorElements = [...getErrorElements(browser)];
+      const errorShows = errorElements.length === 1 && errorElements?.[0].textContent === '"Title" is required';
+
+      expect(errorShows).to.be.true;
+    });
+
+    it('it should not submit the form and show validation errors when neither title nor author is given for creating a new book', async () => {
+      form.submit();
+      await browser.wait();
+
+      errorElements = [...getErrorElements(browser)];
+      const [errEl1, errEl2] = errorElements;
+      const errorShows = errorElements.length === 2 && 
+        errEl1.textContent === '"Title" is required' && errEl2.textContent === '"Author" is required';
+      expect(errorShows).to.be.true;
+    });
+  });
 });
 
 
