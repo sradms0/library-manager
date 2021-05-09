@@ -7,13 +7,15 @@ block content
     each error in errors
       p.error= error
 
+  - const fillValue = value => dataValues?.[value];
+
   form(method='post' action='/books/new')
     p
       label(for='title') Title
-      input.book-detail(name='title' type='text' id='title')
+      input.book-detail(name='title' type='text' id='title' value=fillValue('title'))
     p
       label(for='author') Author
-      input.book-detail(name='author' type='text' id='author')
+      input.book-detail(name='author' type='text' id='author' value=fillValue('author'))
     p
       label(for='genre') Genre
       input.book-detail(name='genre' type='text' id='genre')
