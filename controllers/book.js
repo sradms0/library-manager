@@ -14,7 +14,7 @@ exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
   await bookService.create(body);
   res.redirect('/books');
-}, { errorView: '/book/new', model: bookService.model });
+}, { errorView: 'book/new', model: bookService.model });
 
 /**
  * Reads all books and renders all books to '/views/book/index'
