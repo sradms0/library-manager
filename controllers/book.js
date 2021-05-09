@@ -53,4 +53,4 @@ exports.update = asyncHandler(async function(req, res) {
   if (!book) throw new Error(`Book with id ${id} does not exist`);
   await bookService.update(book, body);
   res.redirect('/books');
-});
+}, { errorView: '/book/update', model: bookService.model });
