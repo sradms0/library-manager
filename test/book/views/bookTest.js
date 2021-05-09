@@ -149,7 +149,6 @@ describe('views.book.new', () => {
 
   it('it should have a cancel link that brings the user back to /books', async () => {
     const extractRoute = url => url.match(/\/books$/g);
-
     await testOps.visitNewBookRoute(browser);
     const cancelA = browser.querySelector('a.button');
     await browser.clickLink(cancelA);
@@ -160,7 +159,10 @@ describe('views.book.new', () => {
   });
 
   describe('error validation rendering', () => {
-    const getErrorElements = browser => browser.querySelectorAll('.error');
+    const getErrorElements = browser => browser.querySelectorAll('.error'),
+          fillTitle = (browser, val=null) => browser.fill('input[name=title]', val ? val : 'new title'),
+          fillAuthor = (browser, val=null) => browser.fill('input[name=author]', val ? val : 'new author');
+        
     let form, errorElements;
 
     beforeEach('', async () => {
@@ -169,7 +171,7 @@ describe('views.book.new', () => {
     });
 
     it('it should not submit the form and show validation errors when only a title is given for creating a new book', async () => {
-      browser.fill('input[name=title]', 'new title');
+      fillTitle(browser);
       form.submit();
       await browser.wait();
 
@@ -179,8 +181,18 @@ describe('views.book.new', () => {
       expect(errorShows).to.be.true;
     });
 
+    it('it should not submit the form and display the prev. title value after validation errors from creating a new book', async () => {
+      const titleVal = 'new title';
+      fillTitle(browser, titleVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="title"]');
+      expect(value).to.equal(titleVal);
+    });
+
     it('it should not submit the form and show validation errors when only an author is given for creating a new book', async () => {
-      browser.fill('input[name=author]', 'new author');
+      fillAuthor(browser);
       form.submit();
       await browser.wait();
 
@@ -188,6 +200,16 @@ describe('views.book.new', () => {
       const errorShows = errorElements.length === 1 && errorElements?.[0].textContent === '"Title" is required';
 
       expect(errorShows).to.be.true;
+    });
+
+    it('it should not submit the form and display the prev. author value after validation errors from creating a new book', async () => {
+      const authorVal = 'new author';
+      fillAuthor(browser, authorVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="author"]');
+      expect(value).to.equal(authorVal);
     });
 
     it('it should not submit the form and show validation errors when neither title nor author is given for creating a new book', async () => {
