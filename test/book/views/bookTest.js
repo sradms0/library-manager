@@ -161,7 +161,9 @@ describe('views.book.new', () => {
   describe('error validation rendering', () => {
     const getErrorElements = browser => browser.querySelectorAll('.error'),
           fillTitle = (browser, val=null) => browser.fill('input[name=title]', val ? val : 'new title'),
-          fillAuthor = (browser, val=null) => browser.fill('input[name=author]', val ? val : 'new author');
+          fillAuthor = (browser, val=null) => browser.fill('input[name=author]', val ? val : 'new author'),
+          fillGenre = (browser, val=null) => browser.fill('input[name=genre]', val ? val : 'new genre'),
+          fillYear = (browser, val=null) => browser.fill('input[name=year]', val ? val : val ? val : '1');
         
     let form, errorElements;
 
@@ -221,6 +223,26 @@ describe('views.book.new', () => {
       const errorShows = errorElements.length === 2 && 
         errEl1.textContent === '"Title" is required' && errEl2.textContent === '"Author" is required';
       expect(errorShows).to.be.true;
+    });
+
+    it('it should not submit the form and display the prev. genre value after validation errors from creating a new book', async () => {
+      const genreVal = 'new genre';
+      fillGenre(browser, genreVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="genre"]');
+      expect(value).to.equal(genreVal);
+    });
+
+    it('it should not submit the form and display the prev. year value after validation errors from creating a new book', async () => {
+      const yearVal = '1';
+      fillYear(browser, yearVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="year"]');
+      expect(value).to.equal(yearVal);
     });
   });
 });
