@@ -63,7 +63,7 @@ describe('controllers.book.create', () => {
           res = mockResponse(),
           req = mockRequest({ body: book });
     await bookController.create(req, res);
-    expect(res.render).to.have.been.calledWith('/book/new', { dataValues: {id: null, ...book }, errors });
+    expect(res.render).to.have.been.calledWith('book/new', { dataValues: {id: null, ...book }, errors });
   });
 
   it('it should call res.render with prev. data when only an author is given (from validation error)', async () => {
@@ -72,7 +72,7 @@ describe('controllers.book.create', () => {
           res = mockResponse(),
           req = mockRequest({ body: book });
     await bookController.create(req, res);
-    expect(res.render).to.have.been.calledWith('/book/new', { dataValues: {id: null, ...book }, errors });
+    expect(res.render).to.have.been.calledWith('book/new', { dataValues: {id: null, ...book }, errors });
   });
 
   it('it should call res.render with prev. data when neither title or author are given (from validation error)', async () => {
@@ -81,7 +81,7 @@ describe('controllers.book.create', () => {
           res = mockResponse(),
           req = mockRequest({ body:  book });
     await bookController.create(req, res);
-    expect(res.render).to.have.been.calledWith('/book/new', { dataValues: {id: null, ...book }, errors });
+    expect(res.render).to.have.been.calledWith('book/new', { dataValues: {id: null, ...book }, errors });
   });
 });
 
