@@ -18,10 +18,10 @@ block content
       input.book-detail(name='author' type='text' id='author' value=fillValue('author'))
     p
       label(for='genre') Genre
-      input.book-detail(name='genre' type='text' id='genre')
+      input.book-detail(name='genre' type='text' id='genre' value=fillValue('genre'))
     p
       label(for='year') Year
-      input.book-detail(name='year' type='text' id='year')
+      input.book-detail(name='year' type='text' id='year' value=fillValue('year'))
 
     p: input(type='submit' value='Create Book')
     p: a(class='button' href='/books') Cancel
