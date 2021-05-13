@@ -18,7 +18,7 @@ describe('views.error', () => {
     browser = new Browser();
     const visitInvalidRoute = async query => {
       try {
-        await testOps.visitRoute(browser, 'invalid-route');
+        await testOps.Route.visit(browser, 'invalid-route');
       } catch(err) {
         return await browser.querySelector(query);
       }
@@ -55,7 +55,7 @@ describe('views.error', () => {
     browser = new Browser();
     const visitInvalidBook = async query => {
       try {
-        await testOps.visitOneBookRoute(browser, -1);
+        await testOps.Route.visitOneBook(browser, -1);
       } catch(err) {
         return await browser.querySelector(query);
       }
