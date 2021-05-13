@@ -135,10 +135,10 @@ describe('views.book.new', () => {
   it('it should submit the form, creating a new book', async () => {
     await testOps.visitNewBookRoute(browser);
     const form = browser.querySelector('form');
-    browser.fill('input[name=title]', 'new title');
-    browser.fill('input[name=author]', 'new author');
-    browser.fill('input[name=genre]', 'new genre');
-    browser.fill('input[name=year]', '1');
+    testOps.BookForm.fillTitle(browser);
+    testOps.BookForm.fillAuthor(browser);
+    testOps.BookForm.fillGenre(browser);
+    testOps.BookForm.fillYear(browser);
     form.submit();
     await browser.wait();
     await testOps.visitBooksRoute(browser);
@@ -159,12 +159,7 @@ describe('views.book.new', () => {
   });
 
   describe('error validation rendering', () => {
-    const getErrorElements = browser => browser.querySelectorAll('.error'),
-          fillTitle = (browser, val=null) => browser.fill('input[name=title]', val ? val : 'new title'),
-          fillAuthor = (browser, val=null) => browser.fill('input[name=author]', val ? val : 'new author'),
-          fillGenre = (browser, val=null) => browser.fill('input[name=genre]', val ? val : 'new genre'),
-          fillYear = (browser, val=null) => browser.fill('input[name=year]', val ? val : val ? val : '1');
-        
+    const getErrorElements = browser => browser.querySelectorAll('.error');
     let form, errorElements;
 
     beforeEach('', async () => {
@@ -173,7 +168,7 @@ describe('views.book.new', () => {
     });
 
     it('it should not submit the form and show validation errors when only a title is given for creating a new book', async () => {
-      fillTitle(browser);
+      testOps.BookForm.fillTitle(browser);
       form.submit();
       await browser.wait();
 
@@ -185,7 +180,7 @@ describe('views.book.new', () => {
 
     it('it should not submit the form and display the prev. title value after validation errors from creating a new book', async () => {
       const titleVal = 'new title';
-      fillTitle(browser, titleVal);
+      testOps.BookForm.fillTitle(browser, titleVal);
       form.submit();
       await browser.wait();
       
@@ -194,7 +189,7 @@ describe('views.book.new', () => {
     });
 
     it('it should not submit the form and show validation errors when only an author is given for creating a new book', async () => {
-      fillAuthor(browser);
+      testOps.BookForm.fillAuthor(browser);
       form.submit();
       await browser.wait();
 
@@ -206,7 +201,7 @@ describe('views.book.new', () => {
 
     it('it should not submit the form and display the prev. author value after validation errors from creating a new book', async () => {
       const authorVal = 'new author';
-      fillAuthor(browser, authorVal);
+      testOps.BookForm.fillAuthor(browser, authorVal);
       form.submit();
       await browser.wait();
       
@@ -227,7 +222,7 @@ describe('views.book.new', () => {
 
     it('it should not submit the form and display the prev. genre value after validation errors from creating a new book', async () => {
       const genreVal = 'new genre';
-      fillGenre(browser, genreVal);
+      testOps.BookForm.fillGenre(browser, genreVal);
       form.submit();
       await browser.wait();
       
@@ -237,7 +232,7 @@ describe('views.book.new', () => {
 
     it('it should not submit the form and display the prev. year value after validation errors from creating a new book', async () => {
       const yearVal = '1';
-      fillYear(browser, yearVal);
+      testOps.BookForm.fillYear(browser, yearVal);
       form.submit();
       await browser.wait();
       

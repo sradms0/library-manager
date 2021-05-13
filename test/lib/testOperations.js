@@ -68,3 +68,43 @@ exports.visitOneBookRoute = function(browser, id){
   return exports.visitRoute(browser, `books/${id}/detail`);
 }
 
+/**
+ * Util Class for filling a book form
+*/
+exports.BookForm = class BookForm {
+  /**
+   * Fills the books title field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill title field (filled if null)
+  */
+  static fillTitle(browser, val=null) {
+    browser.fill('input[name=title]', val ? val : 'new title');
+  }
+
+  /**
+   * Fills the books author field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill author field (filled if null)
+  */
+  static fillAuthor(browser, val=null) {
+    browser.fill('input[name=author]', val ? val : 'new author');
+  } 
+
+  /**
+   * Fills the books genre field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill genre field (filled if null)
+  */
+  static fillGenre(browser, val=null) {
+    browser.fill('input[name=genre]', val ? val : 'new genre');
+  } 
+
+  /**
+   * Fills the books year field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill year field (filled if null)
+  */
+  static fillYear(browser, val=null) {
+    browser.fill('input[name=year]', val ? val : val ? val : '1');
+  } 
+}
