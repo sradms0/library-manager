@@ -35,7 +35,7 @@ describe('views.book.index', () => {
 
   it('it should show all books sorted', async () => {
     const books = await bookService.readAll({ order: [['title', 'ASC']] });
-    await testOps.visitBooksRoute(browser);
+    await testOps.Route.visitBooks(browser);
     const titles = books.map(b => b.title),
           DOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent);
     const allFound = DOMTitles.length === titles.length && titles.every((t,i) => t === DOMTitles?.[i]);
@@ -45,7 +45,7 @@ describe('views.book.index', () => {
   it('it should show one book when all but one books are removed', async () => {
     const books = await bookService.readAll({ order: [['title', 'ASC']] });
     books.slice(0,-1).forEach(async b => await b.destroy());
-    await testOps.visitBooksRoute(browser);
+    await testOps.Route.visitBooks(browser);
     const onlyTitle = (await bookService.readAll())?.[0]?.title,
           DOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent),
           onlyDOMTitle = DOMTitles?.pop();
@@ -55,7 +55,7 @@ describe('views.book.index', () => {
 
   it('it should show no books when all books are removed', async () => {
     await Book.destroy({ truncate: true })
-    await testOps.visitBooksRoute(browser);
+    await testOps.Route.visitBooks(browser);
     const bs = testOps.fetchBookTrs(browser);
     expect(bs).to.have.length(0);
   });
@@ -63,7 +63,7 @@ describe('views.book.index', () => {
   it('it should direct the user to /books/:id/detail when clicking on a book', async () => {
     const extractRoute = url => url?.match(/\/books\/(\d+)\/detail$/g);
 
-    await testOps.visitBooksRoute(browser);
+    await testOps.Route.visitBooks(browser);
     const firstBookA = testOps.fetchBookTrs(browser)?.[0].querySelector('a');
     await browser.clickLink(firstBookA);
     const [ firstBookAHrefRoute ] = extractRoute(firstBookA.href),
@@ -74,7 +74,7 @@ describe('views.book.index', () => {
   it('it should have an anchor element to bring the user to /books/new', async () => {
     const extractRoute = url => url?.match(/\/books\/new$/g);
 
-    await testOps.visitBooksRoute(browser);
+    await testOps.Route.visitBooks(browser);
     const createBookA = browser.querySelector('p a');
     await browser.clickLink(createBookA);
 
@@ -98,26 +98,26 @@ describe('views.book.new', () => {
   });
 
   it('it should display a form for creating a new book', async () => {
-    await testOps.visitNewBookRoute(browser);
+    await testOps.Route.visitNewBook(browser);
     const form = browser.querySelector('form');
     expect(form).to.not.be.null;
   });
 
   it('it should display a form with a post method', async () => {
-    await testOps.visitNewBookRoute(browser);
+    await testOps.Route.visitNewBook(browser);
     const form = browser.querySelector('form');
     expect(form?.method).to.eql('post')
   });
 
   it('it should display a form with an action of /books/new', async () => {
-    await testOps.visitNewBookRoute(browser);
+    await testOps.Route.visitNewBook(browser);
     const form = browser.querySelector('form');
     const [ action ] = form?.action?.match(/\/books\/new$/g);
     expect(action).to.eql('/books/new');
   });
 
   it('it should show fields for creating a new book', async () => {
-    await testOps.visitNewBookRoute(browser);
+    await testOps.Route.visitNewBook(browser);
     const bookDetailIs = browser.querySelectorAll('form p input.book-detail'),
           keys = ['title', 'author', 'genre', 'year'];
     const allFieldsMatch = [...bookDetailIs].every((detail, idx) => 
@@ -127,13 +127,13 @@ describe('views.book.new', () => {
   });
 
   it('it should display a button to submit the new-book form', async () => {
-    await testOps.visitNewBookRoute(browser);
+    await testOps.Route.visitNewBook(browser);
     const submitI = browser.querySelector('form input[type="submit"]');
     expect(submitI).to.not.be.null;
   });
 
   it('it should submit the form, creating a new book', async () => {
-    await testOps.visitNewBookRoute(browser);
+    await testOps.Route.visitNewBook(browser);
     const form = browser.querySelector('form');
     testOps.BookForm.fillTitle(browser);
     testOps.BookForm.fillAuthor(browser);
@@ -141,7 +141,7 @@ describe('views.book.new', () => {
     testOps.BookForm.fillYear(browser);
     form.submit();
     await browser.wait();
-    await testOps.visitBooksRoute(browser);
+    await testOps.Route.visitBooks(browser);
     const newBookTitle = [...browser.querySelectorAll('td a')]
       .find(a => a.textContent === 'new title')?.textContent;
     expect(newBookTitle).to.eql('new title');
@@ -149,7 +149,7 @@ describe('views.book.new', () => {
 
   it('it should have a cancel link that brings the user back to /books', async () => {
     const extractRoute = url => url.match(/\/books$/g);
-    await testOps.visitNewBookRoute(browser);
+    await testOps.Route.visitNewBook(browser);
     const cancelA = browser.querySelector('a.button');
     await browser.clickLink(cancelA);
 
@@ -163,7 +163,7 @@ describe('views.book.new', () => {
     let form, errorElements;
 
     beforeEach('', async () => {
-      await testOps.visitNewBookRoute(browser);
+      await testOps.Route.visitNewBook(browser);
       form = browser.querySelector('form');
     });
 
@@ -254,7 +254,7 @@ describe('views.book.update', () => {
     id = 1,
     book = (await bookService.readByPk(id))?.toJSON(),
     keys = ['title', 'author', 'genre', 'year'];
-    await testOps.visitOneBookRoute(browser, id);
+    await testOps.Route.visitOneBook(browser, id);
     form = browser.querySelector('form');
   });
 
@@ -302,7 +302,7 @@ describe('views.book.update', () => {
     );
     form.submit();
     await browser.wait();
-    await testOps.visitBooksRoute(browser);
+    await testOps.Route.visitBooks(browser);
     const updatedBookTds = [...testOps.fetchBookTrs(browser)]
                             .find(tr => tr.firstChild.textContent === updated.title)?.children;
     const updatedVals = Object.values(updated);

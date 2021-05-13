@@ -32,42 +32,47 @@ exports.fetchBookTrs = function(browser) {
 }
 
 /**
- * Navigates to desired route when server is running
- * @param {Browser} browser - zombie instance
- * @param {String} route - route to visit
- * @return {Promise} zombie.Browser.visit
+ * Util Class for route navigation
 */
-exports.visitRoute = function(browser, route) {
-  return browser.visit(`http://localhost:3000/${route}`);
-}
+exports.Route = class Route {
+  /**
+   * Navigates to desired route when server is running
+   * @param {Browser} browser - zombie instance
+   * @param {String} route - route to visit
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visit(browser, route) {
+    return browser.visit(`http://localhost:3000/${route}`);
+  }
 
-/**
- * Navigates to /books route
- * @param {Browser} browser - zombie instance
- * @return {Promise} zombie.Browser.visit
-*/
-exports.visitBooksRoute = function(browser){
- return exports.visitRoute(browser, 'books');
-}
+  /**
+   * Navigates to /books route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitBooks(browser) {
+   return this.visit(browser, 'books');
+  }
 
-/**
- * Navigates to /books/new route
- * @param {Browser} browser - zombie instance
- * @return {Promise} zombie.Browser.visit
-*/
-exports.visitNewBookRoute = function(browser){
-  return exports.visitRoute(browser, 'books/new');
-}
+  /**
+   * Navigates to /books/new route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitNewBook(browser) {
+    return this.visit(browser, 'books/new');
+  }
 
-/**
- * Navigates to /books/:id route
- * @param {Browser} browser - zombie instance
- * @return {Promise} zombie.Browser.visit
-*/
-exports.visitOneBookRoute = function(browser, id){
-  return exports.visitRoute(browser, `books/${id}/detail`);
-}
+  /**
+   * Navigates to /books/:id route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitOneBook(browser, id) {
+    return this.visit(browser, `books/${id}/detail`);
+  }
 
+}
 /**
  * Util Class for filling a book form
 */
