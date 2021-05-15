@@ -190,7 +190,7 @@ describe('controllers.book.update', () => {
           req = mockRequest({ body: updatedCopy, params: {id} });
 
     await bookController.update(req, res);
-    expect(res.render).to.have.been.calledWith('/book/update', { dataValues: updatedCopy, errors });
+    expect(res.render).to.have.been.calledWith('book/update', { dataValues: updatedCopy, errors });
   });
 
   it('it should call res.render with prev. data when only an author is given (from validation error)', async () => {
@@ -199,7 +199,7 @@ describe('controllers.book.update', () => {
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
     await bookController.update(req, res);
-    expect(res.render).to.have.been.calledWith('/book/update', { dataValues: updatedCopy, errors });
+    expect(res.render).to.have.been.calledWith('book/update', { dataValues: updatedCopy, errors });
   });
 
   it('it should call res.render with prev. data when neither title or author are given (from validation error)', async () => {
@@ -208,6 +208,6 @@ describe('controllers.book.update', () => {
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
     await bookController.update(req, res);
-    expect(res.render).to.have.been.calledWith('/book/update', { dataValues: updatedCopy, errors });
+    expect(res.render).to.have.been.calledWith('book/update', { dataValues: updatedCopy, errors });
   });
 });
