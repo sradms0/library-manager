@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', bookController.readAll);
 
 /* GET one book. */
-router.get('/:id/detail', bookController.readByPk);
+router.get('/:id/update', bookController.readByPk);
 
 /* POST update existing book. */
 router.post('/:id/update', bookController.update);
