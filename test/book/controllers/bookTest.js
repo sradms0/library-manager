@@ -125,7 +125,7 @@ describe('controllers.book.readByPk', () => {
           book = await bookService.readByPk(id);
 
     await bookController.readByPk(req, res);
-    expect(res.render).to.have.been.calledWith('book/update', { book });
+    expect(res.render).to.have.been.calledWith('book/update', { dataValues: book });
   });
 
   it('it should throw an error when a non-existent book is requested', async () => {
