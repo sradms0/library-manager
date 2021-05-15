@@ -41,7 +41,7 @@ exports.readByPk = asyncHandler(async function(req, res) {
   const { id } = req.params;
   const book = await bookService.readByPk(id);
   if (!book) throw new Error(`Book with id ${id} does not exist`);
-  res.render('book/update', { book });
+  res.render('book/update', { dataValues: book });
 });
 
 /**
