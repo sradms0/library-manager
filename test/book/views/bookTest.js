@@ -60,8 +60,8 @@ describe('views.book.index', () => {
     expect(bs).to.have.length(0);
   });
 
-  it('it should direct the user to /books/:id/detail when clicking on a book', async () => {
-    const extractRoute = url => url?.match(/\/books\/(\d+)\/detail$/g);
+  it('it should direct the user to /books/:id/update when clicking on a book', async () => {
+    const extractRoute = url => url?.match(/\/books\/(\d+)\/update$/g);
 
     await testOps.Route.visitBooks(browser);
     const firstBookA = testOps.fetchBookTrs(browser)?.[0].querySelector('a');
@@ -270,7 +270,7 @@ describe('views.book.update', () => {
     expect(form?.method).to.eql('post')
   });
 
-  it('it should display a form with an action of /books/:id/detail', async () => {
+  it('it should display a form with an action of /books/:id/update', async () => {
     const [ action ] = form?.action?.match(/\/books\/\d+\/update$/g);
     expect(action).to.eql(`/books/${id}/update`);
   });
@@ -288,7 +288,7 @@ describe('views.book.update', () => {
     const [ cancelAHrefRoute ] = extractRoute(cancelA?.href),
           [ urlRoute ] = extractRoute(browser.location._url);
     expect(urlRoute).to.equal(cancelAHrefRoute);
-  })
+  });
 
   it('it should submit the form, updating the existing book', async () => {
     const updated = { 
