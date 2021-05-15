@@ -69,7 +69,7 @@ exports.Route = class Route {
    * @return {Promise} zombie.Browser.visit
   */
   static visitOneBook(browser, id) {
-    return this.visit(browser, `books/${id}/detail`);
+    return this.visit(browser, `books/${id}/update`);
   }
 
 }
