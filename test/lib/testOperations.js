@@ -72,6 +72,15 @@ exports.Route = class Route {
     return this.visit(browser, `books/${id}/update`);
   }
 
+  /**
+   * Navigates to /books/:id/delete route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitOneBookDel(browser, id) {
+    return this.visit(browser, `books/${id}/delete`);
+  }
+
 }
 /**
  * Util Class for filling a book form
