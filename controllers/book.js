@@ -17,6 +17,11 @@ exports.create = asyncHandler(async function(req, res) {
 }, { errorView: 'book/new', model: bookService.model });
 
 /**
+ * Deletes a book
+*/
+exports.delete = asyncHandler(async function(req, res) {});
+
+/**
  * Reads all books and renders all books to '/views/book/index'
  *
 */
