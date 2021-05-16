@@ -17,6 +17,14 @@ exports.create = function(data) {
 }
 
 /**
+ * Delete one book
+ * @param { object } - the book instance to delete
+ * @returns { Promise }
+ *
+*/
+exports.delete = function(book) {}
+
+/**
  * Read one book by primary key
  * @param pk - the primary key of the book to read
  * @returns { Promise }

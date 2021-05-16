@@ -182,3 +182,30 @@ describe('services.book.update', () => {
   });
 });
 
+
+describe('services.book.delete', () => {
+  let book;
+
+  before('reload', async () => {
+    await testOps.loadTestDb();
+  });
+
+  beforeEach('fetch first available book to delete', async () => {
+    book = (await bookService.readAll())?.[0];
+  });
+
+  it('it should return a promise', async () => {
+    expect(bookService.delete(book) instanceof Promise).to.be.true;
+  });
+
+  it('it should return a promise resolving to the Book instance deleted', async () => {
+    expect((await bookService.delete(book)) instanceof Book).to.be.true;
+  });
+
+  it('it should delete an existing book', async () => {
+    const { id } = book;
+    await bookService.delete(book);
+    expect(await bookService.readByPk(id)).to.be.null;
+  });
+});
+
