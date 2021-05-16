@@ -282,12 +282,22 @@ describe('views.book.update', () => {
 
   it('it should have a cancel link that brings the user back to /books', async () => {
     const extractRoute = url => url.match(/\/books$/g);
-    const cancelA = browser.querySelector('a.button');
+    const cancelA = browser.querySelector('a#cancel');
     await browser.clickLink(cancelA);
 
     const [ cancelAHrefRoute ] = extractRoute(cancelA?.href),
           [ urlRoute ] = extractRoute(browser.location._url);
     expect(urlRoute).to.equal(cancelAHrefRoute);
+  });
+
+  it('it should have a delete link that brings the user to /books/:id/delete', async () => {
+    const extractRoute = url => url.match(/\/books\/\d+\/delete$/g);
+    const deleteA = browser.querySelector('a#delete');
+    await browser.clickLink(deleteA);
+
+    const [ deleteAHrefRoute ] = extractRoute(deleteA?.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(deleteAHrefRoute);
   });
 
   it('it should submit the form, updating the existing book', async () => {
