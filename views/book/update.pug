@@ -3,6 +3,10 @@ extends ../layout
 block content
   h1 Update Book
 
+  if (errors)
+    each error in errors
+      p.error= error
+
   form(method='post' action=`/books/${dataValues.id}/update`)
     p
       label(for='title') Title
