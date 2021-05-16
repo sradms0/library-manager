@@ -41,7 +41,12 @@ exports.readAll = asyncHandler(async function(req, res) {
  * Sets `res.status` to 404 when a book is not found.
  *
 */
-exports.readDelete = asyncHandler(async function(req, res) {});
+exports.readDelete = asyncHandler(async function(req, res) {
+  const { id } = req.params;
+  const book = await bookService.readByPk(id);
+  assertFind(book, 'Book', id);
+  res.render('book/delete', { dataValues: book });
+});
 
 /**
  * Reads a new book, rendering '/views/book/new'
