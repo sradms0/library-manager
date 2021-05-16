@@ -23,4 +23,6 @@ block content
 
     p: input(type='submit' value='Update Book')
 
-    p: a(class='button' href='/books') Cancel
+    p: a#delete(class='button' href=`/books/${dataValues.id}/delete`) Delete
+
+    p: a#cancel(class='button' href='/books') Cancel
