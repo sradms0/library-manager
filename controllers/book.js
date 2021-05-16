@@ -19,7 +19,13 @@ exports.create = asyncHandler(async function(req, res) {
 /**
  * Deletes a book
 */
-exports.delete = asyncHandler(async function(req, res) {});
+exports.delete = asyncHandler(async function(req, res) {
+  const { id } = req.params;
+  const book = await bookService.readByPk(id);
+  assertFind(book, 'Book', id);
+  await bookService.delete(book);
+  res.redirect('/books');
+});
 
 /**
  * Reads all books and renders all books to '/views/book/index'
