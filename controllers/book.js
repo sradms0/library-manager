@@ -5,7 +5,7 @@
 */
 
 const { book: bookService } = require('$services');
-const { asyncHandler } = require('$root/lib/errorHandling');
+const { assertFind, asyncHandler } = require('$root/lib/errorHandling');
 
 /**
  * Creates a new book
@@ -40,7 +40,7 @@ exports.readNew = function(req, res) {
 exports.readByPk = asyncHandler(async function(req, res) {
   const { id } = req.params;
   const book = await bookService.readByPk(id);
-  if (!book) throw new Error(`Book with id ${id} does not exist`);
+  assertFind(book, 'Book', id);
   res.render('book/update', { dataValues: book });
 });
 
@@ -50,7 +50,7 @@ exports.readByPk = asyncHandler(async function(req, res) {
 exports.update = asyncHandler(async function(req, res) {
   const { id } = req.params, { body } = req;
   const book = await bookService.readByPk(id);
-  if (!book) throw new Error(`Book with id ${id} does not exist`);
+  assertFind(book, 'Book', id);
   await bookService.update(book, body);
   res.redirect('/books');
 }, { errorView: 'book/update', model: bookService.model });
