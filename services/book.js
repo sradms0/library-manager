@@ -22,7 +22,9 @@ exports.create = function(data) {
  * @returns { Promise }
  *
 */
-exports.delete = function(book) {}
+exports.delete = function(book) {
+  return book.destroy();
+}
 
 /**
  * Read one book by primary key
