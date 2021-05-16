@@ -322,4 +322,103 @@ describe('views.book.update', () => {
       expect(detail.value).to.eql(book[ keys[idx] ]+'')
     );
   });
+
+  describe('error validation rendering', () => {
+    const getErrorElements = browser => browser.querySelectorAll('.error');
+    let form, errorElements;
+
+    beforeEach('', async () => {
+      await testOps.Route.visitOneBook(browser, 1);
+      form = browser.querySelector('form');
+    });
+
+    it('it should not submit the form and show validation errors when only a title is given for updating a book', async () => {
+      testOps.BookForm.clear(browser)
+      testOps.BookForm.fillTitle(browser);
+      form.submit();
+      await browser.wait();
+
+      errorElements = [...getErrorElements(browser)];
+      const errorShows = errorElements.length === 1 && errorElements?.[0].textContent === '"Author" is required';
+
+      expect(errorShows).to.be.true;
+    });
+
+    it('it should not submit the form and display the prev. title value after validation errors from updating a book', async () => {
+      const titleVal = 'updated title';
+      testOps.BookForm.clear(browser)
+      testOps.BookForm.fillTitle(browser, titleVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="title"]');
+      expect(value).to.equal(titleVal);
+    });
+
+    it('it should not submit the form and show validation errors when only an author is given for updating a book', async () => {
+      testOps.BookForm.clear(browser)
+      testOps.BookForm.fillAuthor(browser);
+      form.submit();
+      await browser.wait();
+
+      errorElements = [...getErrorElements(browser)];
+      const errorShows = errorElements.length === 1 && errorElements?.[0].textContent === '"Title" is required';
+
+      expect(errorShows).to.be.true;
+    });
+
+    it('it should not submit the form and display the prev. author value after validation errors from updating a book', async () => {
+      const authorVal = 'updated author';
+      testOps.BookForm.clear(browser)
+      testOps.BookForm.fillAuthor(browser, authorVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="author"]');
+      expect(value).to.equal(authorVal);
+    });
+
+    it('it should not submit the form and show validation errors when neither title nor author is given for updating a book', async () => {
+      testOps.BookForm.clear(browser);
+      form.submit();
+      await browser.wait();
+
+      errorElements = [...getErrorElements(browser)];
+      const [errEl1, errEl2] = errorElements;
+      const errorShows = errorElements.length === 2 && 
+        errEl1.textContent === '"Title" is required' && errEl2.textContent === '"Author" is required';
+      expect(errorShows).to.be.true;
+    });
+
+    it('it should not submit the form and display the prev. genre value after validation errors from updating a book', async () => {
+      const genreVal = 'updated genre';
+      testOps.BookForm.clear(browser)
+      testOps.BookForm.fillGenre(browser, genreVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="genre"]');
+      expect(value).to.equal(genreVal);
+    });
+
+    it('it should not submit the form and display the prev. year value after validation errors from updating a book', async () => {
+      const yearVal = '1';
+      testOps.BookForm.clear(browser)
+      testOps.BookForm.fillYear(browser, yearVal);
+      form.submit();
+      await browser.wait();
+      
+      const { value } = browser.querySelector('input[name="year"]');
+      expect(value).to.equal(yearVal);
+    });
+  });
+
+  it('it should show a form with an action of /book/:id/update after validation errors occur at least once from updating a book', async () => {
+      testOps.BookForm.clear(browser)
+      form.submit();
+      await browser.wait();
+
+      const [ action ] = form?.action?.match(/\/books\/\d+\/update$/g);
+      expect(action).to.eql(`/books/${id}/update`);
+  });
 });

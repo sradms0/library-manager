@@ -78,6 +78,14 @@ exports.Route = class Route {
 */
 exports.BookForm = class BookForm {
   /**
+   * Clears all books fields.
+   * @param {Browser} browser - zombie instance
+  */
+  static clear(browser) {
+    [...browser.querySelectorAll('input.book-detail')].forEach(input => input.value = '');
+  } 
+
+  /**
    * Fills the books title field.
    * @param {Browser} browser - zombie instance
    * @param {string} val - value to fill title field (filled if null)
