@@ -4,7 +4,8 @@
  * @module services/book
 */
 
-const { Book } = require('$database/models')
+const { Book } = require('$database/models');
+const { Op } = require('sequelize');
 
 /**
  * Create one book
@@ -25,6 +26,14 @@ exports.create = function(data) {
 exports.delete = function(book) {
   return book.destroy();
 }
+
+/**
+ * Read books based on attributes
+ * @param { string } query - the search term to find books by
+ * @returns { Promise }
+ *
+*/
+exports.readByAttrs = function(query) {}
 
 /**
  * Read one book by primary key
