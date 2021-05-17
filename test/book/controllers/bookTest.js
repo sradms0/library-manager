@@ -135,7 +135,10 @@ describe('controllers.book.readNew', () => {
     const res = mockResponse(),
           req = mockRequest();
     await bookController.readNew(req, res);
-    expect(res.render).to.have.been.calledWith('book/new', { dataValues: {} });
+    expect(res.render).to.have.been.calledWith(
+      'book/new', 
+      { dataValues: {'id':'', 'title':'', 'author':'', 'genre':'', 'year':'', 'createdAt':'', 'updatedAt':''} }
+    );
   });
 });
 
