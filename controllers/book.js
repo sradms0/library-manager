@@ -52,7 +52,9 @@ exports.readDelete = asyncHandler(async function(req, res) {
  * Reads a new book, rendering '/views/book/new'
 */
 exports.readNew = function(req, res) {
-  res.render('book/new', { dataValues: {} });
+  const attrs = Object.keys(bookService.model.tableAttributes);
+  const dataValues = attrs.reduce((acc, curr) => ({...acc, ...{[curr]: ''}}), {});
+  res.render('book/new', { dataValues });
 };
 
 /**
