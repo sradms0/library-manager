@@ -33,7 +33,18 @@ exports.delete = function(book) {
  * @returns { Promise }
  *
 */
-exports.readByAttrs = function(query) {}
+exports.readByAttrs = function(query) {
+  return Book.findAll({
+    where: {
+      [Op.or]: {
+        title:    { [Op.like]: `%${query}%` },
+        author:   { [Op.like]: `%${query}%` },
+        genre:    { [Op.like]: `%${query}%` },
+        year:     { [Op.like]: `%${query}%` }
+      }
+    }
+  });
+}
 
 /**
  * Read one book by primary key
