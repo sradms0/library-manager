@@ -40,7 +40,10 @@ exports.readAll = asyncHandler(async function(req, res) {
  * Reads books by attribute values based on querystring and renders matches to '/views/book/index'.
  *
 */
-exports.readByAttrs = asyncHandler(async function(req, res) {});
+exports.readByAttrs = asyncHandler(async function(req, res) {
+  const searchedBooks = await bookService.readByAttrs(req.query.q);
+  res.render('book/index', { books: searchedBooks });
+});
 
 /**
  * Reads one book by primary key and renders book to '/views/book/update-book' for deletion confirmation.
