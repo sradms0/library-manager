@@ -4,14 +4,10 @@
  * @module test/lib/testOperations
 */
 
-const { expect } = require('chai');
-
 const { loader } = require('$seed/books');
 const { sequelize } = require('$database/models');
 const { models: {Book} } = sequelize;
 
-const bookData = require('$test/data/books.json');
-const genreData = require('$test/data/genres.json');
 
 /**
  * Overwrites previous test-database and re-seeds data for testing.
@@ -19,7 +15,7 @@ const genreData = require('$test/data/genres.json');
 exports.loadTestDb = async function () {
   sequelize.options.logging = false;
   await sequelize.sync({ force:true });
-  await loader.load(bookData, genreData, false);
+  await loader.load(exports.Data.book, exports.Data.genre, false);
 }
 
 /**
@@ -29,6 +25,17 @@ exports.loadTestDb = async function () {
 */
 exports.fetchBookTrs = function(browser) {
   return browser.querySelectorAll('tbody tr');
+}
+
+/**
+ * Util Class for raw-data access
+ */
+exports.Data = class Data {
+  /** raw book-data */
+  static book = require('$test/data/books.json');
+
+  /** raw genre-data */
+  static genre = require('$test/data/genres.json');
 }
 
 /**

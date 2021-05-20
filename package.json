@@ -5,7 +5,7 @@
     "postinstall": "link-module-alias",
     "start": "nodemon ./bin/www",
     "seed": "node seed",
-    "test": "mocha --timeout 10000 --exit test/**/*Test.js"
+    "test": "mocha --timeout 10000 --exit test/**/*.test.js"
   },
   "_moduleAliases": {
     "$root": ".",
