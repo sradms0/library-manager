@@ -28,7 +28,7 @@ exports.fetchBookTrs = function(browser) {
 }
 
 /**
- * Util Class for raw-data access
+ * Util Class for anything data/model related
  */
 exports.Data = class Data {
   /** raw book-data */
@@ -36,6 +36,16 @@ exports.Data = class Data {
 
   /** raw genre-data */
   static genre = require('$test/data/genres.json');
+
+  /** 
+   * Find attribute keys of a model.
+   * @param {object} model - model to grab attribute keys from
+   * @returns {object} array of attribute keys
+  */
+  static getModelAttrs(model, setFilter=null) {
+    let keys = Object.keys(model.tableAttributes);
+    return (setFilter ? keys.filter(key => setFilter.has(key)) : keys);
+  }
 }
 
 /**
@@ -90,7 +100,7 @@ exports.Route = class Route {
 
 }
 /**
- * Util Class for filling a book form
+ * Util Class for filling a book-related forms
 */
 exports.BookForm = class BookForm {
   /**
@@ -99,6 +109,15 @@ exports.BookForm = class BookForm {
   */
   static clear(browser) {
     [...browser.querySelectorAll('input.book-detail')].forEach(input => input.value = '');
+  } 
+
+  /**
+   * Fills the book-search field
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill search field
+  */
+  static fillSearch(browser, val=null) {
+    browser.fill('input[name=q]', val);
   } 
 
   /**
