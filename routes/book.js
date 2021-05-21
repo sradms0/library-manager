@@ -27,4 +27,7 @@ router.get('/new', bookController.readNew);
 /* POST one book. */
 router.post('/new', bookController.create);
 
+/* GET searched books. */
+router.get('/search', bookController.readByAttrs);
+
 module.exports = router;

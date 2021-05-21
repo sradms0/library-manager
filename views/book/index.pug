@@ -3,4 +3,10 @@ extends ../layout
 block content
   h1= title
   p: a(class='button' href='/books/new') Create New Book 
+
+  form.search(action='/books/search' method='get')
+    p
+      input#book-q(name='q' type='text')
+      input(type="submit" value="Search")
+
   include ./includes/table
