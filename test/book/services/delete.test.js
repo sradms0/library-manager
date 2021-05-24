@@ -16,7 +16,7 @@ describe('services.book.delete', () => {
   });
 
   beforeEach('fetch first available book to delete', async () => {
-    book = (await bookService.readAll())?.[0];
+    ({ rows: [book] } = await bookService.readAll());
   });
 
   it('it should return a promise', async () => {

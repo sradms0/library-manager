@@ -13,7 +13,7 @@ describe('services.book.readByAttrs', async () => {
 
   before('reload', async () => {
     await testOps.loadTestDb();
-    ({ title } = (await bookService.readAll())?.[0]);
+    ({ rows: {title} } = (await bookService.readAll()));
   });
 
   it('it should return a promise', async () => {
@@ -37,10 +37,9 @@ describe('services.book.readByAttrs', async () => {
     let oneBook, title, author, genre, year;
 
     before('', async () => {
-      oneBook = (await bookService.readAll())?.[0];
+      ({ rows: [oneBook] } = await bookService.readAll());
       if (oneBook) {
-        bookService.update(oneBook, {genre: 'very unique'});
-        oneBook = (await bookService.readAll())?.[0];
+        oneBook = await bookService.update(oneBook, {genre: 'very unique'});
         ({ title, author, genre, year } = oneBook);
       }
     });

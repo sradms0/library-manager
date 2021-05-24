@@ -26,8 +26,8 @@ describe('controllers.book.readAll', () => {
   it('it should render book/index and pass an all books object', async () => {
     const res = mockResponse(),
           id = 1,
-          req = mockRequest({ params: {id} }),
-          books = await bookService.readAll();
+          req = mockRequest({ params: {id} });
+    const { rows: books } = await bookService.readAll();
 
     await bookController.readAll(req, res);
     expect(res.render).to.have.been.calledWith('book/index', { books });

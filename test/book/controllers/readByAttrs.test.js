@@ -27,10 +27,9 @@ describe('controllers.book.readByAttrs', () => {
     let books, title, author, genre, year;
 
     before('', async () => {
-      books = [(await bookService.readAll())?.[0]];
+      books = (await bookService.readAll()).rows.slice(0,1);
       if (books.length) {
-        bookService.update(books[0], {genre: 'very unique'});
-        books = [(await bookService.readAll())?.[0]];
+        books = [ await bookService.update(books[0], {genre: 'very unique'}) ];
         ({ title, author, genre, year } = books?.[0]);
       }
     });

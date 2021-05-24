@@ -23,7 +23,7 @@ describe('controllers.book.delete', () => {
 
   beforeEach('fetch first available book to delete', async () => {
     await testOps.loadTestDb();
-    const book = (await bookService.readAll())?.[0];
+    const { rows: [book] } = (await bookService.readAll());
     id = book ? book.id : -1;
   });
 

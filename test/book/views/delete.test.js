@@ -21,7 +21,7 @@ describe('views.book.delete', () => {
   beforeEach('', async () => {
     await testOps.loadTestDb();
     requester = await chai.request(server).keepOpen(),
-    book = (await bookService.readAll())?.[0],
+    ({ rows: [book] } = await bookService.readAll());
     id = book ? book.id : -1;
     await testOps.Route.visitOneBookDel(browser, id);
     form = browser.querySelector('form');

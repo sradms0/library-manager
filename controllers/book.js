@@ -32,7 +32,7 @@ exports.delete = asyncHandler(async function(req, res) {
  *
 */
 exports.readAll = asyncHandler(async function(req, res) {
-  const allBooks = await bookService.readAll({ order: [['title', 'ASC']] });
+  const { rows: allBooks } = await bookService.readAll();
   res.render('book/index', {books: allBooks});
 });
 

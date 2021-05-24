@@ -27,8 +27,8 @@ describe('views.book.index', () => {
     requester.close();
   })
 
-  it('it should show all books sorted', async () => {
-    const books = await bookService.readAll();
+  it('it should show all books', async () => {
+    const { rows: books } = await bookService.readAll();
     await testOps.Route.visitBooks(browser);
     const titles = books.map(b => b.title),
           DOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent);
@@ -37,12 +37,16 @@ describe('views.book.index', () => {
   });
 
   it('it should show one book when all but one books are removed', async () => {
-    const books = await bookService.readAll();
-    books.slice(0,-1).forEach(async b => await b.destroy());
+    const { asyncUtil: {asyncForEach} }  = require('$root/lib');
+
+    const { rows: books } = await bookService.readAll();
+    await asyncForEach(books.slice(0,-1), async b => await b.destroy());
     await testOps.Route.visitBooks(browser);
-    const onlyTitle = (await bookService.readAll())?.[0]?.title,
+
+    const { rows: [{ title: onlyTitle }] } = await bookService.readAll(),
           DOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent),
           onlyDOMTitle = DOMTitles?.pop();
+
     const lastFound = !DOMTitles.length && onlyTitle === onlyDOMTitle;
     expect(lastFound).to.true;
   });

@@ -78,7 +78,7 @@ describe('views.book.index.search', () => {
     let title, author, genre, year;
 
     before('', async () => {
-      oneBook = (await bookService.readAll())?.[0];
+      ({ rows:  [oneBook] } = await bookService.readAll());
       if (oneBook) {
         oneBook = await bookService.update(oneBook, { genre: 'very unique' });
         ({ title, author, genre, year } = oneBook);
