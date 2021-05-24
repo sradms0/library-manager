@@ -58,11 +58,14 @@ exports.readByPk = function(pk) {
 
 /**
  * Read all books.
+ * @param { object } [config] - configuration for book reading.
+ * @param { number } config.limit - the amount of books to read.
+ * @param { number } config.offset - where the book-reading should begin.
  * @returns { Promise }
  *
 */
-exports.readAll = function() {
-  return Book.findAll();
+exports.readAll = function({ limit, offset }={}) {
+  return Book.findAndCountAll({ limit, offset });
 }
 
 /**
