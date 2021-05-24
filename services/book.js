@@ -61,8 +61,8 @@ exports.readByPk = function(pk) {
  * @returns { Promise }
  *
 */
-exports.readAll = function(order={}) {
-  return Book.findAll(order);
+exports.readAll = function() {
+  return Book.findAll();
 }
 
 /**
