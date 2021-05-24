@@ -27,7 +27,7 @@ describe('controllers.book.readAll', () => {
     const res = mockResponse(),
           id = 1,
           req = mockRequest({ params: {id} }),
-          books = await bookService.readAll({ order: [['title', 'ASC']] });
+          books = await bookService.readAll();
 
     await bookController.readAll(req, res);
     expect(res.render).to.have.been.calledWith('book/index', { books });
