@@ -22,19 +22,13 @@ describe('services.book.readAll', () => {
     books.forEach(book => expect(book instanceof bookService.model).to.be.true);
   });
 
-  it('it should return should return all books in ascending title-order', async () => {
-    const books = await bookService.readAll({ order: [[ 'title', 'ASC' ]] });
-    const sortedBookData = [...testOps.Data.book]
-      .sort((b1, b2) => {
-        const b1L = b1.title.toLowerCase(), 
-              b2L = b2.title.toLowerCase();
-        if (b1L < b2L) return -1;
-        if (b1L > b2L) return 1;
-        return 0;
-      });
-    books.forEach((dbBook, idx) => {
-      expect(dbBook.title).to.eql(sortedBookData[idx].title)
-    });
+  it('it should return all books from the database', async () => {
+    const dbBooks = await bookService.readAll(),
+          rawBooks = testOps.Data.book;
+
+    const matched = dbBooks.length === rawBooks.length && 
+                    rawBooks.every((rb, idx) => rb.title === dbBooks[idx].title);
+    expect(matched).to.be.true;
   });
 });
 
