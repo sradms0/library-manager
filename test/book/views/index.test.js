@@ -28,7 +28,7 @@ describe('views.book.index', () => {
   })
 
   it('it should show all books sorted', async () => {
-    const books = await bookService.readAll({ order: [['title', 'ASC']] });
+    const books = await bookService.readAll();
     await testOps.Route.visitBooks(browser);
     const titles = books.map(b => b.title),
           DOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent);
@@ -37,7 +37,7 @@ describe('views.book.index', () => {
   });
 
   it('it should show one book when all but one books are removed', async () => {
-    const books = await bookService.readAll({ order: [['title', 'ASC']] });
+    const books = await bookService.readAll();
     books.slice(0,-1).forEach(async b => await b.destroy());
     await testOps.Route.visitBooks(browser);
     const onlyTitle = (await bookService.readAll())?.[0]?.title,
