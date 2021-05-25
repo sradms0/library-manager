@@ -41,15 +41,7 @@ describe('services.book.readAll', () => {
         offset = 0, limit = 0;
 
     before('create more instances for pagination', async () => {
-      const total = 20;
-      for (let i = 0; i < total; i++) {
-        await bookService.create({ 
-          title: `title ${i}`,
-          author: `author ${i}`,
-          genre: `genre ${i}`,
-          year: i
-        });
-      }
+      await testOps.Data.addBooks(bookService.create, 20);
       ({ rows: allBooks } = await bookService.readAll());
     });
 

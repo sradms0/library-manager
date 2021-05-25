@@ -46,6 +46,22 @@ exports.Data = class Data {
     let keys = Object.keys(model.tableAttributes);
     return (setFilter ? keys.filter(key => setFilter.has(key)) : keys);
   }
+
+  /** 
+   * Add books to the current testing database.
+   * @param {function} creator - the function to add book data with
+   * @param {number} total - the amount of books to add
+  */
+  static async addBooks(creator, total) {
+    for (let i = 0; i < total; i++) {
+      await creator({ 
+        title: `title ${i}`,
+        author: `author ${i}`,
+        genre: `genre ${i}`,
+        year: i
+      });
+    }
+  }
 }
 
 /**
