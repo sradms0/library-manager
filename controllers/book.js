@@ -5,7 +5,10 @@
 */
 
 const { book: bookService } = require('$services');
-const { assertFind, asyncHandler } = require('$root/lib/errorHandling');
+const { 
+  errorHandling: {assertFind, asyncHandler},
+  pagination: {assertParams, createReadConf, createRenderConf}
+} = require('$root/lib');
 
 /**
  * Creates a new book
@@ -32,8 +35,11 @@ exports.delete = asyncHandler(async function(req, res) {
  *
 */
 exports.readAll = asyncHandler(async function(req, res) {
-  const { rows: allBooks } = await bookService.readAll();
-  res.render('book/index', {books: allBooks});
+  assertParams('books', res, req);
+  const readConf = createReadConf(req);
+  const { rows: books, count: totalBooks } = await bookService.readAll(readConf);
+  const renderConf = createRenderConf('books', books, totalBooks, req);
+  res.render('book/index', renderConf);
 });
 
 /**
