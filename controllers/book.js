@@ -7,7 +7,7 @@
 const { book: bookService } = require('$services');
 const { 
   errorHandling: {assertFind, asyncHandler},
-  pagination: {assertParams, createReadConf, createRenderConf}
+  pagination: {assertParams, readDataAndCreateRenderConf}
 } = require('$root/lib');
 
 /**
@@ -36,9 +36,7 @@ exports.delete = asyncHandler(async function(req, res) {
 */
 exports.readAll = asyncHandler(async function(req, res) {
   assertParams('books', res, req);
-  const readConf = createReadConf(req);
-  const { rows: books, count: totalBooks } = await bookService.readAll(readConf);
-  const renderConf = createRenderConf('books', books, totalBooks, req);
+  const renderConf = await readDataAndCreateRenderConf('books', bookService.readAll, req);
   res.render('book/index', renderConf);
 });
 
