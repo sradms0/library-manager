@@ -25,6 +25,7 @@ describe('controllers.book.readByAttrs', () => {
 
   describe('one book result', async () => {
     let books, title, author, genre, year;
+    let page, limit;
 
     before('', async () => {
       books = (await bookService.readAll()).rows.slice(0,1);
@@ -119,4 +120,86 @@ describe('controllers.book.readByAttrs', () => {
       expect(res.render).to.have.been.calledWith('book/index', { books });
     });
   });
+
+  describe('pagination parameters', () => {
+    const similarTitles = 'title',
+          q = similarTitles;
+
+    let page, limit, res;
+
+    before('', async () => {
+      await testOps.Data.addBooks(bookService.create, 20);
+    });
+
+
+    beforeEach('', () => {
+      res = mockResponse();
+    });
+
+    it('it should call res.render with book/index and a limited/offset books object with pagination configuration', async () => {
+      page = 1, limit = 10;
+      const req = mockRequest({ query: {q, page, limit} });
+      const { rows: books, count } = await bookService.readByAttrs(q, { limit, offset: page*limit-limit });
+      const totalPages = Math.ceil(count/limit);
+      await bookController.readByAttrs(req, res);
+      expect(res.render).to.have.been.calledWith('book/index', { books, page, limit, totalPages });
+    });
+
+  it('it should call res.render with book/index and only an all books object when a page and limit aren\'t given', async () => {
+    page = limit = undefined;
+    const req = mockRequest({ query: {q, page, limit} });
+    const { rows: books } = await bookService.readByAttrs(q);
+    await bookController.readByAttrs(req, res);
+    expect(res.render).to.have.been.calledWith('book/index', { books });
+  });
+
+    it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the page is equal to zero', async () => {
+    page = 0, limit = 10;
+    const req = mockRequest({ query: {q, page, limit} });
+    await bookController.readByAttrs(req, res);
+    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=1&limit=${limit}`);
+  });
+
+  it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the page is negative', async () => {
+    page = -1, limit = 10;
+    const req = mockRequest({ query: {q, page, limit} });
+    await bookController.readByAttrs(req, res);
+    expect(res.redirect).to.have.been.calledWith(`/books/search?q${q}&page=${-1*page}&limit=${limit}`);
+  });
+
+  it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the limit is equal to zero', async () => {
+    page = 1, limit = 0;
+    const req = mockRequest({ query: {q, page, limit} });
+    await bookController.readByAttrs(req, res);
+    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${page}&limit=10`);
+  });
+
+  it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the limit is negative', async () => {
+    page = 1, limit = -10;
+    const req = mockRequest({ query: {q, page, limit} });
+    await bookController.readByAttrs(req, res);
+    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${page}&limit=${-1*limit}`);
+  });
+
+  it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the page undefined', async () => {
+    page = undefined, limit = 10;
+    const req = mockRequest({ query: {q, page, limit} });
+    await bookController.readByAttrs(req, res);
+    expect(res.redirect).to.have.been.calledWith(`/books/search?${q}&page=1&limit=${limit}`);
+  });
+
+  it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the limit undefined', async () => {
+    page = 1, limit = undefined;
+    const req = mockRequest({ query: {q, page, limit} });
+    await bookController.readByAttrs(req, res);
+    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${page}&limit=10`);
+  });
+
+  it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when both the page and limit are negative', async () => {
+    page = -1, limit = -10;
+    const req = mockRequest({ query: {page, limit} });
+    await bookController.readByAttrs(req, res);
+    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${-1*page}&limit=${-1*limit}`);
+  });
+  })
 });
