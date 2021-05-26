@@ -33,7 +33,7 @@ exports.delete = function(book) {
  * @returns { Promise }
  *
 */
-exports.readByAttrs = function(query, { limit, offset }={}) {
+exports.readByAttrs = function({ query, limit, offset }={}) {
   const where = {
       [Op.or]: {
         title:    { [Op.like]: `%${query}%` },
