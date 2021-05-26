@@ -8,5 +8,12 @@ block content
     p
       input#book-q(name='q' type='text')
       input(type="submit" value="Search")
+  
+  if totalPages
+    nav.pagination
+      ul
+        each _, i in Array(totalPages)
+          li: a(href=`/books?page=${i+1}&limit=${limit}`)= i+1
+    p= `${page} of ${totalPages}`
 
   include ./includes/table
