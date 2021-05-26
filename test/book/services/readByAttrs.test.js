@@ -21,7 +21,7 @@ describe('services.book.readByAttrs', async () => {
   });
 
   it('it should return a Promise resolving to an object with a book total', async () => {
-    const { count } = await bookService.readByAttrs(title);
+    const { count } = await bookService.readByAttrs({ query: title });
     expect(count).to.equal(1);
   });
 
@@ -46,25 +46,25 @@ describe('services.book.readByAttrs', async () => {
     });
 
     it('it should find one book by its title', async() => {
-      const { rows: titleSearched } = await bookService.readByAttrs(title),
+      const { rows: titleSearched } = await bookService.readByAttrs({ query: title }),
             res = oneAndFound(titleSearched, oneBook);
       expect(res).to.be.true;
     });
 
     it('it should find one book by its author', async() => {
-      const { rows: authorSearched } = await bookService.readByAttrs(author),
+      const { rows: authorSearched } = await bookService.readByAttrs({ query: author }),
             res = oneAndFound(authorSearched, oneBook);
       expect(res).to.be.true;
     });
 
     it('it should find one book by its genre', async() => {
-      const { rows: genreSearched } = await bookService.readByAttrs(genre),
+      const { rows: genreSearched } = await bookService.readByAttrs({ query: genre }),
             res = oneAndFound(genreSearched, oneBook);
       expect(res).to.be.true;
     });
 
     it('it should find one book by its year', async() => {
-      const { rows: yearSearched } = await bookService.readByAttrs(author),
+      const { rows: yearSearched } = await bookService.readByAttrs({ query: author }),
             res = oneAndFound(yearSearched, oneBook);
       expect(res).to.be.true;
     });
@@ -91,25 +91,25 @@ describe('services.book.readByAttrs', async () => {
     });
 
     it('it should find many books by title', async () => {
-      const { rows: titleSearched } = await bookService.readByAttrs(title),
+      const { rows: titleSearched } = await bookService.readByAttrs({ query: title }),
             res = manyAndFound(titleSearched, manyBooks);
       expect(res).to.be.true;
     });
 
     it('it should find many books by author', async () => {
-      const { rows: authorSearched } = await bookService.readByAttrs(author),
+      const { rows: authorSearched } = await bookService.readByAttrs({ query: author }),
             res = manyAndFound(authorSearched, manyBooks);
       expect(res).to.be.true;
     });
 
     it('it should find many books by genre', async () => {
-      const { rows: genreSearched } = await bookService.readByAttrs(genre),
+      const { rows: genreSearched } = await bookService.readByAttrs({ query: genre }),
             res = manyAndFound(genreSearched, manyBooks);
       expect(res).to.be.true;
     });
 
     it('it should find many books by year', async () => {
-      const { rows: yearSearched } = await bookService.readByAttrs(year),
+      const { rows: yearSearched } = await bookService.readByAttrs({ query: year }),
             res = manyAndFound(yearSearched, manyBooks);
       expect(res).to.be.true;
     });
@@ -117,7 +117,7 @@ describe('services.book.readByAttrs', async () => {
 
   describe('no book results', async () => {
     it('it should find no books', async () => {
-      const { rows: searched } = await bookService.readByAttrs(null);
+      const { rows: searched } = await bookService.readByAttrs({ query: null });
       expect(searched).to.be.empty;
     });
   });
@@ -141,7 +141,7 @@ describe('services.book.readByAttrs', async () => {
       it('it should return a limit of one searched-book', async () => {
         limit = 1;
         const firstSearchedBook = allSearchedBooks?.slice(offset,limit);
-        limitedSearchedBooks = await bookService.readByAttrs(similarTitles, { limit, offset });
+        limitedSearchedBooks = await bookService.readByAttrs({ query: similarTitles, limit, offset });
 
         const limitCreated = limitedSearchedBooks.rows.length === firstSearchedBook.length &&
           firstSearchedBook[0].title === limitedSearchedBooks.rows[0].title;
@@ -151,7 +151,7 @@ describe('services.book.readByAttrs', async () => {
       it('it should return a limit of some searched-books', async () => {
         limit = Math.ceil(allSearchedBooks.length/2);
         const someSearchedBooks = allSearchedBooks?.slice(offset,limit);
-        limitedSearchedBooks = await bookService.readByAttrs(similarTitles, { limit, offset });
+        limitedSearchedBooks = await bookService.readByAttrs({ query: similarTitles, limit, offset });
 
         const limitCreated = limitedSearchedBooks.rows.length === someSearchedBooks.length &&
           someSearchedBooks.every((book, idx) => book.title === limitedSearchedBooks.rows[idx].title);
@@ -160,7 +160,7 @@ describe('services.book.readByAttrs', async () => {
 
       it('it should return a limit of no searched-books', async () => {
         limit = offset = 0;
-        let { rows: noSearchedBooks } = await bookService.readByAttrs(similarTitles, { limit, offset });
+        let { rows: noSearchedBooks } = await bookService.readByAttrs({ query: similarTitles, limit, offset });
         expect(noSearchedBooks).to.be.empty;
       });
     });
@@ -169,7 +169,7 @@ describe('services.book.readByAttrs', async () => {
       it('it should return a limit of one searched-book with an offset greater than zero', async () => {
         offset = limit = 1;
         const secondSearchedBook = allSearchedBooks?.slice(offset,limit+1);
-        limitedSearchedBooks = await bookService.readByAttrs(similarTitles, { limit, offset });
+        limitedSearchedBooks = await bookService.readByAttrs({ query: similarTitles, limit, offset });
 
         const offsetCreated = limitedSearchedBooks.rows.length === secondSearchedBook.length &&
           secondSearchedBook[0].title === limitedSearchedBooks.rows[0].title;
@@ -179,7 +179,7 @@ describe('services.book.readByAttrs', async () => {
       it('it should return a limit of some searched-books with an offset greater than zero', async () => {
         limit = Math.ceil(allSearchedBooks.length/2);
         const someSearchedBooks = allSearchedBooks?.slice(offset,limit+1);
-        limitedSearchedBooks = await bookService.readByAttrs(similarTitles, { limit, offset });
+        limitedSearchedBooks = await bookService.readByAttrs({ query: similarTitles, limit, offset });
 
         const offsetCreated = limitedSearchedBooks.rows.length === someSearchedBooks.length &&
           someSearchedBooks.every((book, idx) => book.title === limitedSearchedBooks.rows[idx].title);
@@ -189,7 +189,7 @@ describe('services.book.readByAttrs', async () => {
       it('it should return a limit of no books with an offset equal to the searched-books length', async () => {
         const { count } = await modelSearch(similarTitles);
         limit = 10, offset = count;
-        const { rows: noBooks } = await bookService.readByAttrs(similarTitles, { limit, offset });
+        const { rows: noBooks } = await bookService.readByAttrs({ query: similarTitles, limit, offset });
         expect(noBooks).to.be.empty;
       });
     });
