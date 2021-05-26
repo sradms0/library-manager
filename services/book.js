@@ -33,17 +33,16 @@ exports.delete = function(book) {
  * @returns { Promise }
  *
 */
-exports.readByAttrs = function(query) {
-  return Book.findAll({
-    where: {
+exports.readByAttrs = function(query, { limit, offset }={}) {
+  const where = {
       [Op.or]: {
         title:    { [Op.like]: `%${query}%` },
         author:   { [Op.like]: `%${query}%` },
         genre:    { [Op.like]: `%${query}%` },
         year:     { [Op.like]: `%${query}%` }
       }
-    }
-  });
+  };
+  return Book.findAndCountAll({ where, limit, offset });
 }
 
 /**
