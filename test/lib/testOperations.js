@@ -88,6 +88,16 @@ exports.Route = class Route {
   }
 
   /**
+   * Navigates to /books route containing pagination parameters
+   * @param {Browser} browser - zombie instance
+   * @param {object} params - contains query parameters to paginate from
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitPaginatedBooks(browser, { page, limit }) {
+   return this.visit(browser, `books?page=${page}&limit=${limit}`);
+  }
+
+  /**
    * Navigates to /books/new route
    * @param {Browser} browser - zombie instance
    * @return {Promise} zombie.Browser.visit
