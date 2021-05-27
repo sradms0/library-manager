@@ -53,7 +53,7 @@ describe('views.book.index.pagination', () => {
     expect(paginationUl?.childElementCount).to.equal(Math.ceil(totalBooks/limit));
   });
 
-  it('it should direct the user to /books?page={page+1}&limit={limit} when clicking on a pagination link', async () => {
+  it('it should direct the user to /books?page={page+1}&limit={limit} when clicking on a pagination link under non-searced data', async () => {
     const extractRoute = url => url?.match(/\/books\?page=\d+&limit=\d+$/g);
 
     let nextPage = page+1
@@ -65,6 +65,24 @@ describe('views.book.index.pagination', () => {
     const [ nextPaginationLinkAHrefRoute ] = extractRoute(nextPaginationLinkA.href),
           [ urlRoute ] = extractRoute(browser.location._url);
     expect(urlRoute).to.equal(nextPaginationLinkAHrefRoute);
+  });
+
+  it('it should direct the user to /books/search?q=${q}&page={page+1}&limit={limit} when clicking on a pagination link under searced data', async () => {
+    const extractRoute = (url, q) => {
+      const re = new RegExp(`/books\/search\?${q}page=\d+&limit=\d+$/g`)
+      return url?.match(re);
+    }
+
+    let query = 'title';
+    let nextSearchedPage = page+1
+    const { rows: pagedBookData, count: totalBooks } = await bookService.readByAttrs({ query, limit, offset: page });
+    await testOps.Route.visitPaginatedBooks(browser, { page, limit, query });
+
+    const nextSearchedPaginationLinkA = browser.querySelector(`nav.pagination li:nth-child(${nextSearchedPage}) a`);
+    await browser.clickLink(nextSearchedPaginationLinkA);
+    const [ nextSearchedPaginationLinkAHrefRoute ] = extractRoute(nextSearchedPaginationLinkA.href, query),
+          [ urlRoute ] = extractRoute(browser.location._url, query);
+    expect(urlRoute).to.equal(nextSearchedPaginationLinkAHrefRoute);
   });
 
   it('it should render no pagination links when pagination parameters aren\'t given', async () => {

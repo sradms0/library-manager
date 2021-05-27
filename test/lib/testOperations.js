@@ -93,8 +93,8 @@ exports.Route = class Route {
    * @param {object} params - contains query parameters to paginate from
    * @return {Promise} zombie.Browser.visit
   */
-  static visitPaginatedBooks(browser, { page, limit }) {
-   return this.visit(browser, `books?page=${page}&limit=${limit}`);
+  static visitPaginatedBooks(browser, { page, limit, query=null }) {
+    return this.visit(browser, `books${query ? `/search?q=${query}&` : '?'}page=${page}&limit=${limit}`);
   }
 
   /**
