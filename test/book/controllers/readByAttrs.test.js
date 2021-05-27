@@ -142,7 +142,7 @@ describe('controllers.book.readByAttrs', () => {
       const { rows: books, count } = await bookService.readByAttrs({ query: q, limit, offset: page*limit-limit });
       const totalPages = Math.ceil(count/limit);
       await bookController.readByAttrs(req, res);
-      expect(res.render).to.have.been.calledWith('book/index', { books, page, limit, totalPages, paginationRoot: `/books/search?q=${q}`});
+      expect(res.render).to.have.been.calledWith('book/index', { books, page, limit, totalPages, paginationRoot: `/books/search?q=${q}&`});
     });
 
   it('it should call res.render with book/index and only an all books object when a page and limit aren\'t given', async () => {
