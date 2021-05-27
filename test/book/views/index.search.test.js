@@ -60,6 +60,16 @@ describe('views.book.index.search', () => {
       const submitI = form?.querySelector('input[type="submit"]');
       expect(submitI).to.not.be.undefined;
     });
+
+    it('it should set a default page and limit after after submitting a search', async () => {
+      const { rows: [{ title: firstBookTitle }] }  = await bookService.readAll();
+      testOps.BookForm.fillSearch(browser, firstBookTitle);
+      form?.submit();
+      await browser.wait();
+      console.log(browser.location._url);
+      const [ url ] = browser.location._url.match(/\/books\/search\?q=.+&page=1&limit=10$/g);
+      expect(url).to.not.be.null;
+    });
   });
 
   describe('one book result', () => {
