@@ -36,7 +36,7 @@ describe('controllers.book.readAll', () => {
     const { rows: books, count } = await bookService.readAll({ limit, offset: page*limit-limit });
     const totalPages = Math.ceil(count/limit);
     await bookController.readAll(req, res);
-    expect(res.render).to.have.been.calledWith('book/index', { books, page, limit, totalPages });
+    expect(res.render).to.have.been.calledWith('book/index', { books, page, limit, totalPages, paginationRoot: '/books?' });
   });
 
   it('it should call res.render with book/index and only an all books object when a page and limit aren\'t given', async () => {
