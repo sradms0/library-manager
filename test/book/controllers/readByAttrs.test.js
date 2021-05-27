@@ -139,7 +139,7 @@ describe('controllers.book.readByAttrs', () => {
     it('it should call res.render with book/index and a limited/offset books object with pagination configuration', async () => {
       page = 1, limit = 10;
       const req = mockRequest({ query: {q, page, limit} });
-      const { rows: books, count } = await bookService.readByAttrs(q, { limit, offset: page*limit-limit });
+      const { rows: books, count } = await bookService.readByAttrs({ query: q, limit, offset: page*limit-limit });
       const totalPages = Math.ceil(count/limit);
       await bookController.readByAttrs(req, res);
       expect(res.render).to.have.been.calledWith('book/index', { books, page, limit, totalPages });
@@ -148,7 +148,7 @@ describe('controllers.book.readByAttrs', () => {
   it('it should call res.render with book/index and only an all books object when a page and limit aren\'t given', async () => {
     page = limit = undefined;
     const req = mockRequest({ query: {q, page, limit} });
-    const { rows: books } = await bookService.readByAttrs(q);
+    const { rows: books } = await bookService.readByAttrs({ query: q });
     await bookController.readByAttrs(req, res);
     expect(res.render).to.have.been.calledWith('book/index', { books });
   });
