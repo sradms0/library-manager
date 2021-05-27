@@ -45,7 +45,8 @@ exports.readAll = asyncHandler(async function(req, res) {
  *
 */
 exports.readByAttrs = asyncHandler(async function(req, res) {
-  const { rows: searchedBooks } = await bookService.readByAttrs(req.query.q);
+  const { query: {q: query} } = req
+  const { rows: searchedBooks } = await bookService.readByAttrs({ query });
   res.render('book/index', { books: searchedBooks });
 });
 
