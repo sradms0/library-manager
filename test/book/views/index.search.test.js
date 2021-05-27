@@ -66,7 +66,6 @@ describe('views.book.index.search', () => {
       testOps.BookForm.fillSearch(browser, firstBookTitle);
       form?.submit();
       await browser.wait();
-      console.log(browser.location._url);
       const [ url ] = browser.location._url.match(/\/books\/search\?q=.+&page=1&limit=10$/g);
       expect(url).to.not.be.null;
     });

@@ -8,6 +8,8 @@ block content
     p
       input#book-q(name='q' type='text')
       input(type="submit" value="Search")
+      input(type='hidden', name='page', value='1')
+      input(type='hidden', name='limit', value='10')
   
   if totalPages
     nav.pagination
