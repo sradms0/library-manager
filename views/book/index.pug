@@ -13,7 +13,7 @@ block content
     nav.pagination
       ul
         each _, i in Array(totalPages)
-          li: a(href=`/books?page=${i+1}&limit=${limit}`)= i+1
+          li: a(href=`${paginationRoot}page=${i+1}&limit=${limit}`)= i+1
     p= `${page} of ${totalPages}`
 
   include ./includes/table
