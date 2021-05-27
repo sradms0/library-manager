@@ -69,7 +69,7 @@ describe('views.book.index.pagination', () => {
 
   it('it should direct the user to /books/search?q=${q}&page={page+1}&limit={limit} when clicking on a pagination link under searced data', async () => {
     const extractRoute = (url, q) => {
-      const re = new RegExp(`/books\/search\?${q}page=\d+&limit=\d+$/g`)
+      const re = new RegExp(`/books/search\\?q=${q}&page=\\d+&limit=\\d+$`,'g');
       return url?.match(re);
     }
 
