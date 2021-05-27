@@ -45,8 +45,9 @@ exports.readAll = asyncHandler(async function(req, res) {
  *
 */
 exports.readByAttrs = asyncHandler(async function(req, res) {
+  const { query: {q} } = req;
   assertParams('books/search', res, req);
-  const renderConf = await readDataAndCreateRenderConf('books', bookService.readByAttrs, req);
+  const renderConf = await readDataAndCreateRenderConf('books', bookService.readByAttrs, req, `/books/search?q=${q}`);
   res.render('book/index', renderConf);
 });
 
