@@ -122,9 +122,9 @@ describe('controllers.book.readByAttrs', () => {
   });
 
   describe('pagination parameters', () => {
-    const similarTitles = 'title',
-          q = similarTitles;
+    const qplPath = (q, page, limit) => `/books/search?q=${q}&page=${page}&limit=${limit}`;
 
+    const similarTitles = 'title', q = similarTitles;
     let page, limit, res;
 
     before('', async () => {
@@ -157,49 +157,49 @@ describe('controllers.book.readByAttrs', () => {
     page = 0, limit = 10;
     const req = mockRequest({ query: {q, page, limit} });
     await bookController.readByAttrs(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=1&limit=${limit}`);
+    expect(res.redirect).to.have.been.calledWith(qplPath(q, 1, limit));
   });
 
   it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the page is negative', async () => {
     page = -1, limit = 10;
     const req = mockRequest({ query: {q, page, limit} });
     await bookController.readByAttrs(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/books/search?q${q}&page=${-1*page}&limit=${limit}`);
+    expect(res.redirect).to.have.been.calledWith(qplPath(q, -1*page, limit));
   });
 
   it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the limit is equal to zero', async () => {
     page = 1, limit = 0;
     const req = mockRequest({ query: {q, page, limit} });
     await bookController.readByAttrs(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${page}&limit=10`);
+    expect(res.redirect).to.have.been.calledWith(qplPath(q, page, 10));
   });
 
   it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the limit is negative', async () => {
     page = 1, limit = -10;
     const req = mockRequest({ query: {q, page, limit} });
     await bookController.readByAttrs(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${page}&limit=${-1*limit}`);
+    expect(res.redirect).to.have.been.calledWith(qplPath(q, page, -1*limit));
   });
 
   it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the page undefined', async () => {
     page = undefined, limit = 10;
     const req = mockRequest({ query: {q, page, limit} });
     await bookController.readByAttrs(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/books/search?${q}&page=1&limit=${limit}`);
+    expect(res.redirect).to.have.been.calledWith(qplPath(q, 1, limit));
   });
 
   it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when the limit undefined', async () => {
     page = 1, limit = undefined;
     const req = mockRequest({ query: {q, page, limit} });
     await bookController.readByAttrs(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${page}&limit=10`);
+    expect(res.redirect).to.have.been.calledWith(qplPath(q, page, 10));
   });
 
   it('it should redirect to /books/search?q={q}&page={page}&limit={limit} when both the page and limit are negative', async () => {
     page = -1, limit = -10;
-    const req = mockRequest({ query: {page, limit} });
+    const req = mockRequest({ query: {q, page, limit} });
     await bookController.readByAttrs(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/books/search?q=${q}&page=${-1*page}&limit=${-1*limit}`);
+    expect(res.redirect).to.have.been.calledWith(qplPath(q, -1*page, -1*limit));
   });
   })
 });
