@@ -36,7 +36,7 @@ exports.delete = asyncHandler(async function(req, res) {
 */
 exports.readAll = asyncHandler(async function(req, res) {
   assertParams('books', res, req);
-  const renderConf = await readDataAndCreateRenderConf('books', bookService.readAll, req);
+  const renderConf = await readDataAndCreateRenderConf('books', bookService.readAll, req, '/books?');
   res.render('book/index', renderConf);
 });
 
