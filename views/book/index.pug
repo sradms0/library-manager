@@ -1,9 +1,13 @@
 extends ../layout
 
-block content
-  h1= title
-  p: a(class='button' href='/books/new') Create New Book 
+block title
+  title='Books'
 
+block header
+  h1='Books'
+block content
+  p: a(class='button' href='/books/new') Create New Book 
+  br
   form.search(action='/books/search' method='get')
     p
       input#book-q(name='q' type='text')
