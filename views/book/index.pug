@@ -5,15 +5,10 @@ block title
 
 block header
   h1='Books'
+
 block content
   p: a(class='button' href='/books/new') Create New Book 
   br
   include ./includes/search
-  if totalPages
-    nav.pagination
-      ul
-        each _, i in Array(totalPages)
-          li: a(href=`${paginationRoot}page=${i+1}&limit=${limit}`)= i+1
-    p= `${page} of ${totalPages}`
-
+  include ./includes/pagination
   include ./includes/table
