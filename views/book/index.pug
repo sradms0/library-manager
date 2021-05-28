@@ -8,13 +8,7 @@ block header
 block content
   p: a(class='button' href='/books/new') Create New Book 
   br
-  form.search(action='/books/search' method='get')
-    p
-      input#book-q(name='q' type='text')
-      input(type="submit" value="Search")
-      input(type='hidden', name='page', value='1')
-      input(type='hidden', name='limit', value='10')
-  
+  include ./includes/search
   if totalPages
     nav.pagination
       ul
