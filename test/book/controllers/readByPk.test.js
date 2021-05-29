@@ -20,7 +20,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.book.readByPk', () => {
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
   });
   
   it('it should render book/update and pass one book object', async () => {

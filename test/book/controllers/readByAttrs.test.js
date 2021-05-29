@@ -20,7 +20,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.book.readByAttrs', () => {
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
   });
 
   describe('one book result', async () => {

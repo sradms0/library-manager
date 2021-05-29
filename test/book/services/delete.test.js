@@ -12,7 +12,7 @@ describe('services.book.delete', () => {
   let book;
 
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
   });
 
   beforeEach('fetch first available book to delete', async () => {

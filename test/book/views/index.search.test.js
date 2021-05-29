@@ -25,7 +25,7 @@ describe('views.book.index.search', () => {
   } 
 
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
   });
 
   beforeEach('', async() => {

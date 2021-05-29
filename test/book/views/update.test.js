@@ -20,7 +20,7 @@ describe('views.book.update', () => {
   let form, id, book, keys;
 
   beforeEach('', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
     requester = await chai.request(server).keepOpen(),
     id = 1,
     book = (await bookService.readByPk(id))?.toJSON(),

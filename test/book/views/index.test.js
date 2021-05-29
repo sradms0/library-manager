@@ -19,7 +19,7 @@ describe('views.book.index', () => {
   let requester;
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
     requester = await chai.request(server).keepOpen();
   });
 

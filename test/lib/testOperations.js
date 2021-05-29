@@ -4,7 +4,8 @@
  * @module test/lib/testOperations
 */
 
-const { loader } = require('$seed/books');
+const { loader: bookLoader } = require('$seed/books');
+const { loader: patronLoader } = require('$seed/patrons');
 const { sequelize } = require('$database/models');
 const { models: {Book} } = sequelize;
 
@@ -12,10 +13,16 @@ const { models: {Book} } = sequelize;
 /**
  * Overwrites previous test-database and re-seeds data for testing.
 */
-exports.loadTestDb = async function () {
+exports.loadTestDb = async function (loader) {
   sequelize.options.logging = false;
   await sequelize.sync({ force:true });
-  await loader.load(exports.Data.book, exports.Data.genre, false);
+
+  const loaders = {
+    'book':     async () => await bookLoader.load(exports.Data.book, exports.Data.genre, false),
+    'patron':   async () => await patronLoader.load(exports.Data.patron, exports.Data.libraryId, false)
+  };
+
+  await loaders[loader]();
 }
 
 /**
@@ -31,11 +38,18 @@ exports.fetchBookTrs = function(browser) {
  * Util Class for anything data/model related
  */
 exports.Data = class Data {
+
   /** raw book-data */
   static book = require('$test/data/books.json');
 
+  /** raw patron-data */
+  static patron = require('$test/data/patrons.json');
+
   /** raw genre-data */
   static genre = require('$test/data/genres.json');
+
+  /** raw library-id-data */
+  static libraryId = require('$test/data/libraryIds.json');
 
   /** 
    * Find attribute keys of a model.

@@ -19,7 +19,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.book.create', () => {
   beforeEach('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
   });
 
   it('it should create one book when only required attributes are given', async () => {

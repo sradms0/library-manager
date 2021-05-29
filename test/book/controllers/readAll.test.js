@@ -22,7 +22,7 @@ describe('controllers.book.readAll', () => {
   let page, limit, res;
 
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.loadTestDb('book');
     await testOps.Data.addBooks(bookService.create, 20);
   });
 
