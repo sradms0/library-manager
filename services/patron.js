@@ -26,7 +26,9 @@ exports.create = function(data) {
  * @returns { Promise }
  *
 */
-exports.readAll = function({ limit, offset }={}) {}
+exports.readAll = function({ limit, offset }={}) {
+  return Patron.findAndCountAll({ limit, offset });
+}
 
 /** Quick access to model */
 exports.model = Patron;
