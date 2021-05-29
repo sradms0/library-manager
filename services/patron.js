@@ -14,7 +14,9 @@ const { Op } = require('sequelize');
  * @returns {Promise}
  *
 */
-exports.create = function(data) {}
+exports.create = function(data) {
+  return Patron.create(data);
+}
 
 /**
  * Read all patrons.
