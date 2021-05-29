@@ -4,5 +4,6 @@
  * @module services
 */
 module.exports = {
-  book: require('./book')
+  book: require('./book'),
+  patron: require('./patron')
 };
