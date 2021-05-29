@@ -17,7 +17,6 @@ const { sequelize } = require('$database/models');
 exports.load = async function(patronData, libraryIdData, logging=true) {
   sequelize.options.logging = logging;
   await asyncForEach(patronData, async (patron, idx) => {
-    console.log('PATRON: ', patron);
     patron.library_id = libraryIdData[idx].library_id;
 
     await asyncHandler(async () => {
