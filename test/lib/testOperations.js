@@ -76,6 +76,24 @@ exports.Data = class Data {
       });
     }
   }
+
+  /** 
+   * Add patrons to the current testing database.
+   * @param {function} creator - the function to add patron data with
+   * @param {number} total - the amount of patrons to add
+  */
+  static async addPatrons(creator, total) {
+    for (let i = 1; i <= total; i++) {
+      await creator({ 
+        first_name: `first`,
+        last_name: `last`,
+        address: `address ${i}`,
+        email: `user${i}@mail.com`,
+        library_id: `library_id${i}`,
+        zip_code: (''+i).repeat(5).substring(0,5)
+      });
+    }
+  }
 }
 
 /**
