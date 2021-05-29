@@ -8,7 +8,15 @@ const { testOperations: testOps } = require('$test/lib');
 const { expect } = chai;
 
 
+chai.use(require('chai-as-promised'));
+
+
 describe('services.book.create', () => {
+
+  before('reload', async () => {
+    await testOps.loadTestDb('book');
+  })
+
   it('it should return a promise', () => {
     const bookData1 = { 
       title: 'title1', 
