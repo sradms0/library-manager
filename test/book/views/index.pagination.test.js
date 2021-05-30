@@ -38,7 +38,7 @@ describe('views.book.index.pagination', () => {
     const { rows: pagedBookData, count: totalBooks } = await bookService.readAll({ limit, offset: page });
     await testOps.Route.visitPaginatedBooks(browser, { page, limit });
 
-    const pagedDOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent),
+    const pagedDOMTitles = [...testOps.fetchTrs(browser)].map(tr => tr.firstChild.textContent),
           pagedDataTitles = pagedBookData.map(book => book.title),
           pagedAndFound = pagedDOMTitles.length === pagedDataTitles.length && pagedDOMTitles.every((t, idx) => t === pagedDOMTitles?.[idx]);
 

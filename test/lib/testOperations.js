@@ -26,11 +26,11 @@ exports.loadTestDb = async function (loader) {
 }
 
 /**
- * Finds all table rows containing book data
+ * Finds all table rows containing containing data
  * @param {Browser} browser - zombie instance
  * @returns {NodeList} List of a book table rows 
 */
-exports.fetchBookTrs = function(browser) {
+exports.fetchTrs = function(browser) {
   return browser.querySelectorAll('tbody tr');
 }
 
@@ -117,6 +117,15 @@ exports.Route = class Route {
   */
   static visitBooks(browser) {
    return this.visit(browser, 'books');
+  }
+
+  /**
+   * Navigates to /patrons route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitPatrons(browser) {
+    return this.visit(browser, 'patrons');
   }
 
   /**

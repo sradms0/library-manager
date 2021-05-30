@@ -77,7 +77,7 @@ describe('views.book.index.search', () => {
       form?.submit();
       await browser.wait();
 
-      const bookTrs = testOps.fetchBookTrs(browser);
+      const bookTrs = testOps.fetchTrs(browser);
       const { textContent } = bookTrs[0]?.childNodes[tdChildLoc];
 
       return bookTrs.length === 1 && textContent === ''+attr;
@@ -120,7 +120,7 @@ describe('views.book.index.search', () => {
       testOps.BookForm.fillSearch(browser, attr);
       form?.submit();
       await browser.wait();
-      const bookTrs = [...testOps.fetchBookTrs(browser)],
+      const bookTrs = [...testOps.fetchTrs(browser)],
             bookAttrs = testOps.Data.getModelAttrs(
               bookService.model, 
               new Set(['title','author','genre','year'])
@@ -175,7 +175,7 @@ describe('views.book.index.search', () => {
       form?.submit();
       await browser.wait();
 
-      const bookTrs = testOps.fetchBookTrs(browser);
+      const bookTrs = testOps.fetchTrs(browser);
       expect(bookTrs).to.be.empty;
     });
   });

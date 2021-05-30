@@ -31,7 +31,7 @@ describe('views.book.index', () => {
     const { rows: books } = await bookService.readAll();
     await testOps.Route.visitBooks(browser);
     const titles = books.map(b => b.title),
-          DOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent);
+          DOMTitles = [...testOps.fetchTrs(browser)].map(tr => tr.firstChild.textContent);
     const allFound = DOMTitles.length === titles.length && titles.every((t,i) => t === DOMTitles?.[i]);
     expect(allFound).to.be.true;
   });
@@ -44,7 +44,7 @@ describe('views.book.index', () => {
     await testOps.Route.visitBooks(browser);
 
     const { rows: [{ title: onlyTitle }] } = await bookService.readAll(),
-          DOMTitles = [...testOps.fetchBookTrs(browser)].map(tr => tr.firstChild.textContent),
+          DOMTitles = [...testOps.fetchTrs(browser)].map(tr => tr.firstChild.textContent),
           onlyDOMTitle = DOMTitles?.pop();
 
     const lastFound = !DOMTitles.length && onlyTitle === onlyDOMTitle;
@@ -54,7 +54,7 @@ describe('views.book.index', () => {
   it('it should show no books when all books are removed', async () => {
     await bookService.model.destroy({ truncate: true })
     await testOps.Route.visitBooks(browser);
-    const bs = testOps.fetchBookTrs(browser);
+    const bs = testOps.fetchTrs(browser);
     expect(bs).to.have.length(0);
   });
 
@@ -62,7 +62,7 @@ describe('views.book.index', () => {
     const extractRoute = url => url?.match(/\/books\/(\d+)\/update$/g);
 
     await testOps.Route.visitBooks(browser);
-    const firstBookA = testOps.fetchBookTrs(browser)?.[0].querySelector('a');
+    const firstBookA = testOps.fetchTrs(browser)?.[0].querySelector('a');
     await browser.clickLink(firstBookA);
     const [ firstBookAHrefRoute ] = extractRoute(firstBookA.href),
           [ urlRoute ] = extractRoute(browser.location._url);

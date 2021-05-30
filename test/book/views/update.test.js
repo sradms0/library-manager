@@ -84,7 +84,7 @@ describe('views.book.update', () => {
     form.submit();
     await browser.wait();
     await testOps.Route.visitBooks(browser);
-    const updatedBookTds = [...testOps.fetchBookTrs(browser)]
+    const updatedBookTds = [...testOps.fetchTrs(browser)]
                             .find(tr => tr.firstChild.textContent === updated.title)?.children;
     const updatedVals = Object.values(updated);
 
