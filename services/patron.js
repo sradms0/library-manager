@@ -36,7 +36,9 @@ exports.readAll = function({ limit, offset }={}) {
  * @returns { Promise }
  *
 */
-exports.readByPk = function(pk) {}
+exports.readByPk = function(pk) {
+  return Patron.findByPk(pk);
+}
 
 /** Quick access to model */
 exports.model = Patron;
