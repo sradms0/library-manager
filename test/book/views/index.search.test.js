@@ -123,7 +123,7 @@ describe('views.book.index.search', () => {
       const bookTrs = [...testOps.fetchTrs(browser)],
             bookAttrs = testOps.Data.getModelAttrs(
               bookService.model, 
-              new Set(['title','author','genre','year'])
+              { without: ['id', 'createdAt', 'updatedAt'] }
             );
 
       let attrIdx = -1;

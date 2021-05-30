@@ -56,9 +56,9 @@ exports.Data = class Data {
    * @param {object} model - model to grab attribute keys from
    * @returns {object} array of attribute keys
   */
-  static getModelAttrs(model, setFilter=null) {
+  static getModelAttrs(model, { without=null }={}) {
     let keys = Object.keys(model.tableAttributes);
-    return (setFilter ? keys.filter(key => setFilter.has(key)) : keys);
+    return (without ? keys.filter(key => without.indexOf(key) < 0) : keys);
   }
 
   /** 
