@@ -181,6 +181,15 @@ exports.Route = class Route {
   }
 
   /**
+   * Navigates to /patrons/:id route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitOnePatron(browser, id) {
+    return this.visit(browser, `patrons/${id}/update`);
+  }
+
+  /**
    * Navigates to /books/:id/delete route
    * @param {Browser} browser - zombie instance
    * @return {Promise} zombie.Browser.visit
