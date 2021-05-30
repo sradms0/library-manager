@@ -30,5 +30,13 @@ exports.readAll = function({ limit, offset }={}) {
   return Patron.findAndCountAll({ limit, offset });
 }
 
+/**
+ * Read one patron by primary key
+ * @param pk - the primary key of the patron to read
+ * @returns { Promise }
+ *
+*/
+exports.readByPk = function(pk) {}
+
 /** Quick access to model */
 exports.model = Patron;
