@@ -1,0 +1,23 @@
+mixin createForm(action, dataValues)
+
+  form(method='post' action=action)
+    p
+      label(for='first_name') First Name
+      input.patron-detail(name='first_name' type='text' id='first_name' value=`${dataValues.first_name}`)
+    p
+      label(for='last_name') Last Name
+      input.patron-detail(name='last_name' type='text' id='last_name' value=`${dataValues.last_name}`)
+    p
+      label(for='address') Address
+      input.patron-detail(name='address' type='text' id='address' value=`${dataValues.address}`)
+    p
+      label(for='email') Email
+      input.patron-detail(name='email' type='text' id='email' value=`${dataValues.email}`)
+    p
+      label(for='library_id') Library ID
+      input.patron-detail(name='library_id' type='text' id='library_id' value=`${dataValues.library_id}`)
+    p
+      label(for='zip_code') Zip Code
+      input.patron-detail(name='zip_code' type='text' id='zip_code' value=`${dataValues.zip_code}`)
+
+    block

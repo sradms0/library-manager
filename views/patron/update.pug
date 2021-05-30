@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  h1 Update Patron
+  include ./includes/form
+  +createForm(`/patrons/${dataValues.id}/update`, dataValues)
+    p: input(type='submit' value='Update Patron')
+    p: a#cancel(class='button' href='/patrons') Cancel
+
