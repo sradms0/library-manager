@@ -94,6 +94,30 @@ exports.Data = class Data {
       });
     }
   }
+
+  static patronData() {
+    let counter = 1;
+    return ({ prop=null, allProps=false, val=null, del=false, pause=false }={}) => {
+      const data = {
+        first_name: `first`, 
+        last_name: `last`,
+        email: `user${counter}@mail.com`,
+        address: `street${counter}`,
+        zip_code: `${ (''+counter).repeat(5).substring(0,5) }`,
+        library_id: `library_id${counter}`
+      };
+
+      if (prop) {
+        if (val !== null) data[prop] = val;
+        else if (del) delete data[prop];
+      } else if(allProps && val) {
+        Object.keys(data).forEach(key => data[key] = val)
+      }
+
+      !pause && counter++;
+      return data;
+    }
+  }
 }
 
 /**
