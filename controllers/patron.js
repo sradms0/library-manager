@@ -26,4 +26,9 @@ exports.readAll = asyncHandler(async function(req, res) {
  * Sets `res.status` to 404 when a patron is not found.
  *
 */
-exports.readByPk = asyncHandler(async function(req, res) {});
+exports.readByPk = asyncHandler(async function(req, res) {
+  const { id } = req.params;
+  const patron = await patronService.readByPk(id);
+  assertFind(patron, 'Patron', id);
+  res.render('patron/update', { dataValues: patron });
+});
