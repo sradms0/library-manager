@@ -20,3 +20,10 @@ exports.readAll = asyncHandler(async function(req, res) {
   const renderConf = await readDataAndCreateRenderConf('patrons', patronService.readAll, req, '/patrons?');
   res.render('patron/index', renderConf);
 });
+
+/**
+ * Reads one patron by primary key and renders patron to '/views/patron/update-patron'.
+ * Sets `res.status` to 404 when a patron is not found.
+ *
+*/
+exports.readByPk = asyncHandler(async function(req, res) {});
