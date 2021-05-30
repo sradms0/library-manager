@@ -1,0 +1,12 @@
+extends ../layout
+
+block title
+  title='Patrons'
+
+block header
+  h1='Patrons'
+
+block content
+  p: a(class='button' href='/patrons') Create New Patron 
+  br
+  include ./includes/table
