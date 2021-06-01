@@ -77,6 +77,15 @@ exports.Data = class Data {
     }
   }
 
+  /**
+   * Gets validation messages for a model by its name.
+   * @param {string} modelName - the name of the model for which to extract validation messages from.
+   * @return {object} validation messages
+  */
+  static getModelValidationErrorMessages(modelName) {
+    return require('$database/models/validationMessages')[modelName.toLowerCase()];
+  }
+
   /** 
    * Add patrons to the current testing database.
    * @param {function} creator - the function to add patron data with

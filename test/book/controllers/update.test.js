@@ -19,6 +19,11 @@ chai.use(require('sinon-chai'));
 
 
 describe('controllers.book.update', () => {
+  const { messages: {
+    title: titleValMsgs, 
+    author: authorValMsgs
+  }} = testOps.Data.getModelValidationErrorMessages('book');
+
   let updated, id;
 
   beforeEach('reload', async () => {
@@ -63,7 +68,7 @@ describe('controllers.book.update', () => {
 
   it('it should call res.render with prev. data when only a title is given (from validation error)', async () => {
     const updatedCopy = {...updated, title: 'title', author: ''},
-          errors = ['"Author" is required'],
+          errors = [authorValMsgs.notEmpty],
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
 
@@ -73,7 +78,7 @@ describe('controllers.book.update', () => {
 
   it('it should call res.render with prev. data when only an author is given (from validation error)', async () => {
     const updatedCopy = {...updated, title: '', author: 'author'},
-          errors = ['"Title" is required'],
+          errors = [titleValMsgs.notEmpty],
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
     await bookController.update(req, res);
@@ -82,7 +87,7 @@ describe('controllers.book.update', () => {
 
   it('it should call res.render with prev. data when neither title or author are given (from validation error)', async () => {
     const updatedCopy = {...updated, title: '', author: ''},
-          errors = ['"Title" is required', '"Author" is required'],
+          errors = [titleValMsgs.notEmpty,authorValMsgs.notEmpty],
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
     await bookController.update(req, res);
