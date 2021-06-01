@@ -1,8 +1,9 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const { Op } = Sequelize;
 const { sequelize } = require('./');
+const { book: { messages: { title, author } }} = require('./validationMessages');
+
 
 module.exports = sequelize => {
   class Book extends Sequelize.Model {};
@@ -11,16 +12,16 @@ module.exports = sequelize => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: '"Title" is required' },
-        notNull: { msg: '"Title" field is required' }
+        notEmpty: { msg: title.notEmpty },
+        notNull: { msg: title.notNull }
       }
     },
     author: {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: '"Author" is required' },
-        notNull: { msg: '"Author" field is required' }
+        notEmpty: { msg: author.notEmpty },
+        notNull: { msg: author.notNull }
       }
     },
     genre: Sequelize.STRING,

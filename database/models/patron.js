@@ -1,6 +1,16 @@
 'use strict';
 
 const Sequelize = require('sequelize');
+const { patron: { 
+  messages: { 
+    first_name, 
+    last_name, 
+    address, 
+    email, 
+    library_id, 
+    zip_code 
+}}} = require('./validationMessages');
+
 
 module.exports = sequelize => {
   class Patron extends Sequelize.Model {};
@@ -9,11 +19,11 @@ module.exports = sequelize => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        notEmpty: {msg: '"First Name" is required'},
-        notNull: {msg: '"First Name" field is required'},
+        notEmpty: {msg: first_name.notEmpty},
+        notNull: {msg: first_name.notNull},
         is: {
           args: /^[a-z]+$/i, 
-          msg: 'Valid First Name is required: letters only'
+          msg: first_name.is
         }
       }
     },
@@ -21,11 +31,11 @@ module.exports = sequelize => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        notEmpty: {msg: '"Last Name" is required'},
-        notNull: {msg: '"Last Name" field is required'},
+        notEmpty: {msg: last_name.notEmpty},
+        notNull: {msg: last_name.notNull},
         is: {
           args: /^[a-z]+$/i, 
-          msg: 'Valid Last Name is required: letters only'
+          msg: last_name.is
         }
       }
     },
@@ -33,37 +43,39 @@ module.exports = sequelize => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        notEmpty: {msg: '"Address" is required'},
-        notNull: {msg: '"Address" field is required'}
+        notEmpty: {msg: address.notEmpty},
+        notNull: {msg: address.notNull}
       }
     },
     email: {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        notEmpty: {msg: '"Email" is required'},
-        notNull: {msg: '"Email" field is required'},
-        isEmail: {msg: 'Valid Email is required'}
+        notEmpty: {msg: email.notEmpty},
+        notNull: {msg: email.notNull},
+        isEmail: {msg: email.isEmail}
       },
-      unique: {msg: 'Email already exists'}
+      unique: {msg: email.unique}
     },
+
     library_id: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
       validate: {
-        notEmpty: {msg: '"Library ID" is required'},
-        notNull: {msg: '"Library ID" field is required'}
+        notEmpty: {msg: library_id.notEmpty},
+        notNull: {msg:  library_id.notNull}
       },
-      unique: {msg: 'Library ID already exists'}
+      unique: {msg: library_id.unique}
     },
+
     zip_code: {
       type: Sequelize.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: {msg: '"Zip Code" is required'},
-        notNull: {msg: '"Zip Code" field is required'},
-        isInt: {msg: 'Valid Zip Code is required'}
+        notEmpty: {msg: zip_code.notEmpty},
+        notNull: {msg:  zip_code.notNull},
+        isInt: {msg: zip_code.isInt}
       }
     }
   }, { sequelize });
