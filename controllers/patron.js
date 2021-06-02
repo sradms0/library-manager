@@ -12,6 +12,12 @@ const {
 
 
 /**
+ * Creates a new patron
+*/
+exports.create = asyncHandler(async function(req, res) {});
+
+
+/**
  * Reads all patrons and renders all books to '/views/patron/index'
  *
 */

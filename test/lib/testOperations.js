@@ -119,13 +119,21 @@ exports.Data = class Data {
       if (prop) {
         if (val !== null) data[prop] = val;
         else if (del) delete data[prop];
-      } else if(allProps && val) {
+      } else if(allProps && val !== null) {
         Object.keys(data).forEach(key => data[key] = val)
       }
 
       !pause && counter++;
       return data;
     }
+  }
+
+  /**
+   * Creates patron object with empty values
+   * @return {object} patron
+  */
+  static emptyPatron() {
+    return exports.Data.patronData()({ allProps:true, val:'' });;
   }
 }
 
