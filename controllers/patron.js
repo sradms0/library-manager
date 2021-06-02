@@ -14,7 +14,11 @@ const {
 /**
  * Creates a new patron
 */
-exports.create = asyncHandler(async function(req, res) {});
+exports.create = asyncHandler(async function(req, res) {
+  const { body } = req;
+  await patronService.create(body);
+  res.redirect('/patrons');
+}, { errorView: 'patron/new', model: patronService.model });
 
 
 /**
