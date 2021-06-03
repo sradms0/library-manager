@@ -1,4 +1,7 @@
-mixin createForm(action, dataValues)
+mixin createForm(action, dataValues, errors)
+  if (errors)
+    each error in errors
+      p.error=error
 
   form(method='post' action=action)
     p
