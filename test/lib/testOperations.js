@@ -189,6 +189,15 @@ exports.Route = class Route {
   }
 
   /**
+   * Navigates to /patrons/new route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitNewPatron(browser) {
+    return this.visit(browser, 'patrons/new');
+  }
+
+  /**
    * Navigates to /books/:id route
    * @param {Browser} browser - zombie instance
    * @return {Promise} zombie.Browser.visit
@@ -272,4 +281,80 @@ exports.BookForm = class BookForm {
   static fillYear(browser, val=null) {
     browser.fill('input[name=year]', val ? val : val ? val : '1');
   } 
+}
+
+/**
+ * Util Class for filling patron-related forms
+*/
+exports.PatronForm = class PatronForm {
+  /**
+   * Clears all patron fields.
+   * @param {Browser} browser - zombie instance
+  */
+  static clear(browser) {
+    [...browser.querySelectorAll('input.patron-detail')].forEach(input => input.value = '');
+  } 
+
+  /**
+   * Fills the patrons genre field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill genre field (filled if null)
+  */
+  static fillAddress(browser, val=null) {
+    browser.fill('input[name=address]', val ? val : 'new address');
+  } 
+
+  /** 
+   * Fills the patrons email field
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill email field (filled if null)
+  */
+  static fillEmail(browser, val=null) {
+    browser.fill('input[name=email]', val ? val : 'new_user@mail.com');
+  }
+
+  /**
+   * Fills the patrons first name field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill first name field (filled if null)
+  */
+  static fillFirstName(browser, val=null) {
+    browser.fill('input[name=first_name]', val ? val : 'newfirst');
+  }
+
+  /**
+   * Fills the patrons last name field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill last name field (filled if null)
+  */
+  static fillLastName(browser, val=null) {
+    browser.fill('input[name=last_name]', val ? val : 'newlast');
+  } 
+
+  /**
+   * Fills the patrons library id field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill library id field (filled if null)
+  */
+  static fillLibraryId(browser, val=null) {
+    browser.fill('input[name=library_id]', val ? val : 'newid');
+  } 
+
+  /**
+   * Fills the patrons zip code field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill zip code field (filled if null)
+  */
+  static fillZipCode(browser, val=null) {
+    browser.fill('input[name=zip_code]', val ? val : '11111');
+  } 
+
+  /**
+   * Fills all patron form fields
+   * @param {Browser} browser - zombie instance
+   * @param {object} data - patrons data to fill fields
+  */
+  static fillAllWith(browser, data) {
+    Object.keys(data).forEach(k => browser.fill(`input[name="${k}"]`, data[k]));
+  }
 }

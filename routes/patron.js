@@ -12,4 +12,10 @@ router.get('/', patronController.readAll);
 /* GET one patron. */
 router.get('/:id/update', patronController.readByPk);
 
+/* GET new patron. */
+router.get('/new', patronController.readNew);
+
+/* POST one patron. */
+router.post('/new', patronController.create);
+
 module.exports = router;
