@@ -51,11 +51,25 @@ describe('views.patron.index', () => {
     expect(lastFound).to.true;
   });
 
+  it('it should direct the user to /patrons/:id/update when clicking on a patron', async () => {
+    const extractRoute = url => url?.match(/\/patrons\/(\d+)\/update$/g);
+
+    await testOps.Route.visitPatrons(browser);
+    const firstPatronA = testOps.fetchTrs(browser)?.[0].querySelector('a');
+
+    await browser.clickLink(firstPatronA);
+    const [ firstPatronAHrefRoute ] = extractRoute(firstPatronA.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+
+    expect(urlRoute).to.equal(firstPatronAHrefRoute);
+  });
+
   it('it should show no patrons when all patrons are removed', async () => {
     await patronService.model.destroy({ truncate: true })
     await testOps.Route.visitPatrons(browser);
     const ps = testOps.fetchTrs(browser);
     expect(ps).to.have.length(0);
   });
+
 });
 
