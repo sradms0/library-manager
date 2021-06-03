@@ -42,3 +42,8 @@ exports.readByPk = asyncHandler(async function(req, res) {
   assertFind(patron, 'Patron', id);
   res.render('patron/update', { dataValues: patron });
 });
+
+/**
+ * Reads a new patron, rendering '/views/patron/new'
+*/
+exports.readNew = function(req, res) {};
