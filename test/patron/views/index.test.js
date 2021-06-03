@@ -64,6 +64,18 @@ describe('views.patron.index', () => {
     expect(urlRoute).to.equal(firstPatronAHrefRoute);
   });
 
+  it('it should have an anchor element to bring the user to /patrons/new', async () => {
+    const extractRoute = url => url?.match(/\/patrons\/new$/g);
+
+    await testOps.Route.visitPatrons(browser);
+    const createPatronA = browser.querySelector('p a');
+    await browser.clickLink(createPatronA);
+
+    const [ createPatronAHrefRoute ] = extractRoute(createPatronA.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(createPatronAHrefRoute);
+  });
+
   it('it should show no patrons when all patrons are removed', async () => {
     await patronService.model.destroy({ truncate: true })
     await testOps.Route.visitPatrons(browser);
