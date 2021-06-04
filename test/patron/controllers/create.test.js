@@ -42,31 +42,12 @@ describe('controllers.patron.create', () => {
   describe('validation errors', () => {
     const emptyPatron = testOps.Data.emptyPatron;
 
+    const { Validation: { getValMsgs, withoutVal } } = testOps;
     const { messages: valMsgs } = testOps.Data.getModelValidationErrorMessages('patron'); 
-    const withoutVal = (...without) => {
-      const cpy = {...valMsgs};
-      without.forEach(k => delete cpy[k]);
-      return cpy;
-    }
-
-    const getEmptyAndInvValMsgs = (valObjs, ...sansNestedKeys) => {
-      const valObjKeys = Object.keys(valObjs), msgs = [];
-      valObjKeys.forEach(k => {
-        let nestedKeys = Object.keys(valObjs[k]);
-        sansNestedKeys && (
-          nestedKeys = nestedKeys.filter(nk => 
-            !sansNestedKeys.find(snk => new RegExp(`^${snk}`, 'g').test(nk)))
-          );
-        nestedKeys.forEach(nk => {
-          msgs.push(valObjs[k][nk]);
-        })
-      });
-      return msgs;
-    }
 
     it('it should call res.render with prev. data when only a first_name is given (from validation error)', async () => {
       const patron = { ...emptyPatron(), ...{ first_name: 'first' } },
-            errors = getEmptyAndInvValMsgs(withoutVal('first_name'), 'notNull', 'unique'),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['first_name'] }), { sansNestedKeys: ['notNull', 'unique'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -75,7 +56,7 @@ describe('controllers.patron.create', () => {
 
     it('it should call res.render with prev. data when only a last_name is given (from validation error)', async () => {
       const patron = { ...emptyPatron(), ...{ last_name: 'last' } },
-            errors = getEmptyAndInvValMsgs(withoutVal('last_name'), 'notNull', 'unique'),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['last_name'] }), { sansNestedKeys: ['notNull', 'unique'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -84,7 +65,7 @@ describe('controllers.patron.create', () => {
 
     it('it should call res.render with prev. data when only an address is given (from validation error)', async () => {
       const patron = { ...emptyPatron(), ...{ address: '123 road' } },
-            errors = getEmptyAndInvValMsgs(withoutVal('address'), 'notNull', 'unique'),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['address'] }), { sansNestedKeys: ['notNull', 'unique'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -93,7 +74,7 @@ describe('controllers.patron.create', () => {
 
     it('it should call res.render with prev. data when only an email is given (from validation error)', async () => {
       const patron = { ...emptyPatron(), ...{ email: 'invalid_patron@mail.com' } },
-            errors = getEmptyAndInvValMsgs(withoutVal('email'), 'notNull', 'unique'),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), { sansNestedKeys: ['notNull', 'unique'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -102,7 +83,7 @@ describe('controllers.patron.create', () => {
 
     it('it should call res.render with prev. data when only an library_id is given (from validation error)', async () => {
       const patron = { ...emptyPatron(), ...{ library_id: 'libid' } },
-            errors = getEmptyAndInvValMsgs(withoutVal('library_id'), 'notNull', 'unique'),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), { sansNestedKeys: ['notNull', 'unique'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -111,7 +92,7 @@ describe('controllers.patron.create', () => {
 
     it('it should call res.render with prev. data when only an zip_code is given (from validation error)', async () => {
       const patron = { ...emptyPatron(), ...{ zip_code: '11111' } },
-            errors = getEmptyAndInvValMsgs(withoutVal('zip_code'), 'notNull', 'unique'),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['zip_code'] }), { sansNestedKeys: ['notNull', 'unique'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -120,7 +101,7 @@ describe('controllers.patron.create', () => {
 
     it('it should call res.render with no prev. data when only all required fields are empty (from validation error)', async () => {
       const patron = emptyPatron(),
-            errors = getEmptyAndInvValMsgs({...valMsgs}, 'notNull', 'unique'),
+            errors = getValMsgs(valMsgs, { sansNestedKeys: ['notNull', 'unique'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -132,7 +113,7 @@ describe('controllers.patron.create', () => {
       await patronService.create(patron);
       patron.library_id = 'unique_id';
 
-      const errors = getEmptyAndInvValMsgs(withoutVal('library_id'), 'notNull', 'notEmpty', 'is'),
+      const errors = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), { sansNestedKeys: ['notNull', 'notEmpty', 'is'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
@@ -144,7 +125,7 @@ describe('controllers.patron.create', () => {
       await patronService.create(patron);
       patron.email = 'unique_email@mail.com';
 
-      const errors = getEmptyAndInvValMsgs(withoutVal('email'), 'notNull', 'notEmpty', 'is'),
+      const errors = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), { sansNestedKeys: ['notNull', 'notEmpty', 'is'] }),
             res = mockResponse(),
             req = mockRequest({ body: patron });
       await patronController.create(req, res);
