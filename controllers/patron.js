@@ -23,7 +23,13 @@ exports.create = asyncHandler(async function(req, res) {
 /**
  * Deletes a patron
 */
-exports.delete = asyncHandler(async function(req, res) {});
+exports.delete = asyncHandler(async function(req, res) {
+  const { id } = req.params;
+  const patron = await patronService.readByPk(id);
+  assertFind(patron, 'Patron', id);
+  await patronService.delete(patron);
+  res.redirect('/patrons');
+});
 
 /**
  * Reads all patrons and renders all books to '/views/patron/index'
