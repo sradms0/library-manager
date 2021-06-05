@@ -20,6 +20,10 @@ exports.create = asyncHandler(async function(req, res) {
   res.redirect('/patrons');
 }, { errorView: 'patron/new', model: patronService.model });
 
+/**
+ * Deletes a patron
+*/
+exports.delete = asyncHandler(async function(req, res) {});
 
 /**
  * Reads all patrons and renders all books to '/views/patron/index'
