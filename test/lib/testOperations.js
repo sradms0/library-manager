@@ -180,6 +180,16 @@ exports.Route = class Route {
   }
 
   /**
+   * Navigates to /patrons route containing pagination parameters
+   * @param {Browser} browser - zombie instance
+   * @param {object} params - contains query parameters to paginate from
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitPaginatedPatrons(browser, { page, limit, query=null }) {
+    return this.visit(browser, `patrons${query ? `/search?q=${query}&` : '?'}page=${page}&limit=${limit}`);
+  }
+
+  /**
    * Navigates to /books/new route
    * @param {Browser} browser - zombie instance
    * @return {Promise} zombie.Browser.visit
