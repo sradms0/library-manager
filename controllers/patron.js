@@ -55,4 +55,10 @@ exports.readNew = function(req, res) {
 /**
  * Updates an existing patron, redirecting to /patrons after.
 */
-exports.update = asyncHandler(async function(req, res) {});
+exports.update = asyncHandler(async function(req, res) {
+  const { id } = req.params, { body } = req;
+  const patron = await patronService.readByPk(id);
+  assertFind(patron, 'Patron', id);
+  await patronService.update(patron, body);
+  res.redirect('/patrons');
+}, { errorView: 'patron/update', model: patronService.model });
