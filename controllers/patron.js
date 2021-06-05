@@ -51,3 +51,8 @@ exports.readNew = function(req, res) {
   const dataValues = attrs.reduce((acc, curr) => ({...acc, ...{[curr]: ''}}), {});
   res.render('patron/new', { dataValues });
 };
+
+/**
+ * Updates an existing patron, redirecting to /patrons after.
+*/
+exports.update = asyncHandler(async function(req, res) {});
