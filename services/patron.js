@@ -40,5 +40,13 @@ exports.readByPk = function(pk) {
   return Patron.findByPk(pk);
 }
 
+/**
+ * Updates one patron
+ * @param { Patron } patron - the patron instance to update.
+ * @param { Object } data - the data to update the patron instance with.
+ * @returns { Promise }
+*/
+exports.update = function(patron, data) {}
+
 /** Quick access to model */
 exports.model = Patron;
