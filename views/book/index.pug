@@ -10,5 +10,6 @@ block content
   p: a(class='button' href='/books/new') Create New Book 
   br
   include ./includes/search
-  include ./includes/pagination
+  include ../includes/pagination
+  +paginate(page, totalPages, paginationRoot)
   include ./includes/table
