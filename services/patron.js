@@ -46,7 +46,9 @@ exports.readByPk = function(pk) {
  * @param { Object } data - the data to update the patron instance with.
  * @returns { Promise }
 */
-exports.update = function(patron, data) {}
+exports.update = function(patron, data) {
+  return patron.update(data);
+}
 
 /** Quick access to model */
 exports.model = Patron;
