@@ -5,5 +5,6 @@ block content
   include ./includes/form
   +createForm(`/patrons/${dataValues.id}/update`, dataValues, errors)
     p: input(type='submit' value='Update Patron')
+    p: a#delete(class='button' href=`/patrons/${dataValues.id}/delete`) Delete
     p: a#cancel(class='button' href='/patrons') Cancel
 
