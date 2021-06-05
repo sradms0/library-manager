@@ -12,6 +12,9 @@ router.get('/', patronController.readAll);
 /* GET one patron. */
 router.get('/:id/update', patronController.readByPk);
 
+/* POST update existing patron. */
+router.post('/:id/update', patronController.update);
+
 /* GET new patron. */
 router.get('/new', patronController.readNew);
 
