@@ -19,6 +19,14 @@ exports.create = function(data) {
 }
 
 /**
+ * Delete one book
+ * @param { object } patron - the Patron instance to delete
+ * @returns { Promise }
+*/
+exports.delete = function(patron) {}
+
+
+/**
  * Read all patrons.
  * @param { object } [config] - configuration for patron reading.
  * @param { number } config.limit - the amount of patrons to read.
