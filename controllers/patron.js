@@ -42,6 +42,13 @@ exports.readAll = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads one patron by primary key and renders book to '/views/patron/delete' for deletion confirmation.
+ * Sets `res.status` to 404 when a book is not found.
+ *
+*/
+exports.readDelete = asyncHandler(async function(req, res) {});
+
+/**
  * Reads one patron by primary key and renders patron to '/views/patron/update-patron'.
  * Sets `res.status` to 404 when a patron is not found.
  *
