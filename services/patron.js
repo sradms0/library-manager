@@ -23,7 +23,9 @@ exports.create = function(data) {
  * @param { object } patron - the Patron instance to delete
  * @returns { Promise }
 */
-exports.delete = function(patron) {}
+exports.delete = function(patron) {
+  return patron.destroy();
+}
 
 
 /**
