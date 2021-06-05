@@ -9,6 +9,12 @@ const router = express.Router();
 /* GET patrons listing. */
 router.get('/', patronController.readAll);
 
+/* GET one patron for deletion. */
+router.get('/:id/delete', patronController.readDelete);
+
+/* POST patron for deletion. */
+router.post('/:id/delete', patronController.delete);
+
 /* GET one patron. */
 router.get('/:id/update', patronController.readByPk);
 

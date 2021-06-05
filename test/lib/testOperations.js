@@ -224,6 +224,15 @@ exports.Route = class Route {
     return this.visit(browser, `books/${id}/delete`);
   }
 
+  /**
+   * Navigates to /patrons/:id/delete route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitOnePatronDel(browser, id) {
+    return this.visit(browser, `patrons/${id}/delete`);
+  }
+
 }
 /**
  * Util Class for filling a book-related forms
