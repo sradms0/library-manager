@@ -1,3 +1,12 @@
 extends ../layout.pug
 
 block content
+  h2=dataValues.title
+  p 
+    | Are you sure you want to delete 
+    em#patron-name=`${dataValues.first_name} ${dataValues.last_name}`
+    | ?
+  form(action=`/patrons/${dataValues.id}/delete`, method="post")
+    a.button(href=`/patrons/${dataValues.id}/update`) No! Take me back! 
+    | 
+    input(type="submit", value = "Yes, I'm sure")
