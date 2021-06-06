@@ -41,6 +41,14 @@ exports.readAll = function({ limit, offset }={}) {
 }
 
 /**
+ * Read books based on attributes
+ * @param { string } query - the search term to find books by
+ * @returns { Promise }
+ *
+*/
+exports.readByAttrs = function({ query, limit, offset }={}) {}
+
+/**
  * Read one patron by primary key
  * @param pk - the primary key of the patron to read
  * @returns { Promise }
