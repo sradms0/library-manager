@@ -57,7 +57,12 @@ exports.readDelete = asyncHandler(async function(req, res) {
  * Reads Patrons by attribute values based on querystring and renders matches to '/views/patron/index'.
  *
 */
-exports.readByAttrs = asyncHandler(async function(req, res) {});
+exports.readByAttrs = asyncHandler(async function(req, res) {
+  const { query: {q} } = req;
+  assertParams('patrons/search', res, req);
+  const renderConf = await readDataAndCreateRenderConf('patrons', patronService.readByAttrs, req, `/patrons/search?q=${q}&`);
+  res.render('patron/index', renderConf);
+});
 
 /**
  * Reads one patron by primary key and renders patron to '/views/patron/update-patron'.
