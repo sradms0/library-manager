@@ -85,11 +85,9 @@ describe('views.patron.update', () => {
                             .find(tr => tr.firstChild.textContent === (updated.first_name+' '+updated.last_name))?.children;
 
     const [first_name, last_name,...updatedVals] = Object.values(updated);
-    updatedVals.unshift(first_name+' '+last_name);
     // order of table values differ; these should be changed at some point anyway
     [updatedVals[1], updatedVals[2]] = [updatedVals[2], updatedVals[1]];
     [updatedVals[3], updatedVals[4]] = [updatedVals[4], updatedVals[3]];
-
     let found = 0;
     [...updatedPatronTds ]?.forEach((td, idx) => {
       found++;

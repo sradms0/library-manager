@@ -110,6 +110,7 @@ exports.Data = class Data {
       const data = {
         first_name: `first`, 
         last_name: `last`,
+        name: `first last`,
         email: `user${counter}@mail.com`,
         address: `street${counter}`,
         zip_code: `${ (''+counter).repeat(5).substring(0,5) }`,
@@ -374,7 +375,9 @@ exports.PatronForm = class PatronForm {
    * @param {object} data - patrons data to fill fields
   */
   static fillAllWith(browser, data) {
-    Object.keys(data).forEach(k => browser.fill(`input[name="${k}"]`, data[k]));
+    const _data = { ...data };
+    delete _data.name;
+    Object.keys(_data).forEach(k => browser.fill(`input[name="${k}"]`, _data[k]));
   }
 }
 
