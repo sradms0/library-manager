@@ -35,39 +35,21 @@ describe('services.book.readByAttrs', async () => {
       searchRes?.length === 1 && 
       JSON.stringify(searchRes?.[0]) === JSON.stringify(book);
 
-    let oneBook, title, author, genre, year;
-
+    let oneBook;
     before('', async () => {
       ({ rows: [oneBook] } = await bookService.readAll());
-      if (oneBook) {
+      if (oneBook)
         oneBook = await bookService.update(oneBook, {genre: 'very unique'});
-        ({ title, author, genre, year } = oneBook);
-      }
     });
 
-    it('it should find one book by its title', async() => {
-      const { rows: titleSearched } = await bookService.readByAttrs({ query: title }),
-            res = oneAndFound(titleSearched, oneBook);
-      expect(res).to.be.true;
-    });
-
-    it('it should find one book by its author', async() => {
-      const { rows: authorSearched } = await bookService.readByAttrs({ query: author }),
-            res = oneAndFound(authorSearched, oneBook);
-      expect(res).to.be.true;
-    });
-
-    it('it should find one book by its genre', async() => {
-      const { rows: genreSearched } = await bookService.readByAttrs({ query: genre }),
-            res = oneAndFound(genreSearched, oneBook);
-      expect(res).to.be.true;
-    });
-
-    it('it should find one book by its year', async() => {
-      const { rows: yearSearched } = await bookService.readByAttrs({ query: author }),
-            res = oneAndFound(yearSearched, oneBook);
-      expect(res).to.be.true;
-    });
+    testOps.getModelAttrs(bookServie.model, { without: ['id', 'createdAt', 'updatedAt'] })
+    .forEach(attr => {
+      it(`it should find one book by its ${attr}`, async () => {
+        const { rows: searched } = await bookService.readByAttrs({ query: oneBook[attr] }),
+              res = oneAndFound(searched, oneBook);
+        expect(res).to.be.true;
+      });
+    })
   });
 
   describe('many book results', async () => {
@@ -76,43 +58,30 @@ describe('services.book.readByAttrs', async () => {
         JSON.stringify(res.dataValues) === JSON.stringify(books[idx].dataValues));
 
     let manyBooks = [];
-    const title = 'title',
-          author = 'author',
-          genre = 'genre',
-          year = 'year';
+    const nonUniqueData = {
+      title : 'title',
+      author : 'author',
+      genre : 'genre',
+      year : 'year'
+    }
 
     before('create books with identical attrs.', async () => {
       const totalSimilar = 5
       for (let i = 0; i < totalSimilar; i++) {
         // need to fetch after creation since ordering of attrs differ...
-        const { id } = await bookService.create({ title, author, genre, year });
+        const { id } = await bookService.create(nonUniqueData);
         manyBooks.push( await bookService.readByPk(id) );
       }
     });
 
-    it('it should find many books by title', async () => {
-      const { rows: titleSearched } = await bookService.readByAttrs({ query: title }),
-            res = manyAndFound(titleSearched, manyBooks);
-      expect(res).to.be.true;
-    });
-
-    it('it should find many books by author', async () => {
-      const { rows: authorSearched } = await bookService.readByAttrs({ query: author }),
-            res = manyAndFound(authorSearched, manyBooks);
-      expect(res).to.be.true;
-    });
-
-    it('it should find many books by genre', async () => {
-      const { rows: genreSearched } = await bookService.readByAttrs({ query: genre }),
-            res = manyAndFound(genreSearched, manyBooks);
-      expect(res).to.be.true;
-    });
-
-    it('it should find many books by year', async () => {
-      const { rows: yearSearched } = await bookService.readByAttrs({ query: year }),
-            res = manyAndFound(yearSearched, manyBooks);
-      expect(res).to.be.true;
-    });
+    testOps.getModelAttrs(bookServie.model, { without: ['id', 'createdAt', 'updatedAt'] })
+    .forEach(attr => {
+      it(`it should find many books by ${attr}`, async () => {
+        const { rows: searched } = await bookService.readByAttrs({ query: nonUniqueData[attr] }),
+              res = manyAndFound(searched, manyBooks);
+        expect(res).to.be.true;
+      });
+    })
   });
 
   describe('no book results', async () => {
