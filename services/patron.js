@@ -46,7 +46,19 @@ exports.readAll = function({ limit, offset }={}) {
  * @returns { Promise }
  *
 */
-exports.readByAttrs = function({ query, limit, offset }={}) {}
+exports.readByAttrs = function({ query, limit, offset }={}) {
+  const where = {
+      [Op.or]: {
+        first_name: { [Op.like]: `%${query}%` },
+        last_name:  { [Op.like]: `%${query}%` },
+        email:      { [Op.like]: `%${query}%` },
+        address:    { [Op.like]: `%${query}%` },
+        zip_code:   { [Op.like]: `%${query}%` },
+        library_id: { [Op.like]: `%${query}%` }
+      }
+  };
+  return Patron.findAndCountAll({ where, limit, offset });
+}
 
 /**
  * Read one patron by primary key
