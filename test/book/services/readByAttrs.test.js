@@ -9,6 +9,7 @@ const { expect } = chai;
 
 
 describe('services.book.readByAttrs', async () => {
+  const modelAttrs = testOps.Data.getModelAttrs(bookService.model, { without: ['id', 'createdAt', 'updatedAt'] });
   let title;
 
   before('reload', async () => {
@@ -42,8 +43,7 @@ describe('services.book.readByAttrs', async () => {
         oneBook = await bookService.update(oneBook, {genre: 'very unique'});
     });
 
-    testOps.getModelAttrs(bookServie.model, { without: ['id', 'createdAt', 'updatedAt'] })
-    .forEach(attr => {
+    modelAttrs.forEach(attr => {
       it(`it should find one book by its ${attr}`, async () => {
         const { rows: searched } = await bookService.readByAttrs({ query: oneBook[attr] }),
               res = oneAndFound(searched, oneBook);
@@ -74,8 +74,7 @@ describe('services.book.readByAttrs', async () => {
       }
     });
 
-    testOps.getModelAttrs(bookServie.model, { without: ['id', 'createdAt', 'updatedAt'] })
-    .forEach(attr => {
+    modelAttrs.forEach(attr => {
       it(`it should find many books by ${attr}`, async () => {
         const { rows: searched } = await bookService.readByAttrs({ query: nonUniqueData[attr] }),
               res = manyAndFound(searched, manyBooks);
