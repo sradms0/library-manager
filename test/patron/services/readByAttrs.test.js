@@ -9,6 +9,7 @@ const { expect } = chai;
 
 
 describe('services.patron.readByAttrs', async () => {
+  const modelAttrs = testOps.Data.getModelAttrs(patronService.model, { without: ['id', 'createdAt', 'updatedAt'] })
   let firstName;
 
   before('reload', async () => {
@@ -42,8 +43,7 @@ describe('services.patron.readByAttrs', async () => {
         onePatron = await patronService.update(onePatron, {library_id: 'very-unique'});
     });
 
-    testOps.Data.getModelAttrs(patronService.model, { without: ['id', 'createdAt', 'updatedAt'] })
-    .forEach(attr => {
+    modelAttrs.forEach(attr => {
       it(`it should find one patron by ${attr}`, async () => {
         const { rows: searched } = await patronService.readByAttrs({ query: onePatron[attr] }),
               res = oneAndFound(searched, onePatron);
@@ -53,6 +53,7 @@ describe('services.patron.readByAttrs', async () => {
   });
 
   describe('many patron results', async () => {
+    const modeAttrsSansUnique = modelAttrs.filter(attr => attr !== 'email' && attr !== 'library_id');
     const manyAndFound = (searchRes, patrons) => 
       searchRes?.length === patrons.length && searchRes.every((res, idx) => 
         JSON.stringify(res.dataValues) === JSON.stringify(patrons[idx].dataValues));
@@ -63,7 +64,6 @@ describe('services.patron.readByAttrs', async () => {
             address: 'sameaddress', 
             zip_code: 11111 
           }
-
     let manyPatrons = [];
     before('create patrons with identical attrs.', async () => {
       const patronData = testOps.Data.patronData();
@@ -74,8 +74,7 @@ describe('services.patron.readByAttrs', async () => {
       }
     });
 
-    testOps.Data.getModelAttrs(patronService.model, { without: ['id',  'email', 'library_id', 'createdAt', 'updatedAt'] })
-    .forEach((attr, idx) => {
+    modeAttrsSansUnique.forEach((attr, idx) => {
       it(`it should find many patrons by ${attr}`, async () => {
         const { rows: searched } = await patronService.readByAttrs({ query: nonUniqueData[attr] }),
               res = manyAndFound(searched, manyPatrons);
