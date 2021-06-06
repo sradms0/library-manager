@@ -35,6 +35,13 @@ describe('services.patron.create', () => {
     expect(count === 1 && wasCreated).to.be.true;
   });
 
+  it('it should contain a virtual name property after creating a patron', async () => {
+    const patronData3 = patronData(),
+          patron = (await patronService.create(patronData3))?.toJSON(),
+          { first_name, last_name } = patron;
+    expect(patron.name).to.equal(`${first_name} ${last_name}`);
+  });
+
   it('it should throw an error when a first_name of non-alpha chars is given', async () => {
     await expect(
       patronService.create(patronData({ prop: 'first_name', val: '1'}))
