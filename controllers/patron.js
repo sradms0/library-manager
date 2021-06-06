@@ -54,6 +54,12 @@ exports.readDelete = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads Patrons by attribute values based on querystring and renders matches to '/views/patron/index'.
+ *
+*/
+exports.readByAttrs = asyncHandler(async function(req, res) {});
+
+/**
  * Reads one patron by primary key and renders patron to '/views/patron/update-patron'.
  * Sets `res.status` to 404 when a patron is not found.
  *
