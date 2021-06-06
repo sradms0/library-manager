@@ -39,6 +39,10 @@ module.exports = sequelize => {
         }
       }
     },
+    name: {
+      type: Sequelize.VIRTUAL,
+      get() { return `${this.first_name} ${this.last_name}`; }
+    },
     address: {
       type: Sequelize.STRING,
       allowNull: false,
