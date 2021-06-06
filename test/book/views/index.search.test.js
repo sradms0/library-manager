@@ -15,6 +15,7 @@ chai.use(require('chai-http'));
 
 
 describe('views.book.index.search', () => {
+  const modelAttrs = testOps.Data.getModelAttrs(bookService.model, { without: ['id', 'createdAt', 'updatedAt'] });
   const browser = new Browser();
   let requester;
 
@@ -84,34 +85,17 @@ describe('views.book.index.search', () => {
     }
 
     let oneBook;
-    let title, author, genre, year;
-
     before('', async () => {
       ({ rows:  [oneBook] } = await bookService.readAll());
-      if (oneBook) {
+      if (oneBook)
         oneBook = await bookService.update(oneBook, { genre: 'very unique' });
-        ({ title, author, genre, year } = oneBook);
-      }
     });
 
-    it('it should show one title-searched book', async () => {
-      const res = await searchOneAndFound(browser, form, title, 0);
-      expect(res).to.be.true;
-    });
-
-    it('it should show one author-searched book', async () => {
-      const res = await searchOneAndFound(browser, form, author, 1);
-      expect(res).to.be.true;
-    });
-
-    it('it should show one genre-searched book', async () => {
-      const res = await searchOneAndFound(browser, form, genre, 2);
-      expect(res).to.be.true;
-    });
-
-    it('it should show one year-searched book', async () => {
-      const res = await searchOneAndFound(browser, form, year, 3);
-      expect(res).to.be.true;
+    modelAttrs.forEach((attr, idx) => {
+      it(`it should show one ${attr}-searched book`, async () => {
+        const res = await searchOneAndFound(browser, form, oneBook[attr], idx);
+        expect(res).to.be.true;
+      });
     });
   });
 
@@ -134,38 +118,26 @@ describe('views.book.index.search', () => {
     }
 
     let manyBooks = [];
-    const title = 'title',
-          author = 'author',
-          genre = 'genre',
-          year = 'year';
-
+    const nonUniqueData = {
+      title : 'title',
+      author : 'author',
+      genre : 'genre',
+      year : '1000'
+    };
     before('create books with identical attrs.', async () => {
       const totalSimilar = 5;
       for (let i = 0; i < totalSimilar; i++) {
         // need to fetch after creation since ordering of attrs differ...
-        const { id } = await bookService.create({ title, author, genre, year });
+        const { id } = await bookService.create(nonUniqueData);
         manyBooks.push( await bookService.readByPk(id) );
       }
     });
 
-    it('it should show many title-searched books', async () => {
-      const res = await searchManyAndFound(browser, form, title, manyBooks);
-      expect(res).to.be.true;
-    });
-
-    it('it should show many author-searched books', async () => {
-      const res = await searchManyAndFound(browser, form, author, manyBooks);
-      expect(res).to.be.true;
-    });
-
-    it('it should show many genre-searched books', async () => {
-      const res = await searchManyAndFound(browser, form, genre, manyBooks);
-      expect(res).to.be.true;
-    });
-
-    it('it should show many year-searched books', async () => {
-      const res = await searchManyAndFound(browser, form, year, manyBooks);
-      expect(res).to.be.true;
+    modelAttrs.forEach(attr => {
+      it(`it should show many ${attr}-searched books`, async () => {
+        const res = await searchManyAndFound(browser, form, nonUniqueData[attr], manyBooks);
+        expect(res).to.be.true;
+      });
     });
   });
 
