@@ -57,7 +57,7 @@ exports.Data = class Data {
    * @returns {object} array of attribute keys
   */
   static getModelAttrs(model, { without=null }={}) {
-    let keys = Object.keys(model.tableAttributes);
+    let keys = Object.keys(model.rawAttributes);
     return (without ? keys.filter(key => without.indexOf(key) < 0) : keys);
   }
 

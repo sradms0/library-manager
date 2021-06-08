@@ -72,6 +72,8 @@ describe('services.patron.readByAttrs', async () => {
         const { id } = await patronService.create({ ...patronData(), ...nonUniqueData });
         manyPatrons.push( await patronService.readByPk(id) );
       }
+      const { first_name, last_name } = nonUniqueData;
+      nonUniqueData.name = `${first_name} ${last_name}`;
     });
 
     modeAttrsSansUnique.forEach((attr, idx) => {
