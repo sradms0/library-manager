@@ -4,7 +4,7 @@
  * @module services/patron
 */
 
-const { Patron } = require('$database/models');
+const { Patron, sequelize } = require('$database/models');
 const { Op } = require('sequelize');
 
 
@@ -48,14 +48,15 @@ exports.readAll = function({ limit, offset }={}) {
 */
 exports.readByAttrs = function({ query, limit, offset }={}) {
   const where = {
-      [Op.or]: {
-        first_name: { [Op.like]: `%${query}%` },
-        last_name:  { [Op.like]: `%${query}%` },
-        email:      { [Op.like]: `%${query}%` },
-        address:    { [Op.like]: `%${query}%` },
-        zip_code:   { [Op.like]: `%${query}%` },
-        library_id: { [Op.like]: `%${query}%` }
-      }
+    [Op.or]: [ 
+      sequelize.literal(`first_name || " " || last_name LIKE "${query}"`),
+      {first_name: { [Op.like]: `%${query}%` }},
+      {last_name:  { [Op.like]: `%${query}%` }},
+      {email:      { [Op.like]: `%${query}%` }},
+      {address:    { [Op.like]: `%${query}%` }},
+      {zip_code:   { [Op.like]: `%${query}%` }},
+      {library_id: { [Op.like]: `%${query}%` }},
+    ]
   };
   return Patron.findAndCountAll({ where, limit, offset });
 }
