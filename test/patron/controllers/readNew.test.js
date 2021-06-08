@@ -19,7 +19,7 @@ chai.use(require('sinon-chai'));
 
 
 describe('controllers.patron.readNew', () => {
-  const attrs = testOps.Data.getModelAttrs(patronService.model);
+  const attrs = testOps.Data.getModelAttrs(patronService.model, { without: 'name' });
 
   it('it should render patron/new', () => {
     const dataValues = attrs.reduce((acc, curr) => ({...acc, ...{[curr]: ''}}), {}),

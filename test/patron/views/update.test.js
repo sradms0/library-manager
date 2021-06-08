@@ -28,7 +28,7 @@ describe('views.patron.update', () => {
     requester = await chai.request(server).keepOpen(),
     id = 1,
     patron = (await patronService.readByPk(id))?.toJSON(),
-    keys = testOps.Data.getModelAttrs(patronService.model, { without: ['id', 'createdAt', 'updatedAt'] });
+    keys = testOps.Data.getModelAttrs(patronService.model, { without: ['id', 'createdAt', 'updatedAt', 'name'] });
     await testOps.Route.visitOnePatron(browser, id);
     form = browser.querySelector('form');
   });

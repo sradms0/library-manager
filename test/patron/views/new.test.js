@@ -52,7 +52,7 @@ describe('views.patron.new', () => {
   it('it should show fields for creating a new patron', async () => {
     await testOps.Route.visitNewPatron(browser);
     const patronDetailIs = browser.querySelectorAll('form p input.patron-detail'),
-          keys = testOps.Data.getModelAttrs(patronService.model, { without: ['id','createdAt','updatedAt'] });
+          keys = testOps.Data.getModelAttrs(patronService.model, { without: ['id','createdAt','updatedAt', 'name'] });
     const allFieldsMatch = [...patronDetailIs].every((detail, idx) => 
       detail.name === keys[idx]+''
     );
