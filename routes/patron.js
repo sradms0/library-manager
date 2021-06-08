@@ -27,4 +27,7 @@ router.get('/new', patronController.readNew);
 /* POST one patron. */
 router.post('/new', patronController.create);
 
+/* GET searched patrons. */
+router.get('/search', patronController.readByAttrs);
+
 module.exports = router;

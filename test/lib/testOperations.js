@@ -316,6 +316,15 @@ exports.PatronForm = class PatronForm {
   } 
 
   /**
+   * Fills the patron-search field
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill search field
+  */
+  static fillSearch(browser, val=null) {
+    browser.fill('input[name=q]', val);
+  } 
+
+  /**
    * Fills the patrons genre field.
    * @param {Browser} browser - zombie instance
    * @param {string} val - value to fill genre field (filled if null)
