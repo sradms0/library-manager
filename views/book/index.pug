@@ -9,7 +9,11 @@ block header
 block content
   p: a(class='button' href='/books/new') Create New Book 
   br
-  include ./includes/search
+
+  include ../includes/search
+  +search('/books/search', 'book')
+
   include ../includes/pagination
   +paginate(page, totalPages, paginationRoot)
+
   include ./includes/table
