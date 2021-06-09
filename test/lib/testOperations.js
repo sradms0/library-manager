@@ -4,6 +4,7 @@
  * @module test/lib/testOperations
 */
 
+const { asyncUtil: { asyncForEach } } = require('$root/lib');
 const { loader: bookLoader } = require('$seed/books');
 const { loader: patronLoader } = require('$seed/patrons');
 const { sequelize } = require('$database/models');
@@ -22,7 +23,10 @@ exports.loadTestDb = async function (loader) {
     'patron':   async () => await patronLoader.load(exports.Data.patron, exports.Data.libraryId, false)
   };
 
-  await loaders[loader]();
+  const loaderKeys = Object.keys(loaders);
+  loaderKeys.indexOf(loader) >= 0 
+    ? await loaders[loader]()
+    : await asyncForEach(loaderKeys, async loaderKey => await loaders[loaderKey]());
 }
 
 /**
@@ -150,6 +154,15 @@ exports.Route = class Route {
   */
   static visit(browser, route) {
     return browser.visit(`http://localhost:3000/${route}`);
+  }
+
+  /**
+   * Navigates to / route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitRoot(browser) {
+   return this.visit(browser, '');
   }
 
   /**
