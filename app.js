@@ -5,7 +5,11 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 
-const { book: bookRouter, patron: patronRouter } = require('./routes');
+const { 
+  book: bookRouter, 
+  manager: managerRouter,
+  patron: patronRouter
+} = require('./routes');
 
 const { error: errorController } = require('$controllers');
 
@@ -22,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routers
+app.use('/', managerRouter);
 app.use('/books', bookRouter);
 app.use('/patrons', patronRouter);
 
