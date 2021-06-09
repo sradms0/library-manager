@@ -23,6 +23,6 @@ describe('controllers.manager.home', () => {
     const page = 1, 
           limit = 10;
     managerController.home(req, res);
-    expect(res.render).to.have.been.calledWith('index', { page, limit });
+    expect(res.render).to.have.been.calledWith('manager/index', { page, limit });
   });
 });
