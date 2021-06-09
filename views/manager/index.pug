@@ -1,3 +1,18 @@
 extends ../layout
 
 block content
+  - const title = 'Library Manager'
+  title=title
+  h1=title
+  p=`Welcome to ${title}`
+
+  ul
+    li Books
+    ul
+      li: a#new-book(href='/books/new') New Book
+      li: a#all-books(href=`/books?page=${page}&limit=${limit}`) List All
+
+    li Patrons
+    ul
+      li: a#new-patron(href='/patrons/new') New Patron
+      li: a#all-patrons(href=`/patrons?page=${page}&limit=${limit}`) List All
