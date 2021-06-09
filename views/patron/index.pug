@@ -9,6 +9,11 @@ block header
 block content
   p: a(class='button' href='/patrons/new') Create New Patron 
   br
+
+  include ../includes/search
+  +search('/patrons/search', 'patron')
+
   include ../includes/pagination
   +paginate(page, totalPages, paginationRoot)
+
   include ./includes/table

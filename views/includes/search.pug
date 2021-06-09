@@ -1,0 +1,7 @@
+mixin search(action, model_name)
+  form.search(action=action method='get')
+    p
+      input(id=`${model_name}-q` name='q' type='text')
+      input(type="submit" value="Search")
+      input(type='hidden', name='page', value='1')
+      input(type='hidden', name='limit', value='10')
