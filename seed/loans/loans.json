@@ -79,17 +79,5 @@
     {"book_id": 97, "patron_id":78, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
     {"book_id": 98, "patron_id":79, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
     {"book_id": 99, "patron_id":80, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 100,"patron_id":81, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 101,"patron_id":82, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 102,"patron_id":83, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 103,"patron_id":84, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 104,"patron_id":85, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 105,"patron_id":86, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 106,"patron_id":87, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 107,"patron_id":88, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 108,"patron_id":89, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 109,"patron_id":90, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 110,"patron_id":91, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 111,"patron_id":92, "loaned_on": "2018-12-08", "return_by": "2018-12-15"},
-    {"book_id": 112,"patron_id":93, "loaned_on": "2018-12-08", "return_by": "2018-12-15"}
+    {"book_id": 100,"patron_id":81, "loaned_on": "2018-12-08", "return_by": "2018-12-15"}
 ]

@@ -1,0 +1,5 @@
+[
+    {"book_id": 1, "patron_id":1, "loaned_on": "2018-12-16", "return_by": "2018-12-23"},
+    {"book_id": 2, "patron_id":2, "loaned_on": "2018-12-16", "return_by": "2018-12-23"},
+    {"book_id": 3, "patron_id":3, "loaned_on": "2018-12-16", "return_by": "2018-12-23"}
+]

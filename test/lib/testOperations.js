@@ -6,9 +6,9 @@
 
 const { asyncUtil: { asyncForEach } } = require('$root/lib');
 const { loader: bookLoader } = require('$seed/books');
+const { loader: loanLoader } = require('$seed/loans');
 const { loader: patronLoader } = require('$seed/patrons');
 const { sequelize } = require('$database/models');
-const { models: {Book} } = sequelize;
 
 
 /**
@@ -20,7 +20,8 @@ exports.loadTestDb = async function (loader) {
 
   const loaders = {
     'book':     async () => await bookLoader.load(exports.Data.book, exports.Data.genre, false),
-    'patron':   async () => await patronLoader.load(exports.Data.patron, exports.Data.libraryId, false)
+    'patron':   async () => await patronLoader.load(exports.Data.patron, exports.Data.libraryId, false),
+    'loan':     async () => await loanLoader.load(exports.Data.loan, false)
   };
 
   const loaderKeys = Object.keys(loaders);
@@ -46,6 +47,9 @@ exports.Data = class Data {
   /** raw book-data */
   static book = require('$test/data/books.json');
 
+  /** raw loan-data */
+  static loan = require('$test/data/loans.json');
+
   /** raw patron-data */
   static patron = require('$test/data/patrons.json');
 
@@ -69,16 +73,21 @@ exports.Data = class Data {
    * Add books to the current testing database.
    * @param {function} creator - the function to add book data with
    * @param {number} total - the amount of books to add
+   * @return {object} array of books
   */
   static async addBooks(creator, total) {
+    const books = [];
     for (let i = 0; i < total; i++) {
-      await creator({ 
-        title: `title ${i}`,
-        author: `author ${i}`,
-        genre: `genre ${i}`,
-        year: i
-      });
+      books.push(
+        await creator({ 
+          title: `title ${i}`,
+          author: `author ${i}`,
+          genre: `genre ${i}`,
+          year: i
+        })
+      );
     }
+    return books;
   }
 
   /**
@@ -94,18 +103,43 @@ exports.Data = class Data {
    * Add patrons to the current testing database.
    * @param {function} creator - the function to add patron data with
    * @param {number} total - the amount of patrons to add
+   * @return {object} array of patrons
   */
   static async addPatrons(creator, total) {
+    const patrons = [];
     for (let i = 1; i <= total; i++) {
-      await creator({ 
-        first_name: `first`,
-        last_name: `last`,
-        address: `address ${i}`,
-        email: `user${i}@mail.com`,
-        library_id: `library_id${i}`,
-        zip_code: (''+i).repeat(5).substring(0,5)
-      });
+      patrons.push(
+        await creator({ 
+          first_name: `first`,
+          last_name: `last`,
+          address: `address ${i}`,
+          email: `user${i}@mail.com`,
+          library_id: `library_id${i}`,
+          zip_code: (''+i).repeat(5).substring(0,5)
+        })
+      );
     }
+  }
+
+  /** 
+   * Add loans to the current testing database.
+   * A new book and patron are first added to the database to then be associated with the new loan.
+   * @param {function} creator - the function to add loan data with
+   * @param {function} bookCreator - the function to add book data with
+   * @param {function} patronCreator - the function to add patron data with
+   * @param {number} total - the amount of patrons to add
+  */
+  static async addLoans(creator, bookCreator, patronCreator, total) {
+    const books = await this.addBooks(bookCreator, total),
+          patrons = await this.addPatrons(patronCreator, total),
+          loans = [];
+
+    for (let i = 1; i <= total; i++) {
+      const { book_id } = books[i], { patron_id } = patrons[i];
+      loans.push(await creator({ book_id, patron_id }));
+    }
+
+    return loans;
   }
 
   static patronData() {
