@@ -46,8 +46,7 @@ describe('services.loan.readAll', () => {
 
     dbLoans.forEach((loan, idx) => {
       const loanedBook = loanedBooks[idx];
-      delete loanedBook?.id;
-      expect(JSON.stringify(loan?.book)).to.equal(JSON.stringify(loanedBook));
+      expect(JSON.stringify(loan?.Book)).to.equal(JSON.stringify(loanedBook));
     });
   });
 
@@ -60,8 +59,7 @@ describe('services.loan.readAll', () => {
 
     dbLoans.forEach((loan, idx) => {
       const loanedPatron = loanedPatrons[idx];
-      delete loanedPatron?.id;
-      expect(JSON.stringify(loan?.patron)).to.equal(JSON.stringify(loanedPatron));
+      expect(JSON.stringify(loan?.Patron)).to.equal(JSON.stringify(loanedPatron));
     });
   });
 
@@ -72,7 +70,7 @@ describe('services.loan.readAll', () => {
 
     before('create more instances for pagination', async () => {
       await testOps.Data.addLoans(
-        loanService.model.create, 
+        loanService.model,
         bookService.create, 
         patronService.create,
         20

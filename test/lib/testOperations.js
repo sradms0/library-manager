@@ -119,6 +119,7 @@ exports.Data = class Data {
         })
       );
     }
+    return patrons;
   }
 
   /** 
@@ -129,16 +130,15 @@ exports.Data = class Data {
    * @param {function} patronCreator - the function to add patron data with
    * @param {number} total - the amount of patrons to add
   */
-  static async addLoans(creator, bookCreator, patronCreator, total) {
+  static async addLoans(model, bookCreator, patronCreator, total) {
     const books = await this.addBooks(bookCreator, total),
           patrons = await this.addPatrons(patronCreator, total),
           loans = [];
-
-    for (let i = 1; i <= total; i++) {
-      const { book_id } = books[i], { patron_id } = patrons[i];
-      loans.push(await creator({ book_id, patron_id }));
+    for (let i = 0; i < total; i++) {
+      const { id: book_id } = books[i]; 
+      const { id: patron_id } = patrons[i];
+      loans.push(await model.create({ book_id, patron_id }));
     }
-
     return loans;
   }
 
