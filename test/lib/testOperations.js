@@ -138,7 +138,7 @@ exports.Data = class Data {
    * @param {function} patronCreator - the function to add patron data with
    * @param {number} total - the amount of patrons to add
   */
-  static async addLoans(model, bookCreator, patronCreator, total) {
+  static async addLoans(creator, bookCreator, patronCreator, total) {
     const _loanData = exports.Data.loanData();
 
     const books = await this.addBooks(bookCreator, total),
@@ -149,7 +149,7 @@ exports.Data = class Data {
       const { id: book_id } = books[i]; 
       const { id: patron_id } = patrons[i];
       const loanData = _loanData({ set: {book_id, patron_id} });
-      loans.push(await model.create(loanData));
+      loans.push(await creator(loanData));
     }
 
     return loans;

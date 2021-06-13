@@ -70,7 +70,7 @@ describe('services.loan.readAll', () => {
 
     before('create more instances for pagination', async () => {
       await testOps.Data.addLoans(
-        loanService.model,
+        loanService.create,
         bookService.create, 
         patronService.create,
         20
