@@ -1,0 +1,14 @@
+table
+  thead
+    tr
+      th Book
+      th Patron
+      th Loaned On
+      th Return By
+  tbody
+    each loan in loans
+      tr
+        td: a(href='#')=loan.Book.title
+        td: a(href='#')=loan.Patron.name
+        td=`${loan.loaned_on.toLocaleDateString('en-CA')}`
+        td=`${loan.return_by.toLocaleDateString('en-CA')}`
