@@ -85,7 +85,9 @@ module.exports = sequelize => {
   }, { sequelize });
 
   Patron.associate = models => {
-    Patron.hasMany(models.Loan, { foreignKey: 'patron_id' });
+    Patron.hasMany(models.Loan, { 
+      foreignKey: { name: 'patron_id', allowNull: false }
+    });
   };
 
   return Patron;

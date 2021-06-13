@@ -12,7 +12,9 @@ const { Book, Loan, Patron } = require('$database/models');
  * @returns { Promise }
  *
 */
-exports.create = function(data) {}
+exports.create = function(data) {
+  return Loan.create(data, { include: [Book, Patron] });
+}
 
 /**
  * Read all loans.
