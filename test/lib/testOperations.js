@@ -17,6 +17,7 @@ const { sequelize } = require('$database/models');
 exports.loadTestDb = async function (...loaderKeys) {
   sequelize.options.logging = false;
   await sequelize.sync({ force:true });
+  if (loaderKeys[0] === null) return;
 
   const loaders = {
     'book':     async () => await bookLoader.load(exports.Data.book, exports.Data.genre, false),
@@ -253,6 +254,15 @@ exports.Route = class Route {
   */
   static visitBooks(browser) {
    return this.visit(browser, 'books');
+  }
+
+  /**
+   * Navigates to /loans route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitLoans(browser) {
+   return this.visit(browser, 'loans');
   }
 
   /**

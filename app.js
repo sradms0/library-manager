@@ -7,6 +7,7 @@ const logger = require('morgan');
 
 const { 
   book: bookRouter, 
+  loan: loanRouter, 
   manager: managerRouter,
   patron: patronRouter
 } = require('./routes');
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // routers
 app.use('/', managerRouter);
 app.use('/books', bookRouter);
+app.use('/loans', loanRouter);
 app.use('/patrons', patronRouter);
 
 app.use(errorController.route, errorController.global);
