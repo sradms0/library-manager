@@ -7,6 +7,14 @@
 const { Book, Loan, Patron } = require('$database/models');
 
 /**
+ * Create one loan
+ * @param { data } - loan data
+ * @returns { Promise }
+ *
+*/
+exports.create = function(data) {}
+
+/**
  * Read all loans.
  * @param { object } [config] - configuration for loan reading.
  * @param { number } config.limit - the amount of loans to read.

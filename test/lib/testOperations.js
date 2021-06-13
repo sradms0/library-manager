@@ -14,7 +14,7 @@ const { sequelize } = require('$database/models');
 /**
  * Overwrites previous test-database and re-seeds data for testing.
 */
-exports.loadTestDb = async function (loader) {
+exports.loadTestDb = async function (...loaderKeys) {
   sequelize.options.logging = false;
   await sequelize.sync({ force:true });
 
@@ -24,10 +24,8 @@ exports.loadTestDb = async function (loader) {
     'loan':     async () => await loanLoader.load(exports.Data.loan, false)
   };
 
-  const loaderKeys = Object.keys(loaders);
-  loaderKeys.indexOf(loader) >= 0 
-    ? await loaders[loader]()
-    : await asyncForEach(loaderKeys, async loaderKey => await loaders[loaderKey]());
+  let toLoad = loaderKeys.length ? loaderKeys : Object.keys(loaders);
+  await asyncForEach(toLoad, async loaderKey => await loaders[loaderKey]());
 }
 
 /**
@@ -58,6 +56,16 @@ exports.Data = class Data {
 
   /** raw library-id-data */
   static libraryId = require('$test/data/libraryIds.json');
+
+  /**
+   * Date modifier that some date in the past, or future.
+   * @param {object} date - Date object to operate from
+   * @param {number} days - days before, or after, date.
+   * @return {object} past or future date
+  */
+  static getFutureOrPastDate(date, days) {
+    return new Date(date.getTime()+(days*8.64e+7));
+  }
 
   /** 
    * Find attribute keys of a model.
@@ -160,6 +168,40 @@ exports.Data = class Data {
         else if (del) delete data[prop];
       } else if(allProps && val !== null) {
         Object.keys(data).forEach(key => data[key] = val)
+      }
+
+      !pause && counter++;
+      return data;
+    }
+  }
+
+  static loanData() {
+    let counter = 1;
+    return ({ set=null, loanRange=null, del=null, pause=null }={}) => {
+      loanRange ??= 7;
+
+      let loaned_on = new Date(),
+            return_by = new Date(loaned_on.getTime()+(loanRange*(8.64e+7))),
+            returned_on = null,
+            data = { 
+              loaned_on, 
+              return_by, 
+              returned_on, 
+              book_id: counter, 
+              patron_id: counter 
+            };
+
+      if (set) {
+        if ('all' in set)
+          Object.keys(data).forEach(key => data[key] = set.all);
+        else {
+          data = { ...data, ...set };
+        }
+      }
+
+      if (del) {
+        const delKeys = del === 'all' ? Object.keys(data) : del;
+        delKeys.forEach(key => delete data[key])
       }
 
       !pause && counter++;
