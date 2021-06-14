@@ -33,7 +33,7 @@ describe('controllers.loan.readReturn', () => {
     expect(res.render).to.have.been.calledWith('loan/return', { dataValues: loan });
   });
 
-  it('it should throw an error when a non-existent loan is requested for deletion', async () => {
+  it('it should throw an error when a non-existent loan is requested for return', async () => {
     const res = mockResponse(),
           id = -1,
           req = mockRequest({ params: {id} }),
