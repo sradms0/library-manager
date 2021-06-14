@@ -17,6 +17,14 @@ exports.create = function(data) {
 }
 
 /**
+ * Read one loan by primary key
+ * @param pk - the primary key of the loan to read
+ * @returns { Promise }
+ *
+*/
+exports.readByPk = function(pk) {}
+
+/**
  * Read all loans.
  * @param { object } [config] - configuration for loan reading.
  * @param { number } config.limit - the amount of loans to read.
