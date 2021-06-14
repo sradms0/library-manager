@@ -20,3 +20,9 @@ exports.readAll = asyncHandler(async function(req, res) {
   const renderConf = await readDataAndCreateRenderConf('loans', loanService.readAll, req, '/loans?');
   res.render('loan/index', renderConf);
 });
+
+/**
+ * Reads one loan by primary key and renders loan to '/views/loan/return' for return confirmation.
+ * Sets `res.status` to 404 when a loan is not found.
+*/
+exports.readReturn = asyncHandler(async function(req, res) {});
