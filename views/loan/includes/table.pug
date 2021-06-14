@@ -8,7 +8,7 @@ table
   tbody
     each loan in loans
       tr
-        td: a(href='#')=loan.Book.title
-        td: a(href='#')=loan.Patron.name
+        td: a(href=`/books/${loan.Book.id}/update`)=loan.Book.title
+        td: a(href=`/patrons/${loan.Patron.id}/update`)=loan.Patron.name
         td=`${loan.loaned_on.toLocaleDateString('en-CA')}`
         td=`${loan.return_by.toLocaleDateString('en-CA')}`
