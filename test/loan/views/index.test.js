@@ -69,5 +69,34 @@ describe('views.loan.index', () => {
     const ls = testOps.fetchTrs(browser);
     expect(ls).to.have.length(0);
   });
+
+  describe('table links', () => {
+
+    before('reload', async () => {
+      await testOps.loadTestDb();
+    });
+
+    it('it should direct the user to /books/:id/update when clicking on a book', async () => {
+      const extractRoute = url => url?.match(/\/books\/(\d+)\/update$/g);
+
+      await testOps.Route.visitLoans(browser);
+      const [firstBookA] = testOps.fetchTrs(browser)?.[0].querySelectorAll('a');
+      await browser.clickLink(firstBookA);
+      const [ firstBookAHrefRoute ] = extractRoute(firstBookA.href),
+            [ urlRoute ] = extractRoute(browser.location._url);
+      expect(urlRoute).to.equal(firstBookAHrefRoute);
+    });
+
+    it('it should direct the user to /patrons/:id/update when clicking on a patron', async () => {
+      const extractRoute = url => url?.match(/\/patrons\/(\d+)\/update$/g);
+
+      await testOps.Route.visitLoans(browser);
+      const [_, firstPatronA] = testOps.fetchTrs(browser)?.[0].querySelectorAll('a');
+      await browser.clickLink(firstPatronA);
+      const [ firstPatronAHrefRoute ] = extractRoute(firstPatronA.href),
+            [ urlRoute ] = extractRoute(browser.location._url);
+      expect(urlRoute).to.equal(firstPatronAHrefRoute);
+    });
+  })
 });
 
