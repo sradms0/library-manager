@@ -22,7 +22,9 @@ exports.create = function(data) {
  * @returns { Promise }
  *
 */
-exports.readByPk = function(pk) {}
+exports.readByPk = function(pk) {
+  return Loan.findOne({ where: {id: pk}, include: [Book, Patron] });
+}
 
 /**
  * Read all loans.
