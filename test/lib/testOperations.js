@@ -322,6 +322,15 @@ exports.Route = class Route {
   }
 
   /**
+   * Navigates to /loans/:id route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitOneLoan(browser, id) {
+    return this.visit(browser, `loans/${id}/update`);
+  }
+
+  /**
    * Navigates to /patrons/:id route
    * @param {Browser} browser - zombie instance
    * @return {Promise} zombie.Browser.visit
