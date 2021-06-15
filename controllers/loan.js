@@ -4,7 +4,12 @@
  * @module controllers/loan
 */
 
-const { loan: loanService } = require('$services');
+const { 
+  book: bookService,
+  loan: loanService,
+  patron: patronService 
+} = require('$services');
+
 const { 
   errorHandling: {assertFind, asyncHandler},
   pagination: {assertParams, readDataAndCreateRenderConf}
@@ -28,8 +33,14 @@ exports.readAll = asyncHandler(async function(req, res) {
 */
 exports.readByPk = asyncHandler(async function(req, res) {
   const { id } = req.params;
-  const loan = await loanService.readByPk(id);
+  const loan =  await loanService.readByPk(id);
   assertFind(loan, 'Loan', id);
+
+  const { rows: books } = await bookService.readAll(),
+        { rows: patrons } = await patronService.readAll();
+  loan.books = books;
+  loan.patrons = patrons;
+
   res.render('loan/update', { dataValues: loan });
 });
 
