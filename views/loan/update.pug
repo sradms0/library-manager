@@ -1,0 +1,13 @@
+extends ../layout
+
+block title
+  title='Update Loan'
+
+block header
+  h1='Update Loan'
+
+block content
+  include ./includes/form
+  +createForm(`/loans/${dataValues.id}/update`, dataValues)
+    p: input#update(type='submit' value='Update Loan')
+    p: a#cancel(class='button' href='/loans') Cancel
