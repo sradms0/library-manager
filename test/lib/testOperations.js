@@ -149,7 +149,7 @@ exports.Data = class Data {
     for (let i = 0; i < total; i++) {
       const { id: book_id } = books[i]; 
       const { id: patron_id } = patrons[i];
-      const loanData = _loanData({ set: {book_id, patron_id} });
+      const loanData = await _loanData({ set: {book_id, patron_id} });
       loans.push(await creator(loanData));
     }
 
