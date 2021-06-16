@@ -17,9 +17,10 @@ const { loan: {
  * @param {object} date - the date to assert.
  * @throws Error - if the given date exceeds todays date.
 */
-function assertTodayOrBefore(field, date) {
+function assertTodayOrBefore(errMsg, date) {
   if (date > new Date())
-    throw new Error(`"${field}" exceeds current date`);
+    //throw new Error(`"${field}" exceeds current date`);
+    throw new Error(errMsg);
 }
 
 /**
@@ -30,9 +31,10 @@ function assertTodayOrBefore(field, date) {
  * @param {object} endDate - the date that is compared to the start date.
  * @throws Error - if the end date is before the start date
 */
-function assertSameOrAfter(startField, endField, startDate, endDate) {
+function assertSameOrAfter(errMsg, startDate, endDate) {
   if (endDate < startDate)
-    throw new Error(`"${endField}" subceeds "${startField}" date`);
+    //throw new Error(`"${endField}" subceeds "${startField}" date`);
+    throw new Error(errMsg);
 }
 
 
@@ -57,7 +59,7 @@ module.exports = sequelize => {
         notNull: {msg: return_by.notNull},
         isDate: {msg: return_by.isDate},
         requiredDate: function(value) {
-          assertSameOrAfter('Loaned On', return_by.requiredDate, this.loaned_on, value)
+          assertSameOrAfter(return_by.requiredDate, this.loaned_on, value)
         }
       }
     },
@@ -66,7 +68,7 @@ module.exports = sequelize => {
       validate: {
         isDate: {msg: returned_on.isDate},
         requiredDate: function(value) {
-          assertSameOrAfter('Loaned On', returned_on.requiredDate, this.loaned_on, value)
+          assertSameOrAfter(returned_on.requiredDate, this.loaned_on, value)
         }
       }
     }

@@ -183,7 +183,7 @@ exports.Data = class Data {
 
   static loanData() {
     let counter = 1;
-    return ({ set=null, loanRange=null, del=null, pause=null }={}) => {
+    return async ({ bookRead=null, patronRead=null, set=null, loanRange=null, del=null, pause=null }={}) => {
       loanRange ??= 7;
 
       let loaned_on = new Date(),
@@ -200,9 +200,13 @@ exports.Data = class Data {
       if (set) {
         if ('all' in set)
           Object.keys(data).forEach(key => data[key] = set.all);
-        else {
+        else
           data = { ...data, ...set };
-        }
+      }
+
+      if (bookRead && patronRead) {
+        data.Book = (await bookRead(data.book_id)).toJSON();
+        data.Patron = (await patronRead(data.patron_id)).toJSON();
       }
 
       if (del) {

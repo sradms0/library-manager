@@ -37,5 +37,13 @@ exports.readAll = function({ limit, offset }={}) {
   return Loan.findAndCountAll({ include: [Book, Patron], limit, offset });
 };
 
+/**
+ * Updates one loan
+ * @param { object } loan - the loan instance to update.
+ * @param { object } data - the data to update the loan instance with.
+ * @returns { Promise }
+*/
+exports.update = function(loan, data) {};
+
 /** Quick access to model */
 exports.model = Loan;
