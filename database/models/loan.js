@@ -19,7 +19,6 @@ const { loan: {
 */
 function assertTodayOrBefore(errMsg, date) {
   if (date > new Date())
-    //throw new Error(`"${field}" exceeds current date`);
     throw new Error(errMsg);
 }
 
@@ -33,7 +32,6 @@ function assertTodayOrBefore(errMsg, date) {
 */
 function assertSameOrAfter(errMsg, startDate, endDate) {
   if (endDate < startDate)
-    //throw new Error(`"${endField}" subceeds "${startField}" date`);
     throw new Error(errMsg);
 }
 
