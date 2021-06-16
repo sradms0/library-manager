@@ -43,7 +43,9 @@ exports.readAll = function({ limit, offset }={}) {
  * @param { object } data - the data to update the loan instance with.
  * @returns { Promise }
 */
-exports.update = function(loan, data) {};
+exports.update = function(loan, data) {
+  return loan.update(data).then(() => exports.readByPk(loan.id));
+};
 
 /** Quick access to model */
 exports.model = Loan;
