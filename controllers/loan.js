@@ -58,4 +58,10 @@ exports.readReturn = asyncHandler(async function(req, res) {
 /**
  * Updates an existing loan, redirecting to /loans after.
 */
-exports.update = asyncHandler(async function(req, res) {});
+exports.update = asyncHandler(async function(req, res) {
+  const { id } = req.params, { body } = req;
+  const loan = await loanService.readByPk(id);
+  assertFind(loan, 'Loan', id);
+  await loanService.update(loan, body);
+  res.redirect('/loans');
+}, { errorView: 'loan/update', model: loanService.model });
