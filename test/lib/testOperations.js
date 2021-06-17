@@ -220,6 +220,14 @@ exports.Data = class Data {
   }
 
   /**
+   * Creates loan object with empty values
+   * @returns {Promise}
+  */
+  static emptyLoan() {
+    return exports.Data.loanData()({ set: {'all': ''} });;
+  }
+
+  /**
    * Creates patron object with empty values
    * @return {object} patron
   */
@@ -539,10 +547,7 @@ exports.Validation = class Validation {
         nestedKeys = nestedKeys.filter(nk => 
           !sansNestedKeys.find(snk => new RegExp(`^${snk}`, 'g').test(nk)))
         );
-
-      nestedKeys.forEach(nk => {
-        msgs.push(valObjs[k][nk]);
-      })
+      nestedKeys.forEach(nk => msgs.push(valObjs[k][nk]));
     });
 
     return sorted ? msgs.sort() : msgs;

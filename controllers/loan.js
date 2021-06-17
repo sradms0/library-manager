@@ -54,3 +54,8 @@ exports.readReturn = asyncHandler(async function(req, res) {
   assertFind(loan, 'Loan', id);
   res.render('loan/return', { dataValues: loan });
 });
+
+/**
+ * Updates an existing loan, redirecting to /loans after.
+*/
+exports.update = asyncHandler(async function(req, res) {});
