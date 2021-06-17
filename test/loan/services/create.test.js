@@ -131,6 +131,16 @@ describe('services.loan.create', () => {
         .to.be.rejectedWith('"Patron" field is required');
     });
 
+    it('it should not throw a date assertion error when a loaned_on date and empty returned_on date are given', async () => {
+      await expect(loanService.create(await _loanData({ set: {'returned_on': ''} })))
+        .to.not.be.rejectedWith('"Returned On" subceeds "Loaned On" date');
+    });
+
+    it('it should not throw a date assertion error when a loaned_on date and empty return_by date are given', async () => {
+      await expect(loanService.create(await _loanData({ set: {'returned_by': ''} })))
+        .to.not.be.rejectedWith('"Returned By" subceeds "Loaned On" date');
+    });
+
     it('it should throw an error when all empty fields are given', async () => {
       await expect(loanService.create(await _loanData({ set: {'all': ''} }))).to.be.rejectedWith(
         'Validation error: "Loaned On" is required,\n'+
