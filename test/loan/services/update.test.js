@@ -105,6 +105,16 @@ describe('services.loan.update', () => {
         .to.be.rejectedWith(valMsgs.patron.notEmpty);
     });
 
+    it('it should not throw a date assertion error when a loaned_on date and empty returned_on date are given', async () => {
+      await expect(loanService.update(errLoan, { returned_on: ''}))
+        .to.not.be.rejectedWith(valMsgs.returned_on.requiredDate);
+    });
+
+    it('it should not throw a date assertion error when a loaned_on date and empty return_by date are given', async () => {
+      await expect(loanService.update(errLoan, {returned_by: ''}))
+        .to.not.be.rejectedWith(valMsgs.return_by.requiredDate);
+    });
+
     it('it should throw an error when all empty fields are given', async () => {
       const allEmptyValMsgs = testOps.Validation
         .getValMsgs(valMsgs, { sansNestedKeys: ['notNull', 'requiredDate'] })
