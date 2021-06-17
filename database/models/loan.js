@@ -12,13 +12,22 @@ const { loan: {
 }} = require('./validationMessages');
 
 /**
+ * Checks for a Date instance.
+ * @param {object} date - an expected date object.
+ * @return {boolean} - based on `date` being a Date instance.
+*/
+function isDate(date) {
+  return date instanceof Date;
+}
+
+/**
  * Checks if date is of today, or before.
  * @param {string} field - the fieldname the date belongs to.
  * @param {object} date - the date to assert.
  * @throws Error - if the given date exceeds todays date.
 */
 function assertTodayOrBefore(errMsg, date) {
-  if (date > new Date())
+  if (isDate(date) && date > new Date())
     throw new Error(errMsg);
 }
 
@@ -31,7 +40,7 @@ function assertTodayOrBefore(errMsg, date) {
  * @throws Error - if the end date is before the start date
 */
 function assertSameOrAfter(errMsg, startDate, endDate) {
-  if (endDate < startDate)
+  if (isDate(startDate) && isDate(endDate) && endDate < startDate)
     throw new Error(errMsg);
 }
 
