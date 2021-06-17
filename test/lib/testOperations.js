@@ -529,18 +529,22 @@ exports.Validation = class Validation {
    * @param {object} sansNested - nested validation properties to filter out.
    * @return {object} array of filtered validation messages.
   */
-  static getValMsgs(valObjs, { sansNestedKeys=[] }={}) {
+  static getValMsgs(valObjs, { sansNestedKeys=[], sorted=false }={}) {
     const valObjKeys = Object.keys(valObjs), msgs = [];
+
     valObjKeys.forEach(k => {
       let nestedKeys = Object.keys(valObjs[k]);
+
       sansNestedKeys && (
         nestedKeys = nestedKeys.filter(nk => 
           !sansNestedKeys.find(snk => new RegExp(`^${snk}`, 'g').test(nk)))
         );
+
       nestedKeys.forEach(nk => {
         msgs.push(valObjs[k][nk]);
       })
     });
-    return msgs;
+
+    return sorted ? msgs.sort() : msgs;
   }
 }

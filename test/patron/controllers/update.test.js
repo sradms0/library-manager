@@ -65,7 +65,8 @@ describe('controllers.patron.update', () => {
 
     it('it should call res.render with prev. data when only a first_name is given (from validation error)', async () => {
       const updatedCopy = { id, ...emptyPatron(), first_name: 'firstname' },
-            errors = getValMsgs(withoutVal(valMsgs, { props: ['first_name'] }), { sansNestedKeys: ['notNull', 'unique'] }),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['first_name'] }), 
+                      { sansNestedKeys: ['notNull', 'unique'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
@@ -74,7 +75,8 @@ describe('controllers.patron.update', () => {
 
     it('it should call res.render with prev. data when only a last_name is given (from validation error)', async () => {
       const updatedCopy = { id, ...emptyPatron(), last_name: 'lastname' },
-            errors = getValMsgs(withoutVal(valMsgs, { props: ['last_name'] }), { sansNestedKeys: ['notNull', 'unique'] }),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['last_name'] }), 
+                      { sansNestedKeys: ['notNull', 'unique'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
@@ -83,7 +85,8 @@ describe('controllers.patron.update', () => {
 
     it('it should call res.render with prev. data when only an address is given (from validation error)', async () => {
       const updatedCopy = { id, ...emptyPatron(), address: '123 road' },
-            errors = getValMsgs(withoutVal(valMsgs, { props: ['address'] }), { sansNestedKeys: ['notNull', 'unique'] }),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['address'] }), 
+                      { sansNestedKeys: ['notNull', 'unique'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
@@ -92,7 +95,8 @@ describe('controllers.patron.update', () => {
 
     it('it should call res.render with prev. data when only an email is given (from validation error)', async () => {
       const updatedCopy = { id, ...emptyPatron(), email: 'invalid_patron@mail.com' },
-            errors = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), { sansNestedKeys: ['notNull', 'unique'] }),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), 
+                        { sansNestedKeys: ['notNull', 'unique'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
@@ -101,7 +105,8 @@ describe('controllers.patron.update', () => {
 
     it('it should call res.render with prev. data when only an library_id is given (from validation error)', async () => {
       const updatedCopy = { id, ...emptyPatron(), library_id: 'libid' },
-            errors = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), { sansNestedKeys: ['notNull', 'unique'] }),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), 
+                        { sansNestedKeys: ['notNull', 'unique'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
@@ -110,7 +115,8 @@ describe('controllers.patron.update', () => {
 
     it('it should call res.render with prev. data when only an zip_code is given (from validation error)', async () => {
       const updatedCopy = { id, ...emptyPatron(), zip_code: '11111' },
-            errors = getValMsgs(withoutVal(valMsgs, { props: ['zip_code'] }), { sansNestedKeys: ['notNull', 'unique'] }),
+            errors = getValMsgs(withoutVal(valMsgs, { props: ['zip_code'] }), 
+                        { sansNestedKeys: ['notNull', 'unique'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
@@ -122,7 +128,7 @@ describe('controllers.patron.update', () => {
       const { id } = await patronService.create(originalPatron);
       updated.id = id;
 
-      const errors = getValMsgs(valMsgs, { sansNestedKeys: ['notNull', 'unique'] }),
+          const errors = getValMsgs(valMsgs, { sansNestedKeys: ['notNull', 'unique'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updated, params: {id} });
       await patronController.update(req, res);
@@ -136,7 +142,8 @@ describe('controllers.patron.update', () => {
       nextPatron.email = originalPatron.email;
       nextPatron.id = nextId;
 
-      const errors = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), { sansNestedKeys: ['notNull', 'notEmpty', 'is'] }),
+      const errors = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), 
+                      { sansNestedKeys: ['notNull', 'notEmpty', 'is'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: nextPatron, params: {id: nextId} });
       await patronController.update(req, res);
@@ -150,7 +157,8 @@ describe('controllers.patron.update', () => {
       nextPatron.library_id = originalPatron.library_id;
       nextPatron.id = nextId;
 
-      const errors = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), { sansNestedKeys: ['notNull', 'notEmpty', 'is'] }),
+      const errors = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), 
+                      { sansNestedKeys: ['notNull', 'notEmpty', 'is'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: nextPatron, params: {id: nextId} });
       await patronController.update(req, res);

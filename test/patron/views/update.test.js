@@ -129,7 +129,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['first_name'] }), { sansNestedKeys: ['notNull', 'unique']});
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['first_name'] }), 
+                          { sansNestedKeys: ['notNull', 'unique'], sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -140,7 +141,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['last_name'] }), { sansNestedKeys: ['notNull', 'unique']});
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['last_name'] }), 
+                          { sansNestedKeys: ['notNull', 'unique'], sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -151,7 +153,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), { sansNestedKeys: ['notNull', 'unique']});
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), 
+                          { sansNestedKeys: ['notNull', 'unique'], sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -162,7 +165,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['address'] }), { sansNestedKeys: ['notNull', 'unique']});
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['address'] }), 
+                          { sansNestedKeys: ['notNull', 'unique'], sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -173,7 +177,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['zip_code'] }), { sansNestedKeys: ['notNull', 'unique']});
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['zip_code'] }), 
+                          { sansNestedKeys: ['notNull', 'unique'], sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -184,7 +189,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), { sansNestedKeys: ['notNull', 'unique']});
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), 
+                          { sansNestedKeys: ['notNull', 'unique'], sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -194,7 +200,7 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(valMsgs, { sansNestedKeys: ['notNull', 'unique'] });
+      modelValErrMsgs = getValMsgs(valMsgs, { sansNestedKeys: ['notNull', 'unique'] , sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -205,7 +211,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), { sansNestedKeys: ['notNull', 'notEmpty', 'is'] });
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['library_id'] }), 
+                          { sansNestedKeys: ['notNull', 'notEmpty', 'is'] , sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
 
@@ -216,7 +223,8 @@ describe('views.patron.update', () => {
       await browser.wait();
 
       errorElementText = getExtractErrElementText(browser);
-      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), { sansNestedKeys: ['notNull', 'notEmpty', 'is'] });
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['email'] }), 
+                          { sansNestedKeys: ['notNull', 'notEmpty', 'is'] , sorted: true });
       expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
     });
   });

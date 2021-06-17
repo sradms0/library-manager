@@ -167,7 +167,7 @@ describe('views.book.update', () => {
       errorElements = [...getErrorElements(browser)];
       const [errEl1, errEl2] = errorElements;
       const errorShows = errorElements.length === 2 && 
-        errEl1.textContent === '"Title" is required' && errEl2.textContent === '"Author" is required';
+        errEl1.textContent === '"Author" is required' && errEl2.textContent === '"Title" is required';
       expect(errorShows).to.be.true;
     });
 

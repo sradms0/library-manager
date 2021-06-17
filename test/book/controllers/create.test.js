@@ -78,15 +78,11 @@ describe('controllers.book.create', () => {
 
   it('it should call res.render with prev. data when neither title or author are given (from validation error)', async () => {
     const book = {title: '', author: ''},
-          errors = [titleValMsgs.notEmpty, authorValMsgs.notEmpty],
+          errors = [authorValMsgs.notEmpty, titleValMsgs.notEmpty],
           res = mockResponse(),
           req = mockRequest({ body:  book });
     await bookController.create(req, res);
     expect(res.render).to.have.been.calledWith('book/new', { dataValues: {id: null, ...book }, errors });
   });
 });
-
-
-
-
 

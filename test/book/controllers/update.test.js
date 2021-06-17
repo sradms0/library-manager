@@ -87,7 +87,7 @@ describe('controllers.book.update', () => {
 
   it('it should call res.render with prev. data when neither title or author are given (from validation error)', async () => {
     const updatedCopy = {...updated, title: '', author: ''},
-          errors = [titleValMsgs.notEmpty,authorValMsgs.notEmpty],
+          errors = [authorValMsgs.notEmpty, titleValMsgs.notEmpty],
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
     await bookController.update(req, res);
