@@ -516,6 +516,47 @@ exports.PatronForm = class PatronForm {
 }
 
 /**
+ * Util Class for filling loan-related forms
+*/
+exports.LoanForm = class LoanForm {
+  /**
+   * Fills the loans book field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill book field (filled if null)
+  */
+  static fillBook(browser, val) {
+    browser.select('select#book_id', val);
+  } 
+
+  /**
+   * Fills the loans patron field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill book field (filled if null)
+  */
+  static fillPatron(browser, val) {
+    browser.select('select#patron_id', val);
+  } 
+
+  /**
+   * Fills the loans loaned on field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill loaned_on field (filled if null)
+  */
+  static fillLoanedOn(browser, val=null) {
+    browser.fill('input[name=loaned_on]', val ? val : new Date());
+  } 
+
+  /**
+   * Fills the loans return by field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill loan_on field (filled if null)
+  */
+  static fillReturnBy(browser, val=null) {
+    browser.fill('input[name=return_by]', val ? val : exports.Data.getFutureOrPastDate(new Date(), 7));
+  } 
+}
+
+/**
  * Util Class for handling error message extraction and filtering.
 */
 exports.Validation = class Validation {
@@ -553,3 +594,4 @@ exports.Validation = class Validation {
     return sorted ? msgs.sort() : msgs;
   }
 }
+

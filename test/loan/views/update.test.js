@@ -19,16 +19,38 @@ chai.use(require('chai-http'));
 
 
 describe('views.loan.update', () => {
-  const browser = new Browser();
+  const _loanData = testOps.Data.loanData(),
+        browser = new Browser();
+
   let requester;
-  let form, id, loan, keys;
+
+  let form, keys;
+
+  let toUpdate,
+      updated, 
+      id,
+      loaned_on,
+      returned_on,
+      return_by,
+      book_id,
+      patron_id;
 
   beforeEach('reload', async () => {
     await testOps.loadTestDb();
-    requester = await chai.request(server).keepOpen(),
+
     id = 2,
-    keys = testOps.Data.getModelAttrs(loanService.model, { without: ['id', 'createdAt', 'updatedAt', 'returned_on']}),
-    loan = (await loanService.readByPk(id))?.toJSON(),
+    keys = testOps.Data.getModelAttrs(loanService.model, { without: ['id', 'createdAt', 'updatedAt', 'returned_on']});
+
+    toUpdate = await loanService.readByPk(id);
+    ({ book_id, patron_id } = toUpdate);
+
+    updated = await testOps.Data.loanData()({ 
+      set: { book_id: book_id+1, patron_id: patron_id+1 },
+      bookRead: bookService.readByPk, patronRead: patronService.readByPk
+    });
+    ({ loaned_on, returned_on, return_by, book_id, patron_id } = updated);
+
+    requester = await chai.request(server).keepOpen();
     await testOps.Route.visitOneLoan(browser, id);
     form = browser.querySelector('form');
   });
@@ -65,9 +87,26 @@ describe('views.loan.update', () => {
     expect(urlRoute).to.equal(cancelAHrefRoute);
   });
 
+  it('it should submit the form, updating the existing loan', async () => {
+    const updatedCopy = { id, ...updated };
+
+    testOps.LoanForm.fillBook(browser, updated.Book.title);
+    testOps.LoanForm.fillPatron(browser, updated.Patron.name);
+    testOps.LoanForm.fillLoanedOn(browser, updated.loaned_on);
+    testOps.LoanForm.fillReturnBy(browser, updated.return_by);
+
+    form.submit();
+    await browser.wait();
+    await testOps.Route.visitOneLoan(browser, id);
+
+    keys.forEach(key => 
+      expect(form.querySelector(`#${key}`).value).to.equal(updated[key]+'')
+    )
+  });
+
   describe('loan details', () => {
     it('it should show the book assigned to the loan', async () => {
-      const { Book: { id } } = loan,
+      const { Book: { id } } = toUpdate,
             { value } = browser.querySelector('select[name="book_id"]');
       expect(value).to.equal(id+'');
     });
@@ -82,7 +121,7 @@ describe('views.loan.update', () => {
     });
     
     it('it should show the patron assigned to the loan', async () => {
-      const { Patron: { id } } = loan,
+      const { Patron: { id } } = toUpdate,
             { value } = browser.querySelector('select[name="patron_id"]');
       expect(value).to.equal(id+'');
     });
