@@ -17,7 +17,8 @@ describe('views.navigation', () => {
   let requester;
 
   const extractAllBooksRoute = url => url?.match(/\/books\?page=1&limit=10/g),
-        extractAllPatronsRoute = url => url?.match(/\/patrons\?page=1&limit=10/g);
+        extractAllPatronsRoute = url => url?.match(/\/patrons\?page=1&limit=10/g),
+        extractAllLoansRoute = url => url?.match(/\/loans\?page=1&limit=10/g);
 
   const routes = [
     '',
@@ -25,6 +26,8 @@ describe('views.navigation', () => {
     'books/new',
     'books/1/update',
     'books/1/delete',
+    'loans',
+    'loans/1/update',
     'patrons',
     'patrons/new',
     'patrons/1/update',
@@ -41,6 +44,11 @@ describe('views.navigation', () => {
           extractor: extractAllPatronsRoute, 
           href: `/patrons?${pagination}`, 
           id: '#nav-all-patrons'
+        }, {
+          name: 'all loans',
+          extractor: extractAllLoansRoute, 
+          href: `/loans?${pagination}`, 
+          id: '#nav-all-loans'
         }];
 
   before('reload', async () => {
