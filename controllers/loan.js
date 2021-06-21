@@ -64,4 +64,13 @@ exports.update = asyncHandler(async function(req, res) {
   assertFind(loan, 'Loan', id);
   await loanService.update(loan, body);
   res.redirect('/loans');
-}, { errorView: 'loan/update', model: loanService.model });
+}, { 
+  errorView: 'loan/update', 
+  model: loanService.model, 
+  addToBuild: async ({ book_id, patron_id }) => ({ 
+    Book: await bookService.readByPk(book_id),
+    Patron: await patronService.readByPk(patron_id),
+    books: (await bookService.readAll()).rows, 
+    patrons:  (await patronService.readAll()).rows
+  })
+});
