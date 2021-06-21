@@ -520,9 +520,17 @@ exports.PatronForm = class PatronForm {
 */
 exports.LoanForm = class LoanForm {
   /**
+   * Clears all loan fields.
+   * @param {Browser} browser - zombie instance
+  */
+  static clear(browser) {
+    [...browser.querySelectorAll('input.loan-detail')].forEach(input => input.value = '');
+  } 
+
+  /**
    * Fills the loans book field.
    * @param {Browser} browser - zombie instance
-   * @param {string} val - value to fill book field (filled if null)
+   * @param {string} val - value to fill book field
   */
   static fillBook(browser, val) {
     browser.select('select#book_id', val);
@@ -531,7 +539,7 @@ exports.LoanForm = class LoanForm {
   /**
    * Fills the loans patron field.
    * @param {Browser} browser - zombie instance
-   * @param {string} val - value to fill book field (filled if null)
+   * @param {string} val - value to fill patron field
   */
   static fillPatron(browser, val) {
     browser.select('select#patron_id', val);

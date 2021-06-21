@@ -135,4 +135,94 @@ describe('views.loan.update', () => {
       expect(allPatronsShowAndMatch).to.be.true;
     });
   });
+
+  describe('error validation rendering', () => {
+    const { Validation: { getValMsgs, withoutVal } } = testOps;
+    const { messages: valMsgs } = testOps.Data.getModelValidationErrorMessages('loan'); 
+
+    const getExtractErrElementText = browser => [...browser.querySelectorAll('.error')].map(el => el.textContent),
+          errorsShow = (DOMErrs, modelErrs) => {
+            return errorElementText.length === modelValErrMsgs.length && 
+              modelValErrMsgs.every((em, idx) => em === errorElementText[idx]);
+          }
+
+    const { Data: { patronData: _patronData, emptyPatron} } = testOps;
+    const patronData = _patronData();
+    let form, modelValErrMsgs, errorElementText;
+
+    beforeEach('', async () => {
+      await testOps.Route.visitOneLoan(browser, id);
+      form = browser.querySelector('form');
+    });
+
+    it('it should not submit the form and show validation errors when only a loaned_on date is given for updating a loan', async () => {
+      testOps.LoanForm.clear(browser);
+      testOps.LoanForm.fillLoanedOn(browser, new Date()+'');
+      form.submit();
+      await browser.wait();
+
+      errorElementText = getExtractErrElementText(browser);
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['book', 'patron', 'loaned_on', 'returned_on'] }), 
+                          { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true });
+      expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
+    });
+
+    it('it should not submit the form and show validation errors when an invalid loaned_on date is given for updating a loan', async () => {
+      testOps.LoanForm.fillLoanedOn(browser, 'abc');
+      form.submit();
+      await browser.wait();
+
+      errorElementText = getExtractErrElementText(browser);
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['book', 'patron','return_by', 'returned_on'] }), 
+                          { sansNestedKeys: ['notNull',  'notEmpty', 'requiredDate'], sorted: true });
+      expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
+    });
+
+    it('it should not submit the form and show validation errors when only a return_by date is given for updating a loan', async () => {
+      testOps.LoanForm.clear(browser);
+      testOps.LoanForm.fillReturnBy(browser, new Date()+'');
+      form.submit();
+      await browser.wait();
+
+      errorElementText = getExtractErrElementText(browser);
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['book', 'patron', 'return_by', 'returned_on'] }), 
+                          { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true });
+      expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
+    });
+
+    it('it should not submit the form and show validation errors when an invalid return_by date is given for updating a loan', async () => {
+      testOps.LoanForm.fillReturnBy(browser, 'abc');
+      form.submit();
+      await browser.wait();
+
+      errorElementText = getExtractErrElementText(browser);
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['book', 'patron','loaned_on', 'returned_on'] }), 
+                          { sansNestedKeys: ['notNull',  'notEmpty', 'requiredDate'], sorted: true });
+      expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
+    });
+
+    it('it should not submit the form and show validation errors when a return_by date before a loaned_on date is given for updating a loan', async () => {
+      const { loaned_on } = await loanService.readByPk(id),
+            past = testOps.Data.getFutureOrPastDate(loaned_on, -1);
+      testOps.LoanForm.fillReturnBy(browser, past+'');
+      form.submit();
+      await browser.wait();
+
+      errorElementText = getExtractErrElementText(browser);
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['book', 'patron', 'loaned_on', 'returned_on'] }), 
+                          { sansNestedKeys: ['notNull', 'notEmpty', 'isDate'], sorted: true });
+      expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
+    });
+
+    it('it should not submit the form and show validation errors when neither a loaned_on and return_by are given for updating a loan', async () => {
+      testOps.LoanForm.clear(browser);
+      form.submit();
+      await browser.wait();
+
+      errorElementText = getExtractErrElementText(browser);
+      modelValErrMsgs = getValMsgs(withoutVal(valMsgs, { props: ['book', 'patron', 'returned_on'] }), 
+                          { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true });
+      expect(errorsShow(errorElementText, modelValErrMsgs)).to.be.true;
+    });
+  });
 });
