@@ -77,7 +77,15 @@ describe('controllers.loan.update', () => {
 
   describe('validation errors', () => {
     const { messages: valMsgs } = testOps.Data.getModelValidationErrorMessages('loan'),
-          { withoutVal, getValMsgs } = testOps.Validation;
+          { withoutVal, getValMsgs } = testOps.Validation,
+
+          addExpectedPostDataFromErrorHandler = async (preCopy, { book=null, patron=null }={}) => { 
+            const { book_id, patron_id } = preCopy;
+            preCopy.Book = book && await bookService.readByPk(book_id);
+            preCopy.Patron = patron && await patronService.readByPk(patron_id);
+            preCopy.books = (await bookService.readAll()).rows;
+            preCopy.patrons = (await patronService.readAll()).rows;
+          };
 
     it('it should call res.render with prev. data when only a loaned_on date is given (from validation error)', async () => {
       const updatedCopy = { id, ...(await emptyLoan()), loaned_on },
@@ -85,7 +93,9 @@ describe('controllers.loan.update', () => {
                       { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
+
       await loanController.update(req, res);
+      await addExpectedPostDataFromErrorHandler(updatedCopy);
       expect(res.render).to.have.been.calledWith('loan/update', { dataValues: updatedCopy, errors });
     });
 
@@ -95,7 +105,9 @@ describe('controllers.loan.update', () => {
                       { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
+
       await loanController.update(req, res);
+      await addExpectedPostDataFromErrorHandler(updatedCopy);
       expect(res.render).to.have.been.calledWith('loan/update', { dataValues: updatedCopy, errors });
     });
 
@@ -105,7 +117,9 @@ describe('controllers.loan.update', () => {
                       { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
+
       await loanController.update(req, res);
+      await addExpectedPostDataFromErrorHandler(updatedCopy);
       expect(res.render).to.have.been.calledWith('loan/update', { dataValues: updatedCopy, errors });
     });
 
@@ -115,7 +129,9 @@ describe('controllers.loan.update', () => {
                       { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
+
       await loanController.update(req, res);
+      await addExpectedPostDataFromErrorHandler(updatedCopy, { book: true });
       expect(res.render).to.have.been.calledWith('loan/update', { dataValues: updatedCopy, errors });
     });
 
@@ -125,7 +141,9 @@ describe('controllers.loan.update', () => {
                       { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
+
       await loanController.update(req, res);
+      await addExpectedPostDataFromErrorHandler(updatedCopy, { patron: true });
       expect(res.render).to.have.been.calledWith('loan/update', { dataValues: updatedCopy, errors });
     });
 
@@ -134,7 +152,9 @@ describe('controllers.loan.update', () => {
             errors = getValMsgs(valMsgs, { sansNestedKeys: ['notNull', 'requiredDate'], sorted: true }),
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
+
       await loanController.update(req, res);
+      await addExpectedPostDataFromErrorHandler(updatedCopy, { patron: true });
       expect(res.render).to.have.been.calledWith('loan/update', { dataValues: updatedCopy, errors });
     });
   });
