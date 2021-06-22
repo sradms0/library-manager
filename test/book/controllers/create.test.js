@@ -16,7 +16,6 @@ const { mockRequest, mockResponse } = require('mock-req-res')
 
 chai.use(require('sinon-chai'));
 
-console.log(testOps);
 describe('controllers.book.create', () => {
   const { messages: {
     title: titleValMsgs, 

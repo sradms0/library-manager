@@ -19,7 +19,6 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.patron.create', () => {
   const patronData = testOps.Data.patronData();
-  console.log('PATRONDATA: ', patronData);
 
   beforeEach('reload', async () => {
     await testOps.Data.loadTestDb('patron');
