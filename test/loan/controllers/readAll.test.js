@@ -22,7 +22,7 @@ describe('controllers.loan.readAll', () => {
   let page, limit, res;
 
   before('reload', async () => {
-    await testOps.loadTestDb('book', 'patron');
+    await testOps.Data.loadTestDb('book', 'patron');
     await testOps.Data.addLoans(loanService.create, 20);
   });
 

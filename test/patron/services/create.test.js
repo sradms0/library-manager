@@ -15,7 +15,7 @@ describe('services.patron.create', () => {
   const patronData = testOps.Data.patronData();
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
 
   it('it should return a promise', () => {

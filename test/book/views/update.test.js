@@ -20,7 +20,7 @@ describe('views.book.update', () => {
   let form, id, book, keys;
 
   beforeEach('', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
     requester = await chai.request(server).keepOpen(),
     id = 1,
     book = (await bookService.readByPk(id))?.toJSON(),
@@ -84,7 +84,7 @@ describe('views.book.update', () => {
     form.submit();
     await browser.wait();
     await testOps.Route.visitBooks(browser);
-    const updatedBookTds = [...testOps.fetchTrs(browser)]
+    const updatedBookTds = [...testOps.DOM.fetchTrs(browser)]
                             .find(tr => tr.firstChild.textContent === updated.title)?.children;
     const updatedVals = Object.values(updated);
 

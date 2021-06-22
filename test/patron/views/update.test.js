@@ -21,7 +21,7 @@ describe('views.patron.update', () => {
   let form, id, patron, keys;
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
 
   beforeEach('', async () => {
@@ -81,7 +81,7 @@ describe('views.patron.update', () => {
     form.submit();
     await browser.wait();
     await testOps.Route.visitPatrons(browser);
-    const updatedPatronTds = [...testOps.fetchTrs(browser)]
+    const updatedPatronTds = [...testOps.DOM.fetchTrs(browser)]
                             .find(tr => tr.firstChild.textContent === (updated.first_name+' '+updated.last_name))?.children;
 
     const [first_name, last_name,...updatedVals] = Object.values(updated);

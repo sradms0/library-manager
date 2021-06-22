@@ -19,7 +19,7 @@ describe('views.patron.delete', () => {
   let patron, form, id, requester;
 
   beforeEach('', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     requester = await chai.request(server).keepOpen(),
     ({ rows: [patron] } = await patronService.readAll());
     id = patron ? patron.id : -1;

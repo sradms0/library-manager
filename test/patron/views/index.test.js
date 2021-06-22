@@ -19,7 +19,7 @@ describe('views.patron.index', () => {
   let requester;
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     requester = await chai.request(server).keepOpen();
   });
 
@@ -31,7 +31,7 @@ describe('views.patron.index', () => {
     const { rows: patrons } = await patronService.readAll();
     await testOps.Route.visitPatrons(browser);
     const emails = patrons.map(p => p.email),
-          DOMEmails = [...testOps.fetchTrs(browser)].map(tr => tr.childNodes[2].textContent);
+          DOMEmails = [...testOps.DOM.fetchTrs(browser)].map(tr => tr.childNodes[2].textContent);
     const allFound = DOMEmails.length === emails.length && emails.every((e,i) => e === DOMEmails?.[i]);
     expect(allFound).to.be.true;
   });
@@ -44,7 +44,7 @@ describe('views.patron.index', () => {
     await testOps.Route.visitPatrons(browser);
 
     const { rows: [{ email: onlyEmail }] } = await patronService.readAll(),
-          DOMEmails = [...testOps.fetchTrs(browser)].map(tr => tr.childNodes[2].textContent),
+          DOMEmails = [...testOps.DOM.fetchTrs(browser)].map(tr => tr.childNodes[2].textContent),
           onlyDOMEmail = DOMEmails?.pop();
 
     const lastFound = !DOMEmails.length && onlyEmail === onlyDOMEmail;
@@ -55,7 +55,7 @@ describe('views.patron.index', () => {
     const extractRoute = url => url?.match(/\/patrons\/(\d+)\/update$/g);
 
     await testOps.Route.visitPatrons(browser);
-    const firstPatronA = testOps.fetchTrs(browser)?.[0].querySelector('a');
+    const firstPatronA = testOps.DOM.fetchTrs(browser)?.[0].querySelector('a');
 
     await browser.clickLink(firstPatronA);
     const [ firstPatronAHrefRoute ] = extractRoute(firstPatronA.href),
@@ -79,7 +79,7 @@ describe('views.patron.index', () => {
   it('it should show no patrons when all patrons are removed', async () => {
     await patronService.model.destroy({ truncate: true })
     await testOps.Route.visitPatrons(browser);
-    const ps = testOps.fetchTrs(browser);
+    const ps = testOps.DOM.fetchTrs(browser);
     expect(ps).to.have.length(0);
   });
 

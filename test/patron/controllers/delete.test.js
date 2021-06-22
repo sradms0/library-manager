@@ -22,7 +22,7 @@ describe('controllers.patron.delete', () => {
   let id;
 
   beforeEach('fetch first available patron to delete', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     const { rows: [patron] } = (await patronService.readAll());
     id = patron ? patron.id : -1;
   });

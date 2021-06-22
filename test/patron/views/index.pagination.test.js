@@ -21,7 +21,7 @@ describe('views.patron.index.pagination', () => {
 
   before('reload', async () => {
 
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     await testOps.Data.addPatrons(patronService.create, 20);
   });
 
@@ -38,7 +38,7 @@ describe('views.patron.index.pagination', () => {
     const { rows: pagedPatronData, count: totalPatrons } = await patronService.readAll({ limit, offset: page });
     await testOps.Route.visitPaginatedPatrons(browser, { page, limit });
 
-    const pagedDOMTitles = [...testOps.fetchTrs(browser)].map(tr => tr.firstChild.textContent),
+    const pagedDOMTitles = [...testOps.DOM.fetchTrs(browser)].map(tr => tr.firstChild.textContent),
           pagedDataTitles = pagedPatronData.map(patron => patron.title),
           pagedAndFound = pagedDOMTitles.length === pagedDataTitles.length && pagedDOMTitles.every((t, idx) => t === pagedDOMTitles?.[idx]);
 

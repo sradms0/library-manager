@@ -13,7 +13,7 @@ chai.use(require('chai-as-promised'));
 
 describe('services.book.update', () => {
   before('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
   });
 
   it('it should return a promise', async () => {

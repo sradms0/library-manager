@@ -17,7 +17,7 @@ describe('services.loan.readByPk', async () => {
   let id;
 
   before('reload', async () => {
-    await testOps.loadTestDb('book', 'patron');
+    await testOps.Data.loadTestDb('book', 'patron');
     ({ id }  = (await loanService.create( await loanData({ set: {'book_id': 1} }) )));
   })
 

@@ -22,7 +22,7 @@ describe('controllers.patron.readByAttrs', () => {
   const modelAttrs = testOps.Data.getModelAttrs(patronService.model, { without: ['id', 'createdAt', 'updatedAt'] });
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
 
   describe('one patron result', async () => {
@@ -93,7 +93,7 @@ describe('controllers.patron.readByAttrs', () => {
     let page, limit, res;
 
     before('', async () => {
-      await testOps.loadTestDb('patron');
+      await testOps.Data.loadTestDb('patron');
       await testOps.Data.addPatrons(patronService.create, 20);
     });
 

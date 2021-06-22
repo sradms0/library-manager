@@ -19,7 +19,7 @@ describe('services.loan.create', () => {
   const _loanData = testOps.Data.loanData();
 
   before('reload', async () => {
-    await testOps.loadTestDb('book', 'patron');
+    await testOps.Data.loadTestDb('book', 'patron');
     await testOps.Data.addBooks(bookService.create, 20);
     await testOps.Data.addPatrons(patronService.create, 20);
   });

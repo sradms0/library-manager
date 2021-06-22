@@ -27,7 +27,7 @@ describe('controllers.book.update', () => {
   let updated, id;
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
     id = 1;
     updated =  {
       id: id,

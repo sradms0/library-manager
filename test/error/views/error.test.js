@@ -25,7 +25,7 @@ describe('views.error', () => {
     }
 
     before('start server', async () => {
-      await testOps.loadTestDb('book');
+      await testOps.Data.loadTestDb('book');
       requester = await chai.request(server).keepOpen();
     });
 
@@ -62,7 +62,7 @@ describe('views.error', () => {
     }
 
     before('start server', async () => {
-      await testOps.loadTestDb('book');
+      await testOps.Data.loadTestDb('book');
       requester = await chai.request(server).keepOpen();
     });
 

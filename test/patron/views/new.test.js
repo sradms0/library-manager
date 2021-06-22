@@ -19,7 +19,7 @@ describe('views.patron.new', () => {
   let requester;
 
   before('load patron database', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   })
 
   beforeEach('start server', async () => {

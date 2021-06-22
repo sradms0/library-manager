@@ -16,7 +16,7 @@ const { mockRequest, mockResponse } = require('mock-req-res')
 
 chai.use(require('sinon-chai'));
 
-
+console.log(testOps);
 describe('controllers.book.create', () => {
   const { messages: {
     title: titleValMsgs, 
@@ -24,7 +24,7 @@ describe('controllers.book.create', () => {
   }} = testOps.Data.getModelValidationErrorMessages('book');
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
   });
 
   it('it should create one book when only required attributes are given', async () => {

@@ -22,7 +22,7 @@ describe('controllers.book.readByAttrs', () => {
   const modelAttrs = testOps.Data.getModelAttrs(bookService.model, { without: ['id', 'createdAt', 'updatedAt'] });
 
   before('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
   });
 
   describe('one book result', async () => {

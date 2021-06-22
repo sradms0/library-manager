@@ -20,7 +20,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.loan.readReturn', () => {
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
   });
   
   it('it should render loan/return and pass one loan object', async () => {

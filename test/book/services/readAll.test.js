@@ -10,7 +10,7 @@ const { expect } = chai;
 
 describe('services.book.readAll', () => {
   before('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
   });
 
   it('it should return a Promise', () => {

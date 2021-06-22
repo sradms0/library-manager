@@ -19,9 +19,10 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.patron.create', () => {
   const patronData = testOps.Data.patronData();
+  console.log('PATRONDATA: ', patronData);
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
 
   it('it should create one patron when all required attributes are given', async () => {
@@ -40,7 +41,7 @@ describe('controllers.patron.create', () => {
   });
 
   describe('validation errors', () => {
-    const emptyPatron = testOps.Data.emptyPatron;
+    const emptyPatron = testOps.Data.emptyPatron.bind(testOps.Data);
 
     const { Validation: { getValMsgs, withoutVal } } = testOps;
     const { messages: valMsgs } = testOps.Data.getModelValidationErrorMessages('patron'); 

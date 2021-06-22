@@ -27,7 +27,7 @@ describe('views.patron.index.search', () => {
   } 
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
 
   beforeEach('', async() => {
@@ -79,7 +79,7 @@ describe('views.patron.index.search', () => {
       form?.submit();
       await browser.wait();
 
-      const patronTrs = testOps.fetchTrs(browser);
+      const patronTrs = testOps.DOM.fetchTrs(browser);
       const { textContent } = patronTrs[0]?.childNodes[tdChildLoc];
       return patronTrs.length === 1 && equiv(textContent, ''+attrVal);
     }
@@ -114,7 +114,7 @@ describe('views.patron.index.search', () => {
       testOps.PatronForm.fillSearch(browser, attr);
       form?.submit();
       await browser.wait();
-      const patronTrs = [...testOps.fetchTrs(browser)];
+      const patronTrs = [...testOps.DOM.fetchTrs(browser)];
 
       let trDataString = '';
       patronTrs.forEach((tr, idx) => {
@@ -138,7 +138,7 @@ describe('views.patron.index.search', () => {
     let nonUniqueData;
 
     before('create patrons with identical attrs.', async () => {
-      await testOps.loadTestDb('patron');
+      await testOps.Data.loadTestDb('patron');
 
       const patronData = testOps.Data.patronData();
       const totalSimilar = 5;
@@ -177,7 +177,7 @@ describe('views.patron.index.search', () => {
       form?.submit();
       await browser.wait();
 
-      const patronTrs = testOps.fetchTrs(browser);
+      const patronTrs = testOps.DOM.fetchTrs(browser);
       expect(patronTrs).to.be.empty;
     });
   });

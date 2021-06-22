@@ -19,7 +19,7 @@ describe('views.book.delete', () => {
   let book, form, id, requester;
 
   beforeEach('', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
     requester = await chai.request(server).keepOpen(),
     ({ rows: [book] } = await bookService.readAll());
     id = book ? book.id : -1;

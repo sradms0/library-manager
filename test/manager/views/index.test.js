@@ -17,7 +17,7 @@ describe('views.manager.index', () => {
   let requester;
 
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
   });
 
   beforeEach('reload', async () => {

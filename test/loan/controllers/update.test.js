@@ -24,7 +24,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.loan.update', () => {
   const { Data } = testOps,
-        { emptyLoan } = Data,
+        emptyLoan  = Data.emptyLoan.bind(Data),
         loanData = Data.loanData();
 
   let updated, 
@@ -36,7 +36,7 @@ describe('controllers.loan.update', () => {
       patron_id;
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
     id = 1;
     const toUpdate = await loanService.readByPk(1);
     ({ book_id, patron_id } = toUpdate);

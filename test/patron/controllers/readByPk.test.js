@@ -20,7 +20,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.patron.readByPk', () => {
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
   
   it('it should render patron/update and pass one patron object', async () => {

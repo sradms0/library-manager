@@ -36,7 +36,7 @@ describe('views.loan.update', () => {
       patron_id;
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
 
     id = 2,
     keys = testOps.Data.getModelAttrs(loanService.model, { without: ['id', 'createdAt', 'updatedAt', 'returned_on']});

@@ -12,7 +12,7 @@ describe('services.patron.readByPk', async () => {
   let id = 100;
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     await patronService.create(testOps.Data.patronData()({ prop: 'id', val: id }));
   });
 

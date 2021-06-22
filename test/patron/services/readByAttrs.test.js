@@ -13,7 +13,7 @@ describe('services.patron.readByAttrs', async () => {
   let firstName;
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     ({ rows: [{first_name: firstName}] } = await patronService.readAll());
   });
 
@@ -103,7 +103,7 @@ describe('services.patron.readByAttrs', async () => {
         offset = 0, limit = 0;
 
     before('create more instances for pagination', async () => {
-      await testOps.loadTestDb('patron');
+      await testOps.Data.loadTestDb('patron');
       await testOps.Data.addPatrons(patronService.create, 20);
       ({ rows: allSearchedPatrons } = await modelSearch(similarLastNames));
     });

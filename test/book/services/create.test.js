@@ -14,7 +14,7 @@ chai.use(require('chai-as-promised'));
 describe('services.book.create', () => {
 
   before('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
   })
 
   it('it should return a promise', () => {

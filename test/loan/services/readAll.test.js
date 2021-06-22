@@ -11,7 +11,7 @@ const { asyncUtil: {asyncForEach} } = require('$root/lib');
 
 describe('services.loan.readAll', () => {
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
   });
 
   it('it should return a Promise', () => {

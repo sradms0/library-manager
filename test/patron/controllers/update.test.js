@@ -20,13 +20,13 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.patron.update', () => {
   const { Data } = testOps,
-        { emptyPatron } = Data,
+        emptyPatron = Data.emptyPatron.bind(Data),
         patronData = Data.patronData();
 
   let updated, id;
 
   beforeEach('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     id = 1;
     updated = testOps.Data.patronData()({ prop: 'id', val: id });
   });

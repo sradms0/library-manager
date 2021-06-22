@@ -24,7 +24,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.loan.readByPk', () => {
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
   });
   
   it('it should render loan/update and pass one loan object that includes all Book and Patron instances', async () => {

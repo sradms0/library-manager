@@ -52,7 +52,7 @@ describe('views.navigation', () => {
         }];
 
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
   });
 
   beforeEach('reload', async () => {

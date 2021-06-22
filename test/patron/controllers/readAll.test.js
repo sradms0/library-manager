@@ -21,7 +21,7 @@ describe('controllers.patron.readAll', () => {
   let page, limit, res;
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
     await testOps.Data.addPatrons(patronService.create, 20);
   });
 

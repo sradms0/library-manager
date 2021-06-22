@@ -19,7 +19,7 @@ describe('services.loan.update', () => {
   const loanData = testOps.Data.loanData();
 
   before('reload', async () => {
-    await testOps.loadTestDb();
+    await testOps.Data.loadTestDb();
   });
 
   it('it should return a promise', async () => {
@@ -46,7 +46,7 @@ describe('services.loan.update', () => {
     let errLoan;
 
     beforeEach('', async () => {
-      await testOps.loadTestDb();
+      await testOps.Data.loadTestDb();
       const loanData = testOps.Data.loanData();
       errLoan = await loanService.create(await loanData());
     });

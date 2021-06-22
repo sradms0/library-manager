@@ -20,7 +20,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.book.readDelete', () => {
   before('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
   });
   
   it('it should render book/delete and pass one book object', async () => {

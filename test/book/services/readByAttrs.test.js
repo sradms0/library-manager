@@ -13,7 +13,7 @@ describe('services.book.readByAttrs', async () => {
   let title;
 
   before('reload', async () => {
-    await testOps.loadTestDb('book');
+    await testOps.Data.loadTestDb('book');
     ({ rows: [{title}] } = await bookService.readAll());
   });
 

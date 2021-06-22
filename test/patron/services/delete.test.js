@@ -12,7 +12,7 @@ describe('services.patron.delete', () => {
   let patron;
 
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
 
   beforeEach('fetch first available patron to delete', async () => {

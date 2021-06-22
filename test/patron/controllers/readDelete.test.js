@@ -20,7 +20,7 @@ chai.use(require('sinon-chai'));
 
 describe('controllers.patron.readDelete', () => {
   before('reload', async () => {
-    await testOps.loadTestDb('patron');
+    await testOps.Data.loadTestDb('patron');
   });
   
   it('it should render patron/delete and pass one patron object', async () => {

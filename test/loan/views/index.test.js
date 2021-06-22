@@ -23,7 +23,7 @@ describe('views.loan.index', () => {
   let requester;
 
   before('reload', async () => {
-    await testOps.loadTestDb(null);
+    await testOps.Data.loadTestDb(null);
     await testOps.Data.addLoans(
       loanService.create, 
       bookService.create, 
@@ -44,7 +44,7 @@ describe('views.loan.index', () => {
     const { rows: loans } = await loanService.readAll();
     await testOps.Route.visitLoans(browser);
     const titles = loans.map(loan => loan?.Book.title),
-          DOMTitles = [...testOps.fetchTrs(browser)].map(tr => tr.firstChild.textContent);
+          DOMTitles = [...testOps.DOM.fetchTrs(browser)].map(tr => tr.firstChild.textContent);
     const allFound = DOMTitles.length === titles.length && titles.every((t,i) => t === DOMTitles?.[i]);
     expect(allFound).to.be.true;
   });
@@ -56,7 +56,7 @@ describe('views.loan.index', () => {
     await asyncForEach(loans.slice(0,-1), async b => await b.destroy());
     await testOps.Route.visitLoans(browser);
     const { rows: [{ Book: {title: onlyTitle} }] } = await loanService.readAll(),
-          DOMTitles = [...testOps.fetchTrs(browser)].map(tr => tr.firstChild.textContent),
+          DOMTitles = [...testOps.DOM.fetchTrs(browser)].map(tr => tr.firstChild.textContent),
           onlyDOMTitle = DOMTitles?.pop();
 
     const lastFound = !DOMTitles.length && onlyTitle === onlyDOMTitle;
@@ -66,21 +66,21 @@ describe('views.loan.index', () => {
   it('it should show no loans when all loans are removed', async () => {
     await loanService.model.destroy({ truncate: true })
     await testOps.Route.visitLoans(browser);
-    const ls = testOps.fetchTrs(browser);
+    const ls = testOps.DOM.fetchTrs(browser);
     expect(ls).to.have.length(0);
   });
 
   describe('table links', () => {
 
     before('reload', async () => {
-      await testOps.loadTestDb();
+      await testOps.Data.loadTestDb();
     });
 
     it('it should direct the user to /books/:id/update when clicking on a book', async () => {
       const extractRoute = url => url?.match(/\/books\/(\d+)\/update$/g);
 
       await testOps.Route.visitLoans(browser);
-      const [firstBookA] = testOps.fetchTrs(browser)?.[0].querySelectorAll('a');
+      const [firstBookA] = testOps.DOM.fetchTrs(browser)?.[0].querySelectorAll('a');
       await browser.clickLink(firstBookA);
       const [ firstBookAHrefRoute ] = extractRoute(firstBookA.href),
             [ urlRoute ] = extractRoute(browser.location._url);
@@ -91,7 +91,7 @@ describe('views.loan.index', () => {
       const extractRoute = url => url?.match(/\/patrons\/(\d+)\/update$/g);
 
       await testOps.Route.visitLoans(browser);
-      const [_, firstPatronA] = testOps.fetchTrs(browser)?.[0].querySelectorAll('a');
+      const [_, firstPatronA] = testOps.DOM.fetchTrs(browser)?.[0].querySelectorAll('a');
       await browser.clickLink(firstPatronA);
       const [ firstPatronAHrefRoute ] = extractRoute(firstPatronA.href),
             [ urlRoute ] = extractRoute(browser.location._url);
