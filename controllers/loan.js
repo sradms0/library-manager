@@ -17,10 +17,34 @@ const {
 
 
 /**
+ * Helper to add data to either new or loans for updating after validation errors occur.
+ * @param {object} [associationIds] - associative ids of a loan.
+ * @param {number} associationIds.book_id - associative id of loans book.
+ * @param {number} associationIds.patron_id - associative id of loans patron.
+ * @returns {object} the loans associated book and patron, and access to all books and patrons.
+*/
+async function addToBuild({ book_id, patron_id }) { 
+  return {
+    Book: book_id ? await bookService.readByPk(book_id) : null,
+    Patron: patron_id ? await patronService.readByPk(patron_id) : null,
+    books: (await bookService.readAll()).rows, 
+    patrons:  (await patronService.readAll()).rows
+  }
+}
+
+
+/**
  * Creates a new loan
 */
-exports.create = asyncHandler(async function(req, res) {});
-
+exports.create = asyncHandler(async function(req, res) {
+  const { body } = req;
+  await loanService.create(body);
+  res.redirect('/loans');
+}, { 
+  errorView: 'loan/new', 
+  model: bookService.model, 
+  addToBuild 
+});
 
 /**
  * Reads all loans and renders all loans to '/views/loan/index'
@@ -73,10 +97,5 @@ exports.update = asyncHandler(async function(req, res) {
 }, { 
   errorView: 'loan/update', 
   model: loanService.model, 
-  addToBuild: async ({ book_id, patron_id }) => ({ 
-    Book: await bookService.readByPk(book_id),
-    Patron: await patronService.readByPk(patron_id),
-    books: (await bookService.readAll()).rows, 
-    patrons:  (await patronService.readAll()).rows
-  })
+  addToBuild
 });
