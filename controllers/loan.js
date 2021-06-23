@@ -59,11 +59,20 @@ exports.readAll = asyncHandler(async function(req, res) {
 /**
  * Reads a new loan, rendering '/views/loan/new'
 */
-exports.readNew = function(req, res) {
+exports.readNew = asyncHandler(async function(req, res) {
   const attrs = Object.keys(loanService.model.tableAttributes);
   const dataValues = attrs.reduce((acc, curr) => ({...acc, ...{[curr]: ''}}), {});
+
+  const { rows: books } = await bookService.readAll(),
+        { rows: patrons } = await patronService.readAll();
+
+  dataValues.loaned_on = new Date();
+  dataValues.return_by = new Date(dataValues.loaned_on.getTime()+(7*8.64e+7));
+  dataValues.books = books;
+  dataValues.patrons = patrons;
+
   res.render('loan/new', { dataValues });
-}
+});
 
 /**
  * Reads one loan by primary key and renders loan to '/views/loan/update'.
