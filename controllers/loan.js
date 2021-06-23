@@ -17,6 +17,12 @@ const {
 
 
 /**
+ * Creates a new loan
+*/
+exports.create = asyncHandler(async function(req, res) {});
+
+
+/**
  * Reads all loans and renders all loans to '/views/loan/index'
  *
 */

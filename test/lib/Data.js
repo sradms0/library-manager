@@ -122,6 +122,34 @@ module.exports = class {
     return patrons;
   }
 
+  /**
+   * Adds un/associated data to an attempted loan instance after validation errors have been thrown.
+   * This added data is what is expected after going through an error-validation handler.
+   * @param {object} preLoan - loan-data before being passed to some create or update operation
+   * @param {object} [allDataReaders] - data functions to read all rows from desired tables.
+   * @param {function} allDataReaders.allBooksReader - reads all Books rows.
+   * @param {function} allDataReaders.allPatronsReader - reads all Patrons rows.
+   *
+   * @param {object} [associationInclusions={}] - determines if associations will be included.
+   * @param {object} [associationInclusions.book=null] - determines if book association is included.
+   * @param {object} [associationInclusions.patron=null] - determines if patron association is included.
+   *
+   * @param {object} [singleDataReaders={}] - data functions to read single associative model instances.
+   * @param {function} [singleDataReaders.oneBookReader=null] - reads the associated book.
+   * @param {function} [singleDataReaders.onePatronReader=null] - reads the assoicated patron.
+  */
+   static async addPostErrDataToLoan(preLoan, 
+   { allBooksReader, allPatronsReader}, 
+   { book=null, patron=null }={}, 
+   { oneBookReader=null, onePatronReader=null }={}) {
+
+    const { book_id, patron_id } = preLoan;
+    preLoan.Book = book && await oneBookReader(book_id);
+    preLoan.Patron = patron && await onePatronReader(patron_id);
+    preLoan.books = (await allBooksReader()).rows;
+    preLoan.patrons = (await allPatronsReader()).rows;
+  }
+
   /** 
    * Add loans to the current testing database.
    * A new book and patron are first added to the database to then be associated with the new loan.
