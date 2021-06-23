@@ -28,7 +28,7 @@ describe('views.loan.new', () => {
     await testOps.Data.loadTestDb('book', 'patron');
   });
 
-  beforeEach('start server an navigate to form', async () => {
+  beforeEach('start server and navigate to form', async () => {
     requester = await chai.request(server).keepOpen();
     await testOps.Route.visitNewLoan(browser);
     form = browser.querySelector('form');
@@ -71,8 +71,8 @@ describe('views.loan.new', () => {
                   { without: ['id', 'createdAt', 'updatedAt', 'returned_on']}
     );
     const loanData = await _loanData({ set: {id:1} });
-    const book = bookService.readByPk(loanData.book_id),
-          patron = patronService.readByPk(loanData.patron_id);
+    const book = await bookService.readByPk(loanData.book_id),
+          patron = await patronService.readByPk(loanData.patron_id);
 
     testOps.LoanForm.fillBook(browser, book.title);
     testOps.LoanForm.fillPatron(browser, patron.name);
@@ -132,7 +132,7 @@ describe('views.loan.new', () => {
 
     const { Data: { patronData: _patronData, emptyPatron} } = testOps;
     const patronData = _patronData();
-    let form, modelValErrMsgs, errorElementText;
+    let modelValErrMsgs, errorElementText;
 
     it('it should not submit the form and show validation errors when only a loaned_on date is given for creating a loan', async () => {
       testOps.LoanForm.clear(browser);
@@ -181,8 +181,8 @@ describe('views.loan.new', () => {
     });
 
     it('it should not submit the form and show validation errors when a return_by date before a loaned_on date is given for creating a loan', async () => {
-      const { loaned_on } = await loanService.readByPk(id),
-            past = testOps.Data.getFutureOrPastDate(loaned_on, -1);
+      const today = new Date(browser.querySelector('input[name="loaned_on"]').value)
+      const past = testOps.Data.getFutureOrPastDate(today, -1);
       testOps.LoanForm.fillReturnBy(browser, past+'');
       form.submit();
       await browser.wait();
