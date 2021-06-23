@@ -57,6 +57,11 @@ exports.readAll = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads a new loan, rendering '/views/loan/new'
+*/
+exports.readNew = function(req, res) {}
+
+/**
  * Reads one loan by primary key and renders loan to '/views/loan/update'.
  * Sets `res.status` to 404 when a loan is not found.
  *
