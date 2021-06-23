@@ -70,6 +70,18 @@ describe('views.loan.index', () => {
     expect(ls).to.have.length(0);
   });
 
+  it('it should have an anchor element to bring the user to /loans/new', async () => {
+    const extractRoute = url => url?.match(/\/loans\/new$/g);
+
+    await testOps.Route.visitLoans(browser);
+    const createLoanA = browser.querySelector('p a');
+    await browser.clickLink(createLoanA);
+
+    const [ createLoanAHrefRoute ] = extractRoute(createLoanA.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(createLoanAHrefRoute);
+  });
+
   describe('table links', () => {
 
     before('reload', async () => {
