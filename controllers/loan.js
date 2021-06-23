@@ -59,7 +59,11 @@ exports.readAll = asyncHandler(async function(req, res) {
 /**
  * Reads a new loan, rendering '/views/loan/new'
 */
-exports.readNew = function(req, res) {}
+exports.readNew = function(req, res) {
+  const attrs = Object.keys(loanService.model.tableAttributes);
+  const dataValues = attrs.reduce((acc, curr) => ({...acc, ...{[curr]: ''}}), {});
+  res.render('loan/new', { dataValues });
+}
 
 /**
  * Reads one loan by primary key and renders loan to '/views/loan/update'.
