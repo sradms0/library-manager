@@ -8,12 +8,18 @@ mixin createForm(action, dataValues, errors)
       label(for="book_id") Book
       select.loan-detail(id="book_id" name="book_id")
         each book in dataValues.books
-          option(value=`${book.id}`)=book.title
+          if (dataValues.Book && dataValues.Book.id === book.id)
+            option(value=`${book.id}` selected)=book.title
+          else
+            option(value=`${book.id}`)=book.title
     p
       label(for="patron_id") Patron
-      select.loan-detail(id="patron_id" name="patron_id", value=`${dataValues.Patron.id}`)
+      select.loan-detail(id="patron_id" name="patron_id")
         each patron in dataValues.patrons
-          option(value=`${patron.id}`)=patron.name
+          if (dataValues.Patron && dataValues.Patron.id === patron.id)
+            option(value=`${patron.id}` selected)=patron.name
+          else
+            option(value=`${patron.id}`)=patron.name
     p
       label(for="loaned_on") Loaned on:
       input.loan-detail(id="loaned_on" name="loaned_on" type="text" value=`${dataValues.loaned_on}`)
@@ -21,7 +27,3 @@ mixin createForm(action, dataValues, errors)
       label(for="return_by") Return by:
       input.loan-detail(id="return_by" name="return_by" type="text" value=`${dataValues.return_by}`)
     block
-
-  script.
-    document.querySelector('select#book_id').value = #{ dataValues.Book.id };
-    document.querySelector('select#patron_id').value = #{ dataValues.Patron.id };

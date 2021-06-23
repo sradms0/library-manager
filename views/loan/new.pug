@@ -1,3 +1,13 @@
 extends ../layout
 
+block title
+  title='New Loan'
+
+block header
+  h1='New Loan'
+
 block content
+  include ./includes/form
+  +createForm('/loans/new', dataValues, errors)
+    p: input(type='submit' value='Create Loan')
+    p: a#cancel(class='button' href='/loans') Cancel
