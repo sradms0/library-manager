@@ -15,4 +15,10 @@ router.get('/:id/update', loanController.readByPk);
 /* POST update existing loan. */
 router.post('/:id/update', loanController.update);
 
+/* GET new loan. */
+router.get('/new', loanController.readNew);
+
+/* POST one loan. */
+router.post('/new', loanController.create);
+
 module.exports = router;
