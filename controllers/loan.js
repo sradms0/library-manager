@@ -117,3 +117,8 @@ exports.update = asyncHandler(async function(req, res) {
   model: loanService.model, 
   addToBuild
 });
+
+/**
+ * Returns an existing loan, redirecting to /loans after.
+*/
+exports.return = asyncHandler(async function(req, res) {});
