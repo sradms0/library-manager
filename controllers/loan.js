@@ -17,18 +17,33 @@ const {
 
 
 /**
- * Helper to add data to either new or loans for updating after validation errors occur.
+ * Helper to add Book and Patron associations 
+ * and all Book and Patron instances for creating or updating after validation-errors occur.
  * @param {object} [associationIds] - associative ids of a loan.
  * @param {number} associationIds.book_id - associative id of loans book.
  * @param {number} associationIds.patron_id - associative id of loans patron.
  * @returns {object} the loans associated book and patron, and access to all books and patrons.
 */
-async function addToBuild({ book_id, patron_id }) { 
+async function createUpdateValErrBuild({ book_id, patron_id }) { 
   return {
     Book: book_id ? await bookService.readByPk(book_id) : null,
     Patron: patron_id ? await patronService.readByPk(patron_id) : null,
     books: (await bookService.readAll()).rows, 
     patrons:  (await patronService.readAll()).rows
+  }
+}
+
+/**
+ * Helper to add Book and Patron associations after validation-errors occur.
+ * @param {object} [associationIds] - associative ids of a loan.
+ * @param {number} associationIds.book_id - associative id of loans book.
+ * @param {number} associationIds.patron_id - associative id of loans patron.
+ * @returns {object} the loans associated book and patron.
+ */
+async function returnValErrBuild({ book_id, patron_id }) {
+  return {
+    Book: await bookService.readByPk(book_id),
+    Patron: await patronService.readByPk(patron_id)
   }
 }
 
@@ -43,7 +58,7 @@ exports.create = asyncHandler(async function(req, res) {
 }, { 
   errorView: 'loan/new', 
   model: bookService.model, 
-  addToBuild 
+  addToBuild: createUpdateValErrBuild
 });
 
 /**
@@ -115,10 +130,20 @@ exports.update = asyncHandler(async function(req, res) {
 }, { 
   errorView: 'loan/update', 
   model: loanService.model, 
-  addToBuild
+  addToBuild: createUpdateValErrBuild
 });
 
 /**
  * Returns an existing loan, redirecting to /loans after.
 */
-exports.return = asyncHandler(async function(req, res) {});
+exports.return = asyncHandler(async function(req, res) {
+  const { id } = req.params, { body } = req;
+  const loan = await loanService.readByPk(id);
+  assertFind(loan, 'Loan', id);
+  await loanService.update(loan, body);
+  res.redirect('/loans');
+}, { 
+  errorView: 'loan/return', 
+  model: loanService.model, 
+  addToBuild: returnValErrBuild
+});
