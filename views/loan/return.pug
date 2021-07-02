@@ -6,3 +6,35 @@ block header
   h1='Return Book'
 
 block content
+  if (errors)
+    each error in errors
+      p.error=error
+
+  p#book
+    strong Book Title: 
+    |#{dataValues.Book.title}
+
+  p#patron
+    strong Loaned By: 
+    |#{dataValues.Patron.name}
+
+  p#loaned_on 
+    strong Loaned On: 
+    |#{dataValues.loaned_on}
+
+  p#return_by
+    strong Return By: 
+    |#{dataValues.return_by}
+
+  form(action=`/loans/${dataValues.id}/return` method='post')
+    p
+      label(for='returned_on') Returned On: 
+      input(name='returned_on' type=text value=`${ dataValues.returned_on !== null ? dataValues.returned_on : new Date() }`)
+
+      input(type='hidden' name='loaned_on' value=`${dataValues.loaned_on}`)
+      input(type='hidden' name='return_by' value=`${dataValues.return_by}`)
+      input(type='hidden' name='book_id' value=`${dataValues.book_id}`)
+      input(type='hidden' name='patron_id' value=`${dataValues.patron_id}`)
+
+    input(type='submit' value='Return Book')
+    p: a#cancel(class='button' href='/loans') Cancel
