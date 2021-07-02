@@ -21,4 +21,10 @@ router.get('/new', loanController.readNew);
 /* POST one loan. */
 router.post('/new', loanController.create);
 
+/* GET one unreturned loan. */
+router.get('/:id/return', loanController.readReturn);
+
+/* POST update existing loan. */
+router.post('/:id/return', loanController.return);
+
 module.exports = router;

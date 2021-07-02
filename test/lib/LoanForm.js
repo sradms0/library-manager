@@ -51,5 +51,14 @@ module.exports= class {
   static fillReturnBy(browser, val=null) {
     browser.fill('input[name=return_by]', val ? val : require('./Data').getFutureOrPastDate(new Date(), 7));
   } 
+
+  /**
+   * Fills the loans returned on field.
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill returned_on field (filled if null)
+  */
+  static fillReturnedOn(browser, val=null) {
+    browser.fill('input[name=returned_on]', val ? val : new Date());
+  } 
 }
 

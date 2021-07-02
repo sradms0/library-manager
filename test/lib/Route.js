@@ -120,6 +120,15 @@ module.exports = class {
   }
 
   /**
+   * Navigates to /loans/:id/return route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitLoanReturn(browser, id) {
+    return this.visit(browser, `loans/${id}/return`);
+  }
+
+  /**
    * Navigates to /patrons/:id route
    * @param {Browser} browser - zombie instance
    * @return {Promise} zombie.Browser.visit
