@@ -86,6 +86,12 @@ describe('views.loan.index', () => {
 
     before('reload', async () => {
       await testOps.Data.loadTestDb();
+      const firstOpenLoan = await loanService.model.findOne({where: { returned_on: null }});
+      await loanService.update(firstOpenLoan, { returned_on: new Date() });
+    });
+
+    beforeEach('revisit /loans', async () => {
+      await testOps.Route.visitLoans(browser);
     });
 
     it('it should direct the user to /books/:id/update when clicking on a book', async () => {
@@ -108,6 +114,57 @@ describe('views.loan.index', () => {
       const [ firstPatronAHrefRoute ] = extractRoute(firstPatronA.href),
             [ urlRoute ] = extractRoute(browser.location._url);
       expect(urlRoute).to.equal(firstPatronAHrefRoute);
+    });
+
+    it('it should direct the user to /loans/:id/update when clicking on a loans update button', async () => {
+      const extractRoute = url => url?.match(/\/loans\/(\d+)\/update$/g);
+
+      const { id: openLoanId } = await loanService.model.findOne({ where: { returned_on: null } }),
+            firstLoanUpdateA = browser.querySelectorAll('td.action a.button')?.[0];
+      await browser.clickLink(firstLoanUpdateA);
+      await testOps.Route.visitOneLoan(browser, openLoanId);
+
+      const [ firstLoanUpdateAHrefRoute ] = extractRoute(firstLoanUpdateA.href),
+            [ urlRoute ] = extractRoute(browser.location._url);
+
+      expect(urlRoute).to.equal(firstLoanUpdateAHrefRoute);
+    });
+
+    it('it should direct the user to /loans/:id/update when clicking on a loans return button', async () => {
+      const extractRoute = url => url?.match(/\/loans\/(\d+)\/return/g);
+
+      const { id: openLoanId } = await loanService.model.findOne({ where: { returned_on: null } }),
+            firstLoanReturnA = browser.querySelectorAll('td.action a.button')?.[1];
+      await testOps.Route.visitLoanReturn(browser, openLoanId);
+      await browser.clickLink(firstLoanReturnA);
+
+      const [ firstLoanReturnAHrefRoute ] = extractRoute(firstLoanReturnA.href),
+            [ urlRoute ] = extractRoute(browser.location._url);
+
+      expect(urlRoute).to.equal(firstLoanReturnAHrefRoute);
+    });
+
+    const returnedLoans = async bool => (await loanService.readAll()).rows.filter(loan => bool && loan.returned_on),
+          mapTitles = loans => loans.map(loan => loan.Book.title),
+          loanTrs = (browser, titles) => [...testOps.DOM.fetchTrs(browser)].filter(tr => 
+                      titles.indexOf(tr.firstElementChild.textContent) >= 0
+                    );
+    it('it should not have return or update buttons for closed loans', async () => {
+      const closedLoans = await returnedLoans(true),
+            closedLoanTrs = loanTrs(browser, mapTitles(closedLoans));
+      expect(
+        closedLoans.length === closedLoanTrs.length && 
+          closedLoanTrs.every(tr => !tr.lastChild?.children.length)
+      ).to.be.true;
+    });
+
+    it('it should have return and update buttons for open loans', async () => {
+      const openLoans = await returnedLoans(false),
+            openLoanTrs = loanTrs(browser, mapTitles(openLoans));
+      expect(
+        openLoans.length === openLoanTrs.length && 
+          openLoanTrs.every(tr => tr.lastChild?.children.length === 2)
+      ).to.be.true;
     });
   })
 });
