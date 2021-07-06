@@ -116,11 +116,21 @@ describe('views.loan.index', () => {
       expect(urlRoute).to.equal(firstPatronAHrefRoute);
     });
 
+    const fetchActionA = async actionLoc => {
+      const { Book: {title}, id: openLoanId } = await loanService.model.findOne({ 
+        where: { returned_on: null }, 
+        include: [bookService.model]
+      });
+      const loanActionA = [...testOps.DOM.fetchTrs(browser)]
+        .find(tr => tr.firstElementChild.textContent === title)
+        ?.querySelectorAll('a.button')?.[actionLoc];
+
+      return { openLoanId, loanActionA };
+    }
     it('it should direct the user to /loans/:id/update when clicking on a loans update button', async () => {
       const extractRoute = url => url?.match(/\/loans\/(\d+)\/update$/g);
 
-      const { id: openLoanId } = await loanService.model.findOne({ where: { returned_on: null } }),
-            firstLoanUpdateA = browser.querySelectorAll('td.action a.button')?.[0];
+      const { openLoanId, loanActionA: firstLoanUpdateA } = await fetchActionA(0);
       await browser.clickLink(firstLoanUpdateA);
       await testOps.Route.visitOneLoan(browser, openLoanId);
 
@@ -133,8 +143,7 @@ describe('views.loan.index', () => {
     it('it should direct the user to /loans/:id/update when clicking on a loans return button', async () => {
       const extractRoute = url => url?.match(/\/loans\/(\d+)\/return/g);
 
-      const { id: openLoanId } = await loanService.model.findOne({ where: { returned_on: null } }),
-            firstLoanReturnA = browser.querySelectorAll('td.action a.button')?.[1];
+      const { openLoanId, loanActionA: firstLoanReturnA } = await fetchActionA(1);
       await testOps.Route.visitLoanReturn(browser, openLoanId);
       await browser.clickLink(firstLoanReturnA);
 
@@ -144,27 +153,16 @@ describe('views.loan.index', () => {
       expect(urlRoute).to.equal(firstLoanReturnAHrefRoute);
     });
 
-    const returnedLoans = async bool => (await loanService.readAll()).rows.filter(loan => bool && loan.returned_on),
-          mapTitles = loans => loans.map(loan => loan.Book.title),
-          loanTrs = (browser, titles) => [...testOps.DOM.fetchTrs(browser)].filter(tr => 
-                      titles.indexOf(tr.firstElementChild.textContent) >= 0
-                    );
-    it('it should not have return or update buttons for closed loans', async () => {
-      const closedLoans = await returnedLoans(true),
-            closedLoanTrs = loanTrs(browser, mapTitles(closedLoans));
-      expect(
-        closedLoans.length === closedLoanTrs.length && 
-          closedLoanTrs.every(tr => !tr.lastChild?.children.length)
-      ).to.be.true;
+    it('it should have an update button for all loans', async () => {
+      const { count } = await loanService.readAll(),
+        { length: updateTdLength } = [...browser.querySelectorAll('td.action')].filter(td => td.firstElementChild.textContent === 'Update');
+      expect(updateTdLength).to.equal(count);
     });
 
-    it('it should have return and update buttons for open loans', async () => {
-      const openLoans = await returnedLoans(false),
-            openLoanTrs = loanTrs(browser, mapTitles(openLoans));
-      expect(
-        openLoans.length === openLoanTrs.length && 
-          openLoanTrs.every(tr => tr.lastChild?.children.length === 2)
-      ).to.be.true;
+    it('it should have a return button for only open loans', async () => {
+      const openLoans  = (await loanService.readAll()).rows.filter(loan => !loan.returned_on),
+            { length: returnTdLength } = [...browser.querySelectorAll('td.action')].filter(td => td.firstElementChild.textContent === 'Return');
+      expect(returnTdLength).to.equal(openLoans.length);
     });
   })
 });
