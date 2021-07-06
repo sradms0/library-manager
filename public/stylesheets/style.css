@@ -80,6 +80,10 @@ tr:nth-child(2n) {
 td {
   padding: 5px 20px 5px 10px;
 }
+th.action {
+  text-align: center;
+}
+
 label {
   font-weight: bold;
   min-width: 130px;

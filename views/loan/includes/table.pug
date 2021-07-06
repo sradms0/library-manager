@@ -5,6 +5,8 @@ table
       th Patron
       th Loaned On
       th Return By
+      th.action(colspan='2' scope='colgroup') Action
+
   tbody
     each loan in loans
       tr
@@ -12,3 +14,8 @@ table
         td: a(href=`/patrons/${loan.Patron.id}/update`)=loan.Patron.name
         td=`${loan.loaned_on.toLocaleDateString('en-CA')}`
         td=`${loan.return_by.toLocaleDateString('en-CA')}`
+        td.action: a.button(href=`/loans/${loan.id}/update`) Update
+
+        if !loan.returned_on
+          td.action: a.button(href=`/loans/${loan.id}/return`) Return
+                     
