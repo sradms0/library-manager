@@ -65,6 +65,16 @@ module.exports = class {
   }
 
   /**
+   * Navigates to /loans route containing pagination parameters
+   * @param {Browser} browser - zombie instance
+   * @param {object} params - contains query parameters to paginate from
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitPaginatedLoans(browser, { page, limit, query=null }) {
+    return this.visit(browser, `loans${query ? `/search?q=${query}&` : '?'}page=${page}&limit=${limit}`);
+  }
+
+  /**
    * Navigates to /patrons route containing pagination parameters
    * @param {Browser} browser - zombie instance
    * @param {object} params - contains query parameters to paginate from
