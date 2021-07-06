@@ -9,4 +9,8 @@ block header
 block content
   p: a(class='button' href='/loans/new') Create New Loan
   br
+
+  include ../includes/pagination
+  +paginate(page, totalPages, paginationRoot)
+
   include ./includes/table
