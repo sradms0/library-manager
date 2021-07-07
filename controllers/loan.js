@@ -64,7 +64,13 @@ exports.create = asyncHandler(async function(req, res) {
 /**
  * Deletes a loan
 */
-exports.delete = asyncHandler(async function(req, res) {});
+exports.delete = asyncHandler(async function(req, res) {
+  const { id } = req.params;
+  const loan = await loanService.readByPk(id);
+  assertFind(loan, 'Loan', id);
+  await loanService.delete(loan);
+  res.redirect('/loans');
+});
 
 /**
  * Reads all loans and renders all loans to '/views/loan/index'
