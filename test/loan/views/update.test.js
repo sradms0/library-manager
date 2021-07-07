@@ -87,6 +87,16 @@ describe('views.loan.update', () => {
     expect(urlRoute).to.equal(cancelAHrefRoute);
   });
 
+  it('it should have a delete link that brings the user to /loans/:id/delete', async () => {
+    const extractRoute = url => url.match(/\/loans\/\d+\/delete$/g);
+    const deleteA = browser.querySelector('a#delete');
+    await browser.clickLink(deleteA);
+
+    const [ deleteAHrefRoute ] = extractRoute(deleteA?.href),
+          [ urlRoute ] = extractRoute(browser.location._url);
+    expect(urlRoute).to.equal(deleteAHrefRoute);
+  });
+
   it('it should submit the form, updating the existing loan', async () => {
     const updatedCopy = { id, ...updated };
 
