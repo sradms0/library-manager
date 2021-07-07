@@ -62,6 +62,11 @@ exports.create = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Deletes a loan
+*/
+exports.delete = asyncHandler(async function(req, res) {});
+
+/**
  * Reads all loans and renders all loans to '/views/loan/index'
  *
 */
