@@ -157,6 +157,15 @@ module.exports = class {
   }
 
   /**
+   * Navigates to /loans/:id/delete route
+   * @param {Browser} browser - zombie instance
+   * @return {Promise} zombie.Browser.visit
+  */
+  static visitOneLoanDel(browser, id) {
+    return this.visit(browser, `loans/${id}/delete`);
+  }
+
+  /**
    * Navigates to /patrons/:id/delete route
    * @param {Browser} browser - zombie instance
    * @return {Promise} zombie.Browser.visit

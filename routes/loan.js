@@ -9,6 +9,12 @@ const router = express.Router();
 /* GET loans listing. */
 router.get('/', loanController.readAll);
 
+/* GET one loan for deletion. */
+router.get('/:id/delete', loanController.readDelete);
+
+/* POST loan for deletion. */
+router.post('/:id/delete', loanController.delete);
+
 /* GET one loan. */
 router.get('/:id/update', loanController.readByPk);
 
