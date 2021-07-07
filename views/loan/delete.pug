@@ -1,3 +1,21 @@
 extends ../layout.pug
 
 block content
+  - const { Book: {title}, Patron: {name}, loaned_on, return_by, returned_on } = dataValues;
+  h2=name
+  p 
+    | Are you sure you want to delete loan for 
+    em#patron-name=name
+    | ?
+  p Book: 
+    em#book-title=title
+  p Loaned On: 
+    em#loan-date=loaned_on
+  p Return By: 
+    em#return-by-date=return_by
+  p Returned On: 
+    em#returned-on-date=`${returned_on || 'N/A'}`
+  form(action=`/loans/${dataValues.id}/delete`, method="post")
+    a.button(href=`/loans/${dataValues.id}/update`) No! Take me back! 
+    | 
+    input(type="submit", value = "Yes, I'm sure")
