@@ -87,7 +87,12 @@ exports.readAll = asyncHandler(async function(req, res) {
  * Sets `res.status` to 404 when a loan is not found.
  *
 */
-exports.readDelete = asyncHandler(async function(req, res) {});
+exports.readDelete = asyncHandler(async function(req, res) {
+  const { id } = req.params;
+  const loan = await loanService.readByPk(id);
+  assertFind(loan, 'Loan', id);
+  res.render('loan/delete', { dataValues: loan });
+});
 
 /**
  * Reads a new loan, rendering '/views/loan/new'
