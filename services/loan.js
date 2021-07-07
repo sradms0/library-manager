@@ -17,6 +17,14 @@ exports.create = function(data) {
 }
 
 /**
+ * Delete one loan
+ * @param { object } - the loan instance to delete
+ * @returns { Promise }
+ *
+*/
+exports.delete = function(loan) {}
+
+/**
  * Read one loan by primary key
  * @param pk - the primary key of the loan to read
  * @returns { Promise }
