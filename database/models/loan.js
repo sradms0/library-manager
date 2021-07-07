@@ -100,7 +100,8 @@ module.exports = sequelize => {
           notEmpty: {msg: patron.notEmpty},
           notNull: {msg: patron.notNull}
         }
-      }
+      },
+      onDelete: 'CASCADE'
     });
   };
 
