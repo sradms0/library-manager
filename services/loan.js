@@ -22,7 +22,9 @@ exports.create = function(data) {
  * @returns { Promise }
  *
 */
-exports.delete = function(loan) {}
+exports.delete = function(loan) {
+  return loan.destroy();
+}
 
 /**
  * Read one loan by primary key
