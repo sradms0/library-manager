@@ -4,7 +4,7 @@
  * @module services/book
 */
 
-const { Book } = require('$database/models');
+const { Book, Patron, Loan } = require('$database/models');
 const { Op } = require('sequelize');
 
 /**
@@ -52,7 +52,10 @@ exports.readByAttrs = function({ query, limit, offset }={}) {
  *
 */
 exports.readByPk = function(pk) {
-  return Book.findByPk(pk);
+  return Book.findOne({ 
+    where: {id: pk},
+    include: {model: Loan, include: Patron}
+  });
 }
 
 /**
