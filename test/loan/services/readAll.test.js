@@ -42,7 +42,7 @@ describe('services.loan.readAll', () => {
           rawLoans = testOps.Data.loan,
           loanedBookIds = rawLoans.map(rl => rl.book_id),
           loanedBooks = [];
-    await asyncForEach(loanedBookIds, async id => loanedBooks.push( await bookService.readByPk(id) ));
+    await asyncForEach(loanedBookIds, async id => loanedBooks.push( await bookService.model.findByPk(id) ));
 
     dbLoans.forEach((loan, idx) => {
       const loanedBook = loanedBooks[idx];

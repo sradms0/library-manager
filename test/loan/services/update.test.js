@@ -31,7 +31,7 @@ describe('services.loan.update', () => {
   it('it should update one loan', async () => {
     const loan = await loanService.readByPk(1), { book_id } = loan;
     const updatedLoanData = await loanData(
-      { bookRead: bookService.readByPk, patronRead: patronService.readByPk }, 
+      { bookRead: id => bookService.model.findByPk(id), patronRead: patronService.readByPk }, 
       { set: {'id': loan.id} }
     );
 

@@ -59,7 +59,7 @@ describe('controllers.book.readByAttrs', () => {
       for (let i = 0; i < totalSimilar; i++) {
         // need to fetch after creation since ordering of attrs differ...
         const { id } = await bookService.create(nonUniqueData);
-        books.push( await bookService.readByPk(id) );
+        books.push( await bookService.model.findByPk(id) );
       }
     });
 

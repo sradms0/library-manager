@@ -42,7 +42,7 @@ describe('services.loan.readByPk', async () => {
     const { Book: book } = loan;
     const { id: bookId } = book;
 
-    const associatedBook = JSON.stringify(await bookService.readByPk(bookId));
+    const associatedBook = JSON.stringify(await bookService.model.findByPk(bookId));
     expect(associatedBook).to.equal(JSON.stringify(book));
   });
 

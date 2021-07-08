@@ -70,7 +70,7 @@ describe('services.book.readByAttrs', async () => {
       for (let i = 0; i < totalSimilar; i++) {
         // need to fetch after creation since ordering of attrs differ...
         const { id } = await bookService.create(nonUniqueData);
-        manyBooks.push( await bookService.readByPk(id) );
+        manyBooks.push( await bookService.model.findByPk(id) );
       }
     });
 
