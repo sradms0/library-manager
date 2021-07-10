@@ -54,7 +54,10 @@ exports.readByAttrs = function({ query, limit, offset }={}) {
 exports.readByPk = function(pk) {
   return Book.findOne({ 
     where: {id: pk},
-    include: {model: Loan, include: Patron}
+    include: {
+      model: Loan, 
+      include: [Book, Patron]
+    }
   });
 }
 
