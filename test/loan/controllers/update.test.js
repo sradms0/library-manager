@@ -43,7 +43,7 @@ describe('controllers.loan.update', () => {
 
     updated = await testOps.Data.loanData()({ 
       set: { book_id: book_id+1, patron_id: patron_id+1 },
-      bookRead: id => bookService.model.findByPk(id), patronRead: patronService.readByPk
+      bookRead: id => bookService.model.findByPk(id), patronRead: id => patronService.model.findByPk(id)
     });
     ({ loaned_on, returned_on, return_by, book_id, patron_id } = updated);
   });

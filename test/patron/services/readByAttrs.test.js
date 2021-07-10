@@ -70,7 +70,7 @@ describe('services.patron.readByAttrs', async () => {
       const totalSimilar = 5
       for (let i = 0; i < totalSimilar; i++) {
         const { id } = await patronService.create({ ...patronData(), ...nonUniqueData });
-        manyPatrons.push( await patronService.readByPk(id) );
+        manyPatrons.push( await patronService.model.findByPk(id) );
       }
       const { first_name, last_name } = nonUniqueData;
       nonUniqueData.name = `${first_name} ${last_name}`;

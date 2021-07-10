@@ -51,7 +51,7 @@ describe('services.loan.readByPk', async () => {
     const { Patron: patron } = loan;
     const { id: patronId } = patron;
 
-    const associatedPatron = JSON.stringify(await patronService.readByPk(patronId));
+    const associatedPatron = JSON.stringify(await patronService.model.findByPk(patronId));
     expect(associatedPatron).to.equal(JSON.stringify(patron));
   });
 
