@@ -27,7 +27,7 @@ describe('services.book.readByPk', async () => {
       }})).filter(({Loans}) => Loans.length)[0]);
 
     associatedLoans = await loanService.model.findAll({ 
-      where: {book_id: id}, include: patronService.model,
+      where: {book_id: id}, include: [bookService.model, patronService.model],
     });
   });
 
@@ -54,6 +54,13 @@ describe('services.book.readByPk', async () => {
     const { Loans: nestedLoans } = await bookService.readByPk(id);
     associatedLoans.forEach(({ Patron: {id: patronId} }, idx) => 
       expect(nestedLoans[idx].Patron.id).to.equal(patronId)
+    );
+  });
+
+  it('it should include associated loans with the nested associated book', async () => {
+    const { Loans: nestedLoans } = await bookService.readByPk(id);
+    associatedLoans.forEach(({ Book: {id: bookId} }, idx) => 
+      expect(nestedLoans[idx].Book.id).to.equal(bookId)
     );
   });
 });
