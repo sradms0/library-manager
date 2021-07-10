@@ -96,6 +96,6 @@ exports.update = asyncHandler(async function(req, res) {
 }, { 
   errorView: 'book/update', 
   model: bookService.model, 
-  addToBuild: async ({...args}) => 
-    ({Loans: (await bookService.readByPk(args.params.id)).Loans})
+  addToBuild: async ({ params: {id} }) => 
+    ({Loans: (await bookService.readByPk(id)).Loans})
 });
