@@ -64,12 +64,16 @@ describe('views.book.update.loan.history', async () => {
     Loans.forEach((loan, idx)=> {
       const { Book, Patron } = loan,
             loanTxt = tdTxt[idx];
+
       expect(
         loanTxt.tdBook === Book.title &&
         loanTxt.tdPatron === Patron.name &&
-        new Date(loan.loaned_on).toDateString() === new Date(loanTxt.tdLoanedOn).toDateString() &&
-        new Date(loan.return_by).toDateString() === new Date(loanTxt.tdReturnBy).toDateString() &&
-        new Date(loan.returned_on).toDateString() === new Date(loanTxt.tdReturnedOn).toDateString()
+        loan.loaned_on.toLocaleDateString('en-CA') === loanTxt.tdLoanedOn &&
+        loan.return_by.toLocaleDateString('en-CA') === loanTxt.tdReturnBy && (
+          loan.returned_on ? 
+            loan.returned_on.toLocaleDataString('en-CA') === loanTxt.tdReturnedOn :
+            true
+        )
       ).to.be.true;
     })
   });
