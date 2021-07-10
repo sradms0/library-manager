@@ -63,6 +63,13 @@ describe('controllers.patron.update', () => {
     const { messages: valMsgs } = testOps.Data.getModelValidationErrorMessages('patron'),
           { withoutVal, getValMsgs } = testOps.Validation;
 
+    const addLoansPostErrUpdate = (body, Loans) => ({ ...body, Loans });
+
+    let Loans;
+    before('', async () => {
+      ({ Loans } = await patronService.readByPk(id))
+    });
+
     it('it should call res.render with prev. data when only a first_name is given (from validation error)', async () => {
       const updatedCopy = { id, ...emptyPatron(), first_name: 'firstname' },
             errors = getValMsgs(withoutVal(valMsgs, { props: ['first_name'] }), 
@@ -70,7 +77,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: updatedCopy, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
     });
 
     it('it should call res.render with prev. data when only a last_name is given (from validation error)', async () => {
@@ -80,7 +87,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: updatedCopy, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
     });
 
     it('it should call res.render with prev. data when only an address is given (from validation error)', async () => {
@@ -90,7 +97,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: updatedCopy, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
     });
 
     it('it should call res.render with prev. data when only an email is given (from validation error)', async () => {
@@ -100,7 +107,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: updatedCopy, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
     });
 
     it('it should call res.render with prev. data when only an library_id is given (from validation error)', async () => {
@@ -110,7 +117,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: updatedCopy, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
     });
 
     it('it should call res.render with prev. data when only an zip_code is given (from validation error)', async () => {
@@ -120,7 +127,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: updatedCopy, params: {id} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: updatedCopy, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
     });
 
     it('it should call res.render with no prev. data when only all required fields are empty (from validation error)', async () => {
@@ -132,7 +139,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: updated, params: {id} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: updated, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(updated, Loans), errors });
     });
 
     it('it should call res.render with prev. data when a duplicate email is given (from validation error)', async () => {
@@ -147,7 +154,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: nextPatron, params: {id: nextId} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: nextPatron, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(nextPatron, Loans), errors });
     });
 
     it('it should call res.render with prev. data when a duplicate library_id is given (from validation error)', async () => {
@@ -162,7 +169,7 @@ describe('controllers.patron.update', () => {
             res = mockResponse(),
             req = mockRequest({ body: nextPatron, params: {id: nextId} });
       await patronController.update(req, res);
-      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: nextPatron, errors });
+      expect(res.render).to.have.been.calledWith('patron/update', { dataValues: addLoansPostErrUpdate(nextPatron, Loans), errors });
     });
   });
 });
