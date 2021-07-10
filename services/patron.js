@@ -4,7 +4,7 @@
  * @module services/patron
 */
 
-const { Patron, sequelize } = require('$database/models');
+const { Book, Loan, Patron, sequelize } = require('$database/models');
 const { Op } = require('sequelize');
 
 
@@ -68,7 +68,10 @@ exports.readByAttrs = function({ query, limit, offset }={}) {
  *
 */
 exports.readByPk = function(pk) {
-  return Patron.findByPk(pk);
+  return Patron.findOne({
+    where: {id: pk},
+    include: { model: Loan, include: [Book, Patron] }
+  });
 }
 
 /**
