@@ -93,4 +93,9 @@ exports.update = asyncHandler(async function(req, res) {
   assertFind(book, 'Book', id);
   await bookService.update(book, body);
   res.redirect('/books');
-}, { errorView: 'book/update', model: bookService.model });
+}, { 
+  errorView: 'book/update', 
+  model: bookService.model, 
+  addToBuild: async ({...args}) => 
+    ({Loans: (await bookService.readByPk(args.params.id)).Loans})
+});
