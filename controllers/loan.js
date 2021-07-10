@@ -24,7 +24,7 @@ const {
  * @param {number} associationIds.patron_id - associative id of loans patron.
  * @returns {object} the loans associated book and patron, and access to all books and patrons.
 */
-async function createUpdateValErrBuild({ book_id, patron_id }) { 
+async function createUpdateValErrBuild({ body: {book_id, patron_id} }) { 
   return {
     Book: book_id ? await bookService.readByPk(book_id) : null,
     Patron: patron_id ? await patronService.readByPk(patron_id) : null,
@@ -40,7 +40,7 @@ async function createUpdateValErrBuild({ book_id, patron_id }) {
  * @param {number} associationIds.patron_id - associative id of loans patron.
  * @returns {object} the loans associated book and patron.
  */
-async function returnValErrBuild({ book_id, patron_id }) {
+async function returnValErrBuild({ body: {book_id, patron_id} }) {
   return {
     Book: await bookService.readByPk(book_id),
     Patron: await patronService.readByPk(patron_id)
