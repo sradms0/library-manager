@@ -18,24 +18,26 @@ const { mockRequest, mockResponse } = require('mock-req-res')
 chai.use(require('sinon-chai'));
 
 
-describe('controllers.book.update', () => {
+describe('controllers.book.update', async () => {
   const { messages: {
     title: titleValMsgs, 
     author: authorValMsgs
   }} = testOps.Data.getModelValidationErrorMessages('book');
 
-  let updated, id;
+  const addLoansPostErrUpdate = (body, Loans) => ({ ...body, Loans });
 
-  beforeEach('reload', async () => {
-    await testOps.Data.loadTestDb('book');
-    id = 1;
+  let id = 1, Loans, updated;
+
+  beforeEach('', async () => {
+    await testOps.Data.loadTestDb();
+    ({ Loans } = await bookService.readByPk(id));
     updated =  {
       id: id,
       title: 'updated title', 
       author: 'updated author',
       genre: 'updated genre',
       year: 1,
-    }
+    };
   });
 
   it('it should throw an error when a non-existent book update is attempted', async() => {
@@ -51,7 +53,6 @@ describe('controllers.book.update', () => {
   it('it should update one book when all attributes are given', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: updated, params: {id} });
-
     await bookController.update(req, res);
     const updatedBook = (await bookService.readByPk(id))?.toJSON();
     Object.keys(updated).forEach(key => 
@@ -73,7 +74,7 @@ describe('controllers.book.update', () => {
           req = mockRequest({ body: updatedCopy, params: {id} });
 
     await bookController.update(req, res);
-    expect(res.render).to.have.been.calledWith('book/update', { dataValues: updatedCopy, errors });
+    expect(res.render).to.have.been.calledWith('book/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
   });
 
   it('it should call res.render with prev. data when only an author is given (from validation error)', async () => {
@@ -82,7 +83,7 @@ describe('controllers.book.update', () => {
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
     await bookController.update(req, res);
-    expect(res.render).to.have.been.calledWith('book/update', { dataValues: updatedCopy, errors });
+    expect(res.render).to.have.been.calledWith('book/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
   });
 
   it('it should call res.render with prev. data when neither title or author are given (from validation error)', async () => {
@@ -91,6 +92,6 @@ describe('controllers.book.update', () => {
           res = mockResponse(),
           req = mockRequest({ body: updatedCopy, params: {id} });
     await bookController.update(req, res);
-    expect(res.render).to.have.been.calledWith('book/update', { dataValues: updatedCopy, errors });
+    expect(res.render).to.have.been.calledWith('book/update', { dataValues: addLoansPostErrUpdate(updatedCopy, Loans), errors });
   });
 });
