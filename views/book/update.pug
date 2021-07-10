@@ -2,8 +2,13 @@ extends ../layout
 
 block content
   h1 Update Book
+
   include ./includes/form
   +createForm(`/books/${dataValues.id}/update`, dataValues, errors)
     p: input(type='submit' value='Update Book')
     p: a#delete(class='button' href=`/books/${dataValues.id}/delete`) Delete
     p: a#cancel(class='button' href='/books') Cancel
+
+  h2 Loan History
+  include ../loan/includes/table
+  +loanHistory(dataValues.Loans)
