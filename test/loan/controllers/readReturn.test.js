@@ -19,27 +19,35 @@ chai.use(require('sinon-chai'));
 
 
 describe('controllers.loan.readReturn', () => {
-  before('reload', async () => {
+  const nonReturnedId = 1, returnedId = 2;
+
+  before('reload and return one loan', async () => {
     await testOps.Data.loadTestDb();
+    const loanToReturn = await loanService.readByPk(returnedId);
+    await loanService.update(loanToReturn, { returned_on: new Date() });
   });
   
   it('it should render loan/return and pass one loan object', async () => {
     const res = mockResponse(),
-          id = 1,
-          req = mockRequest({ params: {id} }),
-          loan = await loanService.readByPk(id);
-
+          req = mockRequest({ params: {id: nonReturnedId} }),
+          loan = await loanService.readByPk(nonReturnedId);
     await loanController.readReturn(req, res);
     expect(res.render).to.have.been.calledWith('loan/return', { dataValues: loan });
   });
 
   it('it should throw an error when a non-existent loan is requested for return', async () => {
     const res = mockResponse(),
-          id = -1,
-          req = mockRequest({ params: {id} }),
-          loan = await loanService.readByPk(id);
-
+          badId = -1,
+          req = mockRequest({ params: {id: badId} });
     expect(await loanController.readReturn(req, res, err => err.message))
-      .to.equal(`Loan with id ${id} does not exist`);
+      .to.equal(`Loan with id ${badId} does not exist`);
+  });
+
+  it('it should throw an error when a loan has already been returned', async () => {
+    const res = mockResponse(),
+          req = mockRequest({ params: {id: returnedId} }),
+          { returned_on } = await loanService.readByPk(returnedId);
+    expect(await loanController.readReturn(req, res, err => err.message))
+      .to.equal(`Loan with id ${returnedId} has been returned on ${returned_on}`);
   });
 });
