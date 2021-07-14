@@ -33,10 +33,6 @@ describe('controllers.loan.return', () => {
       book_id, 
       patron_id;
 
-  before('reload', async () => {
-    await testOps.Data.loadTestDb();
-  });
-
   beforeEach('start server', async () => {
     await testOps.Data.loadTestDb();
     const { id: _ } = await loanService.model.findOne({ where: {returned_on: null} });
@@ -51,6 +47,18 @@ describe('controllers.loan.return', () => {
 
     expect(await loanController.return(req, res, err => err.message))
       .to.equal(`Loan with id ${badId} does not exist`);
+  });
+
+  it('it should throw an error when a loan has already been returned', async () => {
+    const toReturn = await loanService.model.findOne({ where: {returned_on: null} });
+    await loanService.update(toReturn, { returned_on: new Date() });
+    const { id: returnedId } = toReturn;
+
+    const res = mockResponse(),
+          req = mockRequest({ params: {id: returnedId} }),
+          { returned_on } = await loanService.readByPk(returnedId);
+    expect(await loanController.return(req, res, err => err.message))
+      .to.equal(`Loan with id ${returnedId} has been returned on ${returned_on}`);
   });
 
   it('it should return the loan when a return_by date is given', async () => {
