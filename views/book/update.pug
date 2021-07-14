@@ -7,7 +7,7 @@ block content
   +createForm(`/books/${dataValues.id}/update`, dataValues, errors)
     p: input(type='submit' value='Update Book')
     p: a#delete(class='button' href=`/books/${dataValues.id}/delete`) Delete
-    p: a#cancel(class='button' href='/books') Cancel
+    p: a#cancel(class='button' href='/books?page=1&limit=10') Cancel
 
   h2 Loan History
   include ../loan/includes/table
