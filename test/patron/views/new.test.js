@@ -82,8 +82,8 @@ describe('views.patron.new', () => {
     expect(newPatronTitle).to.eql('newfirst newlast');
   });
 
-  it('it should have a cancel link that brings the user back to /patrons', async () => {
-    const extractRoute = url => url.match(/\/patrons$/g);
+  it('it should have a cancel link that brings the user back to /patrons?page=1&limit=10', async () => {
+    const extractRoute = url => url.match(/\/patrons\?page=1&limit=10$/g);
     await testOps.Route.visitNewPatron(browser);
     const cancelA = browser.querySelector('a.button');
     await browser.clickLink(cancelA);
