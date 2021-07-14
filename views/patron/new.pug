@@ -5,5 +5,5 @@ block content
   include ./includes/form
   +createForm(`/patrons/new`, dataValues, errors)
     p: input(type='submit' value='Create Patron')
-    p: a(class='button' href='/patrons') Cancel
+    p: a(class='button' href='/patrons?page=1&limit=10') Cancel
 
