@@ -17,11 +17,15 @@ describe('views.book.new', () => {
   const browser = new Browser();
   let requester;
 
-  beforeEach('reload', async () => {
+  before('reload', async () => {
+    await testOps.Data.loadTestDb();
+  });
+
+  beforeEach('start server', async () => {
     requester = await chai.request(server).keepOpen();
   });
 
-  afterEach('close', () => {
+  afterEach('end server', () => {
     requester.close();
   });
 
