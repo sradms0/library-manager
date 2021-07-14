@@ -77,4 +77,28 @@ describe('views.manager.index', () => {
     });
   })
 
+  describe('loan links', () => {
+    it('it should have a link to /loans?page=1&limit=10', async () => {
+      const extractRoute = url => url?.match(/\/loans\?page=1&limit=10/g);
+      const allLoansA = browser.querySelector('#all-loans'),
+            [ allLoansARoute ] = extractRoute(allLoansA.href);
+
+      await browser.clickLink(allLoansA);
+      const [ urlRoute ] = extractRoute(browser.location._url);
+
+      expect(allLoansARoute).to.equal(urlRoute);
+    });
+
+    it('it should have a link to /loans/new', async () => {
+      const extractRoute = url => url?.match(/\/loans\/new/g);
+      const newLoanA = browser.querySelector('#new-loan'),
+            [ newLoanAHref ] = extractRoute(newLoanA.href);
+
+      await browser.clickLink(newLoanA);
+      const [ urlRoute ] = extractRoute(browser.location._url);
+
+      expect(newLoanAHref).to.equal(urlRoute);
+    });
+  });
+
 });
