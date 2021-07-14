@@ -5,4 +5,4 @@ block content
   include ./includes/form
   +createForm('/books/new', dataValues, errors)
     p: input(type='submit' value='Create Book')
-    p: a(class='button' href='/books') Cancel
+    p: a(class='button' href='/books?page=1&limit=10') Cancel
