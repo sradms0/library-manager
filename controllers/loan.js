@@ -164,6 +164,7 @@ exports.return = asyncHandler(async function(req, res) {
   const { id } = req.params, { body } = req;
   const loan = await loanService.readByPk(id);
   assertFind(loan, 'Loan', id);
+  assertLoanReturn(loan);
   await loanService.update(loan, body);
   res.redirect('/loans');
 }, { 
