@@ -11,7 +11,7 @@ const {
 } = require('$services');
 
 const { 
-  errorHandling: {assertFind, asyncHandler},
+  errorHandling: {assertFind, assertLoanReturn, asyncHandler},
   pagination: {assertParams, readDataAndCreateRenderConf}
 } = require('$root/lib');
 
@@ -138,6 +138,7 @@ exports.readReturn = asyncHandler(async function(req, res) {
   const { id } = req.params;
   const loan = await loanService.readByPk(id);
   assertFind(loan, 'Loan', id);
+  assertLoanReturn(loan)
   res.render('loan/return', { dataValues: loan });
 });
 
