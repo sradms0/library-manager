@@ -75,8 +75,8 @@ describe('views.book.new', () => {
     expect(newBookTitle).to.eql('new title');
   });
 
-  it('it should have a cancel link that brings the user back to /books', async () => {
-    const extractRoute = url => url.match(/\/books$/g);
+  it('it should have a cancel link that brings the user back to /books?page=1&limit=10', async () => {
+    const extractRoute = url => url?.match(/\/books\?page=1&limit=10/g);
     await testOps.Route.visitNewBook(browser);
     const cancelA = browser.querySelector('a.button');
     await browser.clickLink(cancelA);
