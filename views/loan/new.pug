@@ -10,4 +10,4 @@ block content
   include ./includes/form
   +createForm('/loans/new', dataValues, errors)
     p: input(type='submit' value='Create Loan')
-    p: a#cancel(class='button' href='/loans') Cancel
+    p: a#cancel(class='button' href='/loans?page=1&limit=10') Cancel
