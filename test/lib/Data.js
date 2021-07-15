@@ -195,6 +195,25 @@ module.exports = class {
     return loans;
   }
 
+  /** 
+   * Add loans to a specific patron, each with a different book.
+   * Enough books should exist beforehand.
+   * @param {function} creator - the function to add loan data with.
+   * @param {number} patronId - the patron id to associate a loan with.
+   * @param {number} bookIdStart - the starting id of a book-id range.
+   * @param {number} total - the amount of loans to add.
+   * @returns {object} an array of loans.
+  */
+  static async addLoansToPatron(creator, patronId, bookIdStart, total) {
+    const _loanData = this.loanData(),
+          loans = [];
+    for (let i = 0; i < total; i++) {
+      const loanData = await _loanData({ set: { patron_id: patronId, book_id: bookIdStart++ }});
+      loans.push(await creator(loanData));
+    }
+    return loans;
+  }
+
   static patronData() {
     let counter = 1;
     return ({ prop=null, allProps=false, val=null, del=false, pause=false }={}) => {
