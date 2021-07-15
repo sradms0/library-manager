@@ -8,3 +8,7 @@ block content
     p: a#delete(class='button' href=`/patrons/${dataValues.id}/delete`) Delete
     p: a#cancel(class='button' href='/patrons?page=1&limit=10') Cancel
 
+  h2 Loan History
+  include ../loan/includes/table
+  +loanHistory(dataValues.Loans)
+
