@@ -157,9 +157,10 @@ module.exports = class {
    * @param {function} bookCreator - the function to add book data with
    * @param {function} patronCreator - the function to add patron data with
    * @param {number} total - the amount of loans to add
+   * @param {object=} [loanDataSetter] - optional new-loan property configuration setter.
    * @returns {object} an array of loans.
   */
-  static async addLoans(creator, bookCreator, patronCreator, total) {
+  static async addLoans(creator, bookCreator, patronCreator, total, loanDataSetter={}) {
     const _loanData = this.loanData();
 
     const books = await this.addBooks(bookCreator, total),
@@ -169,7 +170,7 @@ module.exports = class {
     for (let i = 0; i < total; i++) {
       const { id: book_id } = books[i]; 
       const { id: patron_id } = patrons[i];
-      const loanData = await _loanData({ set: {book_id, patron_id} });
+      const loanData = await _loanData({ set: {book_id, patron_id, ...loanDataSetter} });
       loans.push(await creator(loanData));
     }
 

@@ -74,6 +74,18 @@ exports.readAll = function({ limit, offset }={}) {
 }
 
 /**
+ * Read overdue books.
+ * @param { object } [config] - configuration for book reading.
+ * @param { number } config.limit - the amount of overdue books to read.
+ * @param { number } config.offset - where the overdue book-reading should begin.
+ * @returns { Promise }
+ *
+*/
+exports.readOverdue = function({ limit, offset }={}) {
+  return { count: 0, rows: 0 };
+}
+
+/**
  * Updates one book
  * @param { Book } book - the book instance to update.
  * @param { Object } data - the data to update the book instance with.
