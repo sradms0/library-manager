@@ -82,7 +82,14 @@ exports.readAll = function({ limit, offset }={}) {
  *
 */
 exports.readOverdue = function({ limit, offset }={}) {
-  return { count: 0, rows: 0 };
+  const where = { 
+    [Op.and]: [
+      { '$Loans.returned_on$': null },
+      { '$Loans.return_by$': { [Op.lt]: new Date() } }
+    ]
+  }, include = { model: Loan }
+
+  return Book.findAndCountAll({ where, include, limit, offset, subQuery: false });
 }
 
 /**
