@@ -81,7 +81,10 @@ exports.readAll = function({ limit, offset }={}) {
  * @returns { Promise }
  *
 */
-exports.readCheckedOut = function({ limit, offset }={}) {}
+exports.readCheckedOut = function({ limit, offset }={}) {
+  const where = { '$Loans.returned_on$': null }, include = { model: Loan }
+  return Book.findAndCountAll({ where, include, limit, offset, subQuery: false });
+}
 
 /**
  * Read overdue books.
