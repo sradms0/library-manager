@@ -4,6 +4,7 @@ process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
 const { testOperations: testOps } = require('$test/lib');
+const { asyncUtil: {asyncForEach} } = require('$root/lib');
 const { expect } = chai;
 
 const { 
@@ -17,24 +18,28 @@ const {
 describe('services.book.readCheckedOut', () => {
   const { Op } = require('sequelize');
 
-  const where = { '$Loans.returned_on$': null }, include = { model: loanService.model };
+  const where = { 
+    [Op.and]: [
+      { [Op.not]: {'$Loans.book_id$': null} },
+      { '$Loans.returned_on$': null }        
+    ]
+  }, include = { model: loanService.model };
 
   let checkedOut;
 
   before('reload', async () => {
     await testOps.Data.loadTestDb('book');
 
-    const { Data: {getFutureOrPastDate: fOP} } = testOps,
-          today = new Date();
-
+    // create loans, but return some
     await testOps.Data.addLoans(
       loanService.create, 
       bookService.create, 
       patronService.create,
-      20, { 
-        loaned_on: fOP(today, -2),
-        return_by: fOP(today, -1)
-      }
+      20
+    );
+    const { rows: dbLoans } = await loanService.readAll({ limit: 10, offset: 1 });
+    asyncForEach(dbLoans, async loan => 
+      await loanService.update(loan, { returned_on: today })
     );
     checkedOut = await bookService.model.findAll({ where, include });
   });

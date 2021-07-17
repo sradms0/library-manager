@@ -82,7 +82,13 @@ exports.readAll = function({ limit, offset }={}) {
  *
 */
 exports.readCheckedOut = function({ limit, offset }={}) {
-  const where = { '$Loans.returned_on$': null }, include = { model: Loan }
+  const where = { 
+    [Op.and]: [
+      { [Op.not]: {'$Loans.book_id$': null} },
+      { '$Loans.returned_on$': null }        
+    ]
+  }, include = { model: Loan };
+   
   return Book.findAndCountAll({ where, include, limit, offset, subQuery: false });
 }
 
