@@ -55,7 +55,11 @@ exports.readByAttrs = asyncHandler(async function(req, res) {
  * Reads all overdue books and renders all books to '/views/book/index'
  *
 */
-exports.readOverdue = asyncHandler(async function(req, res) {});
+exports.readOverdue = asyncHandler(async function(req, res) {
+  assertParams('books/overdue', res, req);
+  const renderConf = await readDataAndCreateRenderConf('books', bookService.readOverdue, req, '/books/overdue?');
+  res.render('book/index', renderConf);
+});
 
 /**
  * Reads one book by primary key and renders book to '/views/book/update-book' for deletion confirmation.
