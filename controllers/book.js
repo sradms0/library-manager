@@ -52,6 +52,12 @@ exports.readByAttrs = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads all checked-out books and renders books to '/views/book/index'
+ *
+*/
+exports.readCheckedOut = asyncHandler(async function(req, res) {});
+
+/**
  * Reads all overdue books and renders all books to '/views/book/index'
  *
 */
