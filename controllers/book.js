@@ -52,6 +52,12 @@ exports.readByAttrs = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads all overdue books and renders all books to '/views/book/index'
+ *
+*/
+exports.readOverdue = asyncHandler(async function(req, res) {});
+
+/**
  * Reads one book by primary key and renders book to '/views/book/update-book' for deletion confirmation.
  * Sets `res.status` to 404 when a book is not found.
  *
