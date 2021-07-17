@@ -9,6 +9,9 @@ const router = express.Router();
 /* GET books listing. */
 router.get('/', bookController.readAll);
 
+/* GET checked out books listing. */
+router.get('/checked-out', bookController.readCheckedOut);
+
 /* GET one book for deletion. */
 router.get('/:id/delete', bookController.readDelete);
 
@@ -26,9 +29,6 @@ router.get('/new', bookController.readNew);
 
 /* POST one book. */
 router.post('/new', bookController.create);
-
-/* GET overdue books listing. */
-router.get('/overdue', bookController.readOverdue);
 
 /* GET searched books. */
 router.get('/search', bookController.readByAttrs);
