@@ -74,6 +74,16 @@ exports.readAll = function({ limit, offset }={}) {
 }
 
 /**
+ * Read checked out books.
+ * @param { object } [config] - configuration for book reading.
+ * @param { number } config.limit - the amount of checked out books to read.
+ * @param { number } config.offset - where the checked out book-reading should begin.
+ * @returns { Promise }
+ *
+*/
+exports.readCheckedOut = function({ limit, offset }={}) {}
+
+/**
  * Read overdue books.
  * @param { object } [config] - configuration for book reading.
  * @param { number } config.limit - the amount of overdue books to read.
