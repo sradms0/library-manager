@@ -83,6 +83,12 @@ exports.readAll = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads all checked-out loans and renders all checked-out loans to '/views/loan/index'
+ *
+*/
+exports.readCheckedOut = asyncHandler(async function(req, res) {});
+
+/**
  * Reads one loan by primary key and renders loan to '/views/loan/delete' for deletion confirmation.
  * Sets `res.status` to 404 when a loan is not found.
  *
