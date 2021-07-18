@@ -5,6 +5,7 @@
 */
 
 const { Book, Loan, Patron } = require('$database/models');
+const { Op: {and, lt} } = require('sequelize');
 
 /**
  * Create one loan
@@ -55,7 +56,16 @@ exports.readAll = function({ limit, offset }={}) {
  * @returns { Promise }
  *
 */
-exports.readOverdue = function({ limit, offset }={}) {}
+exports.readOverdue = function({ limit, offset }={}) {
+  const where = {
+    [and]: [
+      { returned_on: null },
+      { return_by: { [lt]: new Date() } }
+    ]
+  }, include = { model: Book };
+
+  return Loan.findAndCountAll({ where, include, limit, offset, subQuery: false });
+}
 
 /**
  * Updates one loan
