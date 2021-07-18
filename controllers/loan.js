@@ -88,7 +88,7 @@ exports.readAll = asyncHandler(async function(req, res) {
 */
 exports.readCheckedOut = asyncHandler(async function(req, res) {
   assertParams('loans/checked-out', res, req);
-  const renderConf = await readDataAndCreateRenderConf('loans', loanService.readAll, req, '/loans/checked-out?');
+  const renderConf = await readDataAndCreateRenderConf('loans', loanService.readCheckedOut, req, '/loans/checked-out?');
   res.render('loan/index', renderConf);
 });
 
