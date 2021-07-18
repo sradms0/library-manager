@@ -33,7 +33,7 @@ module.exports = class {
    * @return {Promise} zombie.Browser.visit
   */
   static visitBooks(browser) {
-   return this.visit(browser, 'books');
+    return this.visit(browser, 'books/all');
   }
 
   /**
@@ -61,7 +61,7 @@ module.exports = class {
    * @return {Promise} zombie.Browser.visit
   */
   static visitPaginatedBooks(browser, { page, limit, query=null }) {
-    return this.visit(browser, `books${query ? `/search?q=${query}&` : '?'}page=${page}&limit=${limit}`);
+    return this.visit(browser, `books${query ? `/search?q=${query}&` : '/all?'}page=${page}&limit=${limit}`);
   }
 
   /**

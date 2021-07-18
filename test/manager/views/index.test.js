@@ -30,8 +30,8 @@ describe('views.manager.index', () => {
   });
 
   describe('book links', () => {
-    it('it should have a link to /books?page=1&limit=10', async () => {
-      const extractRoute = url => url?.match(/\/books\?page=1&limit=10/g);
+    it('it should have a link to /books/all?page=1&limit=10', async () => {
+      const extractRoute = url => url?.match(/\/books\/all\?page=1&limit=10/g);
       const allBooksA = browser.querySelector('#all-books'),
             [ allBooksARoute ] = extractRoute(allBooksA.href);
 

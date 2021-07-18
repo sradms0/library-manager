@@ -54,10 +54,11 @@ describe('controllers.book.readCheckedOut', () => {
     const totalPages = Math.ceil(count/limit);
     await bookController.readCheckedOut(req, res);
 
+    
     const [args] = res.render.args,
           [template, { 
             books: rBooks, 
-            paginationRoot, 
+            paginationRoot: rPaginationRoot, 
             page: rPage, 
             limit: rLimit, 
             totalPages: rTotalPages 
@@ -67,6 +68,7 @@ describe('controllers.book.readCheckedOut', () => {
       rPage === page && 
       rLimit === limit && 
       rTotalPages === totalPages && 
+      rPaginationRoot === '/books/checked-out?' &&
       rBooks.length === books.length &&
       books.every((book, idx) => book.title === rBooks[idx].title);
 

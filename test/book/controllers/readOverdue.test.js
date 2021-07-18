@@ -67,6 +67,7 @@ describe('controllers.book.readOverdue', () => {
       rPage === page && 
       rLimit === limit && 
       rTotalPages === totalPages && 
+      rPaginationRoot === '/books/overdue?' &&
       rBooks.length === books.length &&
       books.every((book, idx) => book.title === rBooks[idx].title);
 

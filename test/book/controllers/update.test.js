@@ -64,7 +64,7 @@ describe('controllers.book.update', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: updated, params: {id} });
     await bookController.update(req, res);
-    expect(res.redirect).to.have.been.calledWith('/books');
+    expect(res.redirect).to.have.been.calledWith('/books/all');
   })
 
   it('it should call res.render with prev. data when only a title is given (from validation error)', async () => {

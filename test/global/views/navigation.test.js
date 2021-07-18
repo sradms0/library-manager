@@ -16,13 +16,13 @@ describe('views.navigation', () => {
   const browser = new Browser();
   let requester;
 
-  const extractAllBooksRoute = url => url?.match(/\/books\?page=1&limit=10/g),
+  const extractAllBooksRoute = url => url?.match(/\/books\/all\?page=1&limit=10/g),
         extractAllPatronsRoute = url => url?.match(/\/patrons\?page=1&limit=10/g),
         extractAllLoansRoute = url => url?.match(/\/loans\?page=1&limit=10/g);
 
   const routes = [
     '',
-    'books',
+    'books/all',
     'books/new',
     'books/1/update',
     'books/1/delete',
@@ -37,7 +37,7 @@ describe('views.navigation', () => {
         navData = [{
           name: 'all books',
           extractor: extractAllBooksRoute, 
-          href: `/books?${pagination}`, 
+          href: `/books/all?${pagination}`, 
           id: '#nav-all-books', 
         },{
           name: 'all patrons',

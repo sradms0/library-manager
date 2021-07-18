@@ -51,8 +51,8 @@ describe('views.book.update', () => {
     expect(submitI).to.not.be.null;
   });
 
-  it('it should have a cancel link that brings the user back to /books?page=1&limit=10', async () => {
-    const extractRoute = url => url.match(/\/books\?page=1&limit=10$/g);
+  it('it should have a cancel link that brings the user back to /books/all?page=1&limit=10', async () => {
+    const extractRoute = url => url.match(/\/books\/all\?page=1&limit=10$/g);
     const cancelA = browser.querySelector('a#cancel');
     await browser.clickLink(cancelA);
 

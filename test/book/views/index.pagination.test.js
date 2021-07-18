@@ -53,8 +53,8 @@ describe('views.book.index.pagination', () => {
     expect(paginationUl?.childElementCount).to.equal(Math.ceil(totalBooks/limit));
   });
 
-  it('it should direct the user to /books?page={page+1}&limit={limit} when clicking on a pagination link under non-searced data', async () => {
-    const extractRoute = url => url?.match(/\/books\?page=\d+&limit=\d+$/g);
+  it('it should direct the user to /books/all?page={page+1}&limit={limit} when clicking on a pagination link under non-searced data', async () => {
+    const extractRoute = url => url?.match(/\/books\/all\?page=\d+&limit=\d+$/g);
 
     let nextPage = page+1
     const { rows: pagedBookData, count: totalBooks } = await bookService.readAll({ limit, offset: page });

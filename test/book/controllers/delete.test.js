@@ -46,6 +46,6 @@ describe('controllers.book.delete', () => {
     const res = mockResponse(),
           req = mockRequest({ params: {id} });
     await bookController.delete(req, res);
-    expect(res.redirect).to.have.been.calledWith('/books');
+    expect(res.redirect).to.have.been.calledWith('/books/all');
   });
 });
