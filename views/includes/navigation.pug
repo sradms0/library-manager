@@ -1,6 +1,6 @@
 nav
   ul
     - const pagination = 'page=1&limit=10'
-    li: a#nav-all-books(href=`/books?${pagination}`) Books 
+    li: a#nav-all-books(href=`/books/all?${pagination}`) Books 
     li: a#nav-all-loans(href=`/loans?${pagination}`) Loans
     li: a#nav-all-patrons(href=`/patrons?${pagination}`) Patrons 

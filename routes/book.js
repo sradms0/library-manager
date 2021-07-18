@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 /* GET books listing. */
-router.get('/', bookController.readAll);
+router.get('/all', bookController.readAll);
 
 /* GET checked out books listing. */
 router.get('/checked-out', bookController.readCheckedOut);

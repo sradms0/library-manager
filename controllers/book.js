@@ -16,7 +16,7 @@ const {
 exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
   await bookService.create(body);
-  res.redirect('/books');
+  res.redirect('/books/all');
 }, { errorView: 'book/new', model: bookService.model });
 
 /**
@@ -27,7 +27,7 @@ exports.delete = asyncHandler(async function(req, res) {
   const book = await bookService.readByPk(id);
   assertFind(book, 'Book', id);
   await bookService.delete(book);
-  res.redirect('/books');
+  res.redirect('/books/all');
 });
 
 /**
@@ -35,8 +35,8 @@ exports.delete = asyncHandler(async function(req, res) {
  *
 */
 exports.readAll = asyncHandler(async function(req, res) {
-  assertParams('books', res, req);
-  const renderConf = await readDataAndCreateRenderConf('books', bookService.readAll, req, '/books?');
+  assertParams('books/all', res, req);
+  const renderConf = await readDataAndCreateRenderConf('books', bookService.readAll, req, '/books/all?');
   res.render('book/index', renderConf);
 });
 
@@ -112,7 +112,7 @@ exports.update = asyncHandler(async function(req, res) {
   const book = await bookService.readByPk(id);
   assertFind(book, 'Book', id);
   await bookService.update(book, body);
-  res.redirect('/books');
+  res.redirect('/books/all');
 }, { 
   errorView: 'book/update', 
   model: bookService.model, 
