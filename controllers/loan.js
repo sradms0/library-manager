@@ -113,6 +113,12 @@ exports.readNew = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads all overdue loans and renders all loans to '/views/loan/index'
+ *
+*/
+exports.readOverdue = asyncHandler(async function(req, res) {});
+
+/**
  * Reads one loan by primary key and renders loan to '/views/loan/update'.
  * Sets `res.status` to 404 when a loan is not found.
  *
