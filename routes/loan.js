@@ -9,6 +9,9 @@ const router = express.Router();
 /* GET loans listing. */
 router.get('/', loanController.readAll);
 
+/* GET checked-out loans listing. */
+router.get('/checked-out', loanController.readCheckedOut);
+
 /* GET one loan for deletion. */
 router.get('/:id/delete', loanController.readDelete);
 
