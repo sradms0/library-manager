@@ -116,7 +116,11 @@ exports.readNew = asyncHandler(async function(req, res) {
  * Reads all overdue loans and renders all loans to '/views/loan/index'
  *
 */
-exports.readOverdue = asyncHandler(async function(req, res) {});
+exports.readOverdue = asyncHandler(async function(req, res) {
+  assertParams('loans/overdue', res, req);
+  const renderConf = await readDataAndCreateRenderConf('loans', loanService.readOverdue, req, '/loans/overdue?');
+  res.render('loan/index', renderConf);
+});
 
 /**
  * Reads one loan by primary key and renders loan to '/views/loan/update'.
