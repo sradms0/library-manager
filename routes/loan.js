@@ -15,6 +15,12 @@ router.get('/:id/delete', loanController.readDelete);
 /* POST loan for deletion. */
 router.post('/:id/delete', loanController.delete);
 
+/* GET one unreturned loan. */
+router.get('/:id/return', loanController.readReturn);
+
+/* POST update existing loan. */
+router.post('/:id/return', loanController.return);
+
 /* GET one loan. */
 router.get('/:id/update', loanController.readByPk);
 
@@ -27,10 +33,7 @@ router.get('/new', loanController.readNew);
 /* POST one loan. */
 router.post('/new', loanController.create);
 
-/* GET one unreturned loan. */
-router.get('/:id/return', loanController.readReturn);
-
-/* POST update existing loan. */
-router.post('/:id/return', loanController.return);
+/* GET overdue loans listing. */
+router.get('/overdue', loanController.readOverdue);
 
 module.exports = router;
