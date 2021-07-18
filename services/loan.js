@@ -56,7 +56,11 @@ exports.readAll = function({ limit, offset }={}) {
  * @returns { Promise }
  *
 */
-exports.readCheckedOut = function({ limit, offset }={}) {}
+exports.readCheckedOut = function({ limit, offset }={}) {
+  const where = { returned_on: null }, 
+        include = [ Book, Patron ];
+  return Loan.findAndCountAll({ where, include, limit, offset, subQuery: false });
+}
 
 /**
  * Read overdue loans.
