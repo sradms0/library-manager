@@ -49,6 +49,16 @@ exports.readAll = function({ limit, offset }={}) {
 };
 
 /**
+ * Read checked-out loans.
+ * @param { object } [config] - configuration for loan reading.
+ * @param { number } config.limit - the amount of checked-out loans to read.
+ * @param { number } config.offset - where the checked-out loan-reading should begin.
+ * @returns { Promise }
+ *
+*/
+exports.readCheckedOut = function({ limit, offset }={}) {}
+
+/**
  * Read overdue loans.
  * @param { object } [config] - configuration for loan reading.
  * @param { number } config.limit - the amount of overdue loans to read.
