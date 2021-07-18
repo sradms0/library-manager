@@ -48,6 +48,16 @@ exports.readAll = function({ limit, offset }={}) {
 };
 
 /**
+ * Read overdue loans.
+ * @param { object } [config] - configuration for loan reading.
+ * @param { number } config.limit - the amount of overdue loans to read.
+ * @param { number } config.offset - where the overdue loan-reading should begin.
+ * @returns { Promise }
+ *
+*/
+exports.readOverdue = function({ limit, offset }={}) {}
+
+/**
  * Updates one loan
  * @param { object } loan - the loan instance to update.
  * @param { object } data - the data to update the loan instance with.
