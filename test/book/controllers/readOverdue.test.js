@@ -57,7 +57,7 @@ describe('controllers.book.readOverdue', () => {
     const [args] = res.render.args,
           [template, { 
             books: rBooks, 
-            paginationRoot, 
+            paginationRoot: rPaginationRoot, 
             page: rPage, 
             limit: rLimit, 
             totalPages: rTotalPages 
