@@ -62,7 +62,7 @@ exports.readOverdue = function({ limit, offset }={}) {
       { returned_on: null },
       { return_by: { [lt]: new Date() } }
     ]
-  }, include = { model: Book };
+  }, include = [ Book, Patron ];
 
   return Loan.findAndCountAll({ where, include, limit, offset, subQuery: false });
 }
