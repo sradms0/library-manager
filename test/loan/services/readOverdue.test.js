@@ -21,7 +21,7 @@ describe('services.loan.readOverdue', () => {
     [Op.and]: [
       { returned_on: null },
       { return_by: { [Op.lt]: new Date() } }
-    ]}, include = { model: bookService.model };
+    ]}, include = [ bookService.model, patronService.model ];
 
   let overdue;
 
@@ -63,6 +63,26 @@ describe('services.loan.readOverdue', () => {
     const matched = overdueLoanCount === expectedOverdueLoans.length && 
                     expectedOverdueLoans.every((eOB, idx) => eOB.title === overdueLoans[idx].title);
     expect(matched).to.be.true;
+  });
+
+  it('it should return all overdue loans from the database, each loan containing associated book data', async () => {
+    const { count: overdueLoanCount, rows: overdueLoans} = await loanService.readOverdue(),
+          expectedOverdueLoans = await loanService.model.findAll({ where, include });
+
+    expectedOverdueLoans.forEach((loan, idx) => {
+      const loanedBook = overdueLoans[idx].Book;
+      expect(JSON.stringify(loan?.Book)).to.equal(JSON.stringify(loanedBook));
+    });
+  });
+
+  it('it should return all loans from the database, each loan containing associated patron data', async () => {
+    const { count: overdueLoanCount, rows: overdueLoans} = await loanService.readOverdue(),
+          expectedOverdueLoans = await loanService.model.findAll({ where, include });
+
+    expectedOverdueLoans.forEach((loan, idx) => {
+      const loanedPatron = overdueLoans[idx].Patron;
+      expect(JSON.stringify(loan?.Patron)).to.equal(JSON.stringify(loanedPatron));
+    });
   });
 
   describe('limit and offset', async () => {
