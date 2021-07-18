@@ -86,7 +86,11 @@ exports.readAll = asyncHandler(async function(req, res) {
  * Reads all checked-out loans and renders all checked-out loans to '/views/loan/index'
  *
 */
-exports.readCheckedOut = asyncHandler(async function(req, res) {});
+exports.readCheckedOut = asyncHandler(async function(req, res) {
+  assertParams('loans/checked-out', res, req);
+  const renderConf = await readDataAndCreateRenderConf('loans', loanService.readAll, req, '/loans/checked-out?');
+  res.render('loan/index', renderConf);
+});
 
 /**
  * Reads one loan by primary key and renders loan to '/views/loan/delete' for deletion confirmation.
