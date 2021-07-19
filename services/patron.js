@@ -5,7 +5,7 @@
 */
 
 const { Book, Loan, Patron, sequelize } = require('$database/models');
-const { Op } = require('sequelize');
+const { Op: {and, lt, like, or} } = require('sequelize');
 
 
 /**
@@ -48,14 +48,14 @@ exports.readAll = function({ limit, offset }={}) {
 */
 exports.readByAttrs = function({ query, limit, offset }={}) {
   const where = {
-    [Op.or]: [ 
+    [or]: [ 
       sequelize.literal(`first_name || " " || last_name LIKE "${query}"`),
-      {first_name: { [Op.like]: `%${query}%` }},
-      {last_name:  { [Op.like]: `%${query}%` }},
-      {email:      { [Op.like]: `%${query}%` }},
-      {address:    { [Op.like]: `%${query}%` }},
-      {zip_code:   { [Op.like]: `%${query}%` }},
-      {library_id: { [Op.like]: `%${query}%` }},
+      {first_name: { [like]: `%${query}%` }},
+      {last_name:  { [like]: `%${query}%` }},
+      {email:      { [like]: `%${query}%` }},
+      {address:    { [like]: `%${query}%` }},
+      {zip_code:   { [like]: `%${query}%` }},
+      {library_id: { [like]: `%${query}%` }},
     ]
   };
   return Patron.findAndCountAll({ where, limit, offset });
@@ -82,7 +82,16 @@ exports.readByPk = function(pk) {
  * @returns { Promise }
  *
 */
-exports.readOverdue = function({ limit, offset }={}) {}
+exports.readOverdue = function({ limit, offset }={}) {
+  const where = { 
+    [and]: [
+      { '$Loans.returned_on$': null },
+      { '$Loans.return_by$': { [lt]: new Date() } }
+    ]
+  }, include = { model: Loan }
+
+  return Patron.findAndCountAll({ where, include, limit, offset, subQuery: false });
+}
 
 /**
  * Updates one patron
