@@ -80,7 +80,11 @@ exports.readByPk = asyncHandler(async function(req, res) {
  * Reads all patrons with checked-out loans and renders patrons to '/views/patrons/index'
  *
 */
-exports.readCheckedOut = asyncHandler(async function(req, res) {});
+exports.readCheckedOut = asyncHandler(async function(req, res) {
+  assertParams('patrons/checked-out', res, req);
+  const renderConf = await readDataAndCreateRenderConf('patrons', patronService.readCheckedOut, req, '/patrons/checked-out?');
+  res.render('patron/index', renderConf);
+});
 
 /**
  * Reads all patrons with overdue loans and renders patrons to '/views/patrons/index'
