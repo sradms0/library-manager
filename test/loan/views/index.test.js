@@ -90,7 +90,7 @@ describe('views.loan.index', () => {
       await loanService.update(firstOpenLoan, { returned_on: new Date() });
     });
 
-    beforeEach('revisit /loans', async () => {
+    beforeEach('revisit /loans/all', async () => {
       await testOps.Route.visitLoans(browser);
     });
 

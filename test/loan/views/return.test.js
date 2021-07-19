@@ -57,8 +57,8 @@ describe('views.loan.return', () => {
     expect(submitI).to.not.be.null;
   });
 
-  it('it should have a cancel link that brings the user back to /loans?page=1&limit=10', async () => {
-    const extractRoute = url => url.match(/\/loans\?page=1&limit=10$/g);
+  it('it should have a cancel link that brings the user back to /loans/all?page=1&limit=10', async () => {
+    const extractRoute = url => url.match(/\/loans\/all\?page=1&limit=10$/g);
     const cancelA = browser.querySelector('a#cancel');
     await browser.clickLink(cancelA);
 

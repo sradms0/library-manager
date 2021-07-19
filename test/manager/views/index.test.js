@@ -78,8 +78,8 @@ describe('views.manager.index', () => {
   })
 
   describe('loan links', () => {
-    it('it should have a link to /loans?page=1&limit=10', async () => {
-      const extractRoute = url => url?.match(/\/loans\?page=1&limit=10/g);
+    it('it should have a link to /loans/all?page=1&limit=10', async () => {
+      const extractRoute = url => url?.match(/\/loans\/all\?page=1&limit=10/g);
       const allLoansA = browser.querySelector('#all-loans'),
             [ allLoansARoute ] = extractRoute(allLoansA.href);
 

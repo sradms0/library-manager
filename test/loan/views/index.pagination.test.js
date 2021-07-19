@@ -56,8 +56,8 @@ describe('views.loan.index.pagination', () => {
     expect(paginationUl?.childElementCount).to.equal(Math.ceil(totalLoans/limit));
   });
 
-  it('it should direct the user to /loans?page={page+1}&limit={limit} when clicking on a pagination link under non-searced data', async () => {
-    const extractRoute = url => url?.match(/\/loans\?page=\d+&limit=\d+$/g);
+  it('it should direct the user to /loans/all?page={page+1}&limit={limit} when clicking on a pagination link under non-searced data', async () => {
+    const extractRoute = url => url?.match(/\/loans\/all\?page=\d+&limit=\d+$/g);
 
     let nextPage = page+1
     const { rows: pagedLoanData, count: totalLoans } = await loanService.readAll({ limit, offset: page });
