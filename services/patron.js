@@ -75,6 +75,16 @@ exports.readByPk = function(pk) {
 }
 
 /**
+ * Read patrons with overdue loans
+ * @param { object } [config] - configuration for patron reading.
+ * @param { number } config.limit - the amount of patrons with overdue loans to read.
+ * @param { number } config.offset - where the overdue patron-reading should begin.
+ * @returns { Promise }
+ *
+*/
+exports.readOverdue = function({ limit, offset }={}) {}
+
+/**
  * Updates one patron
  * @param { Patron } patron - the patron instance to update.
  * @param { Object } data - the data to update the patron instance with.
