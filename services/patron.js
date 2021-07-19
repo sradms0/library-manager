@@ -75,6 +75,16 @@ exports.readByPk = function(pk) {
 }
 
 /**
+ * Read patrons with checked-out loans
+ * @param { object } [config] - configuration for patron reading.
+ * @param { number } config.limit - the amount of patrons with checked-out loans to read.
+ * @param { number } config.offset - where the checked-out patron-reading should begin.
+ * @returns { Promise }
+ *
+*/
+exports.readCheckedOut = function({ limit, offset }={}) {}
+
+/**
  * Read patrons with overdue loans
  * @param { object } [config] - configuration for patron reading.
  * @param { number } config.limit - the amount of patrons with overdue loans to read.
