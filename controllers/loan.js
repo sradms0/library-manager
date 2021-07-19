@@ -54,7 +54,7 @@ async function returnValErrBuild({ body: {book_id, patron_id} }) {
 exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
   await loanService.create(body);
-  res.redirect('/loans');
+  res.redirect('/loans/all');
 }, { 
   errorView: 'loan/new', 
   model: bookService.model, 
@@ -69,7 +69,7 @@ exports.delete = asyncHandler(async function(req, res) {
   const loan = await loanService.readByPk(id);
   assertFind(loan, 'Loan', id);
   await loanService.delete(loan);
-  res.redirect('/loans');
+  res.redirect('/loans/all');
 });
 
 /**
@@ -77,8 +77,8 @@ exports.delete = asyncHandler(async function(req, res) {
  *
 */
 exports.readAll = asyncHandler(async function(req, res) {
-  assertParams('loans', res, req);
-  const renderConf = await readDataAndCreateRenderConf('loans', loanService.readAll, req, '/loans?');
+  assertParams('loans/all', res, req);
+  const renderConf = await readDataAndCreateRenderConf('loans', loanService.readAll, req, '/loans/all?');
   res.render('loan/index', renderConf);
 });
 
@@ -170,7 +170,7 @@ exports.update = asyncHandler(async function(req, res) {
   const loan = await loanService.readByPk(id);
   assertFind(loan, 'Loan', id);
   await loanService.update(loan, body);
-  res.redirect('/loans');
+  res.redirect('/loans/all');
 }, { 
   errorView: 'loan/update', 
   model: loanService.model, 
@@ -186,7 +186,7 @@ exports.return = asyncHandler(async function(req, res) {
   assertFind(loan, 'Loan', id);
   assertLoanReturn(loan);
   await loanService.update(loan, body);
-  res.redirect('/loans');
+  res.redirect('/loans/all');
 }, { 
   errorView: 'loan/return', 
   model: loanService.model, 
