@@ -15,7 +15,7 @@ const {
 
 
 
-describe('services.loan.readCheckedOut', () => {
+describe('services.patron.readCheckedOut', () => {
   const { Op } = require('sequelize');
 
   const where = {

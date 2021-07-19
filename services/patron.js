@@ -5,7 +5,7 @@
 */
 
 const { Book, Loan, Patron, sequelize } = require('$database/models');
-const { Op: {and, lt, like, or} } = require('sequelize');
+const { Op: {and, lt, like, not, or} } = require('sequelize');
 
 
 /**
@@ -82,7 +82,16 @@ exports.readByPk = function(pk) {
  * @returns { Promise }
  *
 */
-exports.readCheckedOut = function({ limit, offset }={}) {}
+exports.readCheckedOut = function({ limit, offset }={}) {
+  const where = {
+    [and]: [
+      { [not]: {'$Loans.book_id$': null} },
+      { '$Loans.returned_on$': null }        
+    ]
+  }, include = { model: Loan };
+
+  return Patron.findAndCountAll({ where, include, limit, offset, subQuery: false });
+}
 
 /**
  * Read patrons with overdue loans
