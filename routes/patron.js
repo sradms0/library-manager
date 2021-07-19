@@ -9,6 +9,9 @@ const router = express.Router();
 /* GET patrons listing. */
 router.get('/', patronController.readAll);
 
+/* GET patrons of checked-out loans listing. */
+router.get('/checked-out', patronController.readCheckedOut);
+
 /* GET one patron for deletion. */
 router.get('/:id/delete', patronController.readDelete);
 
