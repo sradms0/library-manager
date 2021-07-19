@@ -13,7 +13,9 @@ chai.use(require('chai-http'));
 
 
 describe('views.manager.index', () => {
-  const browser = new Browser();
+  const browser = new Browser(),
+        dataFilters = ['all', 'checked-out', 'overdue'];
+
   let requester;
 
   before('reload', async () => {
@@ -30,15 +32,21 @@ describe('views.manager.index', () => {
   });
 
   describe('book links', () => {
-    it('it should have a link to /books/all?page=1&limit=10', async () => {
-      const extractRoute = url => url?.match(/\/books\/all\?page=1&limit=10/g);
-      const allBooksA = browser.querySelector('#all-books'),
-            [ allBooksARoute ] = extractRoute(allBooksA.href);
+    describe('filters', () => {
+      dataFilters.forEach(filter => {
+        it(`it should have a link to /books/${filter}?page=1&limit=10`, async () => {
+          const routeRe = new RegExp(`/books/${filter}\\?page=1&limit=10`, 'g'),
+                extractRoute = url => url?.match(routeRe);
 
-      await browser.clickLink(allBooksA);
-      const [ urlRoute ] = extractRoute(browser.location._url);
+          const filterBooksA = browser.querySelector(`#${filter}-books`),
+                [ filterBooksARoute ] = extractRoute(filterBooksA.href);
 
-      expect(allBooksARoute).to.equal(urlRoute);
+          await browser.clickLink(filterBooksA);
+          const [ urlRoute ] = extractRoute(browser.location._url);
+
+          expect(filterBooksARoute).to.equal(urlRoute);
+        });
+      });
     });
 
     it('it should have a link to /books/new', async () => {
@@ -78,15 +86,21 @@ describe('views.manager.index', () => {
   })
 
   describe('loan links', () => {
-    it('it should have a link to /loans/all?page=1&limit=10', async () => {
-      const extractRoute = url => url?.match(/\/loans\/all\?page=1&limit=10/g);
-      const allLoansA = browser.querySelector('#all-loans'),
-            [ allLoansARoute ] = extractRoute(allLoansA.href);
+    describe('filters', () => {
+      dataFilters.forEach(filter => {
+        it(`it should have a link to /loans/${filter}?page=1&limit=10`, async () => {
+          const routeRe = new RegExp(`/loans/${filter}\\?page=1&limit=10`, 'g'),
+                extractRoute = url => url?.match(routeRe);
 
-      await browser.clickLink(allLoansA);
-      const [ urlRoute ] = extractRoute(browser.location._url);
+          const filterLoansA = browser.querySelector(`#${filter}-loans`),
+                [ filterLoansARoute ] = extractRoute(filterLoansA.href);
 
-      expect(allLoansARoute).to.equal(urlRoute);
+          await browser.clickLink(filterLoansA);
+          const [ urlRoute ] = extractRoute(browser.location._url);
+
+          expect(filterLoansARoute).to.equal(urlRoute);
+        });
+      });
     });
 
     it('it should have a link to /loans/new', async () => {
