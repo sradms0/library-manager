@@ -17,7 +17,7 @@ const {
 exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
   await patronService.create(body);
-  res.redirect('/patrons');
+  res.redirect('/patrons/all?page=1&limit=10');
 }, { errorView: 'patron/new', model: patronService.model });
 
 /**
@@ -28,7 +28,7 @@ exports.delete = asyncHandler(async function(req, res) {
   const patron = await patronService.readByPk(id);
   assertFind(patron, 'Patron', id);
   await patronService.delete(patron);
-  res.redirect('/patrons');
+  res.redirect('/patrons/all?page=1&limit=10');
 });
 
 /**
@@ -36,8 +36,8 @@ exports.delete = asyncHandler(async function(req, res) {
  *
 */
 exports.readAll = asyncHandler(async function(req, res) {
-  assertParams('patrons', res, req);
-  const renderConf = await readDataAndCreateRenderConf('patrons', patronService.readAll, req, '/patrons?');
+  assertParams('patrons/all', res, req);
+  const renderConf = await readDataAndCreateRenderConf('patrons', patronService.readAll, req, '/patrons/all?');
   res.render('patron/index', renderConf);
 });
 
@@ -113,7 +113,7 @@ exports.update = asyncHandler(async function(req, res) {
   const patron = await patronService.readByPk(id);
   assertFind(patron, 'Patron', id);
   await patronService.update(patron, body);
-  res.redirect('/patrons');
+  res.redirect('/patrons/all?page=1&limit=10');
 }, { 
   errorView: 'patron/update', 
   model: patronService.model,
