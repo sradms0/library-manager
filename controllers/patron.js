@@ -77,6 +77,12 @@ exports.readByPk = asyncHandler(async function(req, res) {
 });
 
 /**
+ * Reads all patrons with overdue loans and renders patrons to '/views/patrons/index'
+ *
+*/
+exports.readOverdue = asyncHandler(async function(req, res) {});
+
+/**
  * Reads a new patron, rendering '/views/patron/new'
 */
 exports.readNew = function(req, res) {
