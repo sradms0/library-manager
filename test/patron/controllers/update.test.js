@@ -52,11 +52,11 @@ describe('controllers.patron.update', () => {
     );
   });
 
-  it('it should redirect the user to /patrons after a patron is updated', async () => {
+  it('it should redirect the user to /patrons/all?page=1&limit=10 after a patron is updated', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: updated, params: {id} });
     await patronController.update(req, res);
-    expect(res.redirect).to.have.been.calledWith('/patrons');
+    expect(res.redirect).to.have.been.calledWith('/patrons/all?page=1&limit=10');
   })
 
   describe('validation errors', () => {

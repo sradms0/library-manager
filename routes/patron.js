@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 /* GET patrons listing. */
-router.get('/', patronController.readAll);
+router.get('/all', patronController.readAll);
 
 /* GET patrons of checked-out loans listing. */
 router.get('/checked-out', patronController.readCheckedOut);

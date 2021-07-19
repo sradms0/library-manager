@@ -35,7 +35,7 @@ describe('controllers.patron.readAll', () => {
     const { rows: patrons, count } = await patronService.readAll({ limit, offset: page*limit-limit });
     const totalPages = Math.ceil(count/limit);
     await patronController.readAll(req, res);
-    expect(res.render).to.have.been.calledWith('patron/index', { patrons, page, limit, totalPages, paginationRoot: '/patrons?' });
+    expect(res.render).to.have.been.calledWith('patron/index', { patrons, page, limit, totalPages, paginationRoot: '/patrons/all?' });
   });
 
   it('it should call res.render with patron/index and only an all patrons object when a page and limit aren\'t given', async () => {
@@ -47,52 +47,52 @@ describe('controllers.patron.readAll', () => {
   });
 
 
-  it('it should redirect to /patrons (with pag/lim querystring) when the page is equal to zero', async () => {
+  it('it should redirect to /patrons/all (with pag/lim querystring) when the page is equal to zero', async () => {
     page = 0, limit = 10;
     const req = mockRequest({ query: {page, limit} });
     await patronController.readAll(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/patrons?page=1&limit=${limit}`);
+    expect(res.redirect).to.have.been.calledWith(`/patrons/all?page=1&limit=${limit}`);
   });
 
-  it('it should redirect to /patrons (with pag/lim querystring) when the page is negative', async () => {
+  it('it should redirect to /patrons/all (with pag/lim querystring) when the page is negative', async () => {
     page = -1, limit = 10;
     const req = mockRequest({ query: {page, limit} });
     await patronController.readAll(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/patrons?page=${-1*page}&limit=${limit}`);
+    expect(res.redirect).to.have.been.calledWith(`/patrons/all?page=${-1*page}&limit=${limit}`);
   });
 
-  it('it should redirect to /patrons (with pag/lim querystring) when the limit is equal to zero', async () => {
+  it('it should redirect to /patrons/all (with pag/lim querystring) when the limit is equal to zero', async () => {
     page = 1, limit = 0;
     const req = mockRequest({ query: {page, limit} });
     await patronController.readAll(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/patrons?page=${page}&limit=10`);
+    expect(res.redirect).to.have.been.calledWith(`/patrons/all?page=${page}&limit=10`);
   });
 
-  it('it should redirect to /patrons (with pag/lim querystring) when the limit is negative', async () => {
+  it('it should redirect to /patrons/all (with pag/lim querystring) when the limit is negative', async () => {
     page = 1, limit = -10;
     const req = mockRequest({ query: {page, limit} });
     await patronController.readAll(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/patrons?page=${page}&limit=${-1*limit}`);
+    expect(res.redirect).to.have.been.calledWith(`/patrons/all?page=${page}&limit=${-1*limit}`);
   });
 
-  it('it should redirect to /patrons (with pag/lim querystring) when the page undefined', async () => {
+  it('it should redirect to /patrons/all (with pag/lim querystring) when the page undefined', async () => {
     page = undefined, limit = 10;
     const req = mockRequest({ query: {page, limit} });
     await patronController.readAll(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/patrons?page=1&limit=${limit}`);
+    expect(res.redirect).to.have.been.calledWith(`/patrons/all?page=1&limit=${limit}`);
   });
 
-  it('it should redirect to /patrons (with pag/lim querystring) when the limit undefined', async () => {
+  it('it should redirect to /patrons/all (with pag/lim querystring) when the limit undefined', async () => {
     page = 1, limit = undefined;
     const req = mockRequest({ query: {page, limit} });
     await patronController.readAll(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/patrons?page=${page}&limit=10`);
+    expect(res.redirect).to.have.been.calledWith(`/patrons/all?page=${page}&limit=10`);
   });
 
-  it('it should redirect to /patrons (with pag/lim querystring) when both the page and limit are negative', async () => {
+  it('it should redirect to /patrons/all (with pag/lim querystring) when both the page and limit are negative', async () => {
     page = -1, limit = -10;
     const req = mockRequest({ query: {page, limit} });
     await patronController.readAll(req, res);
-    expect(res.redirect).to.have.been.calledWith(`/patrons?page=${-1*page}&limit=${-1*limit}`);
+    expect(res.redirect).to.have.been.calledWith(`/patrons/all?page=${-1*page}&limit=${-1*limit}`);
   });
 });

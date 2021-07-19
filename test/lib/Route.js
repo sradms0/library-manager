@@ -51,7 +51,7 @@ module.exports = class {
    * @return {Promise} zombie.Browser.visit
   */
   static visitPatrons(browser) {
-    return this.visit(browser, 'patrons');
+    return this.visit(browser, 'patrons/all');
   }
 
   /**
@@ -81,7 +81,7 @@ module.exports = class {
    * @return {Promise} zombie.Browser.visit
   */
   static visitPaginatedPatrons(browser, { page, limit, query=null }) {
-    return this.visit(browser, `patrons${query ? `/search?q=${query}&` : '?'}page=${page}&limit=${limit}`);
+    return this.visit(browser, `patrons${query ? `/search?q=${query}&` : '/all?'}page=${page}&limit=${limit}`);
   }
 
   /**

@@ -53,8 +53,8 @@ describe('views.patron.index.pagination', () => {
     expect(paginationUl?.childElementCount).to.equal(Math.ceil(totalPatrons/limit));
   });
 
-  it('it should direct the user to /patrons?page={page+1}&limit={limit} when clicking on a pagination link under non-searced data', async () => {
-    const extractRoute = url => url?.match(/\/patrons\?page=\d+&limit=\d+$/g);
+  it('it should direct the user to /patrons/all?page={page+1}&limit={limit} when clicking on a pagination link under non-searced data', async () => {
+    const extractRoute = url => url?.match(/\/patrons\/all\?page=\d+&limit=\d+$/g);
 
     let nextPage = page+1
     const { rows: pagedPatronData, count: totalPatrons } = await patronService.readAll({ limit, offset: page });

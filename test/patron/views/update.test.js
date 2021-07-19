@@ -55,8 +55,8 @@ describe('views.patron.update', () => {
     expect(submitI).to.not.be.null;
   });
 
-  it('it should have a cancel link that brings the user back to /patrons?page=1&limit=10', async () => {
-    const extractRoute = url => url.match(/\/patrons\?page=1&limit=10$/g);
+  it('it should have a cancel link that brings the user back to /patrons/all?page=1&limit=10', async () => {
+    const extractRoute = url => url.match(/\/patrons\/all\?page=1&limit=10$/g);
     const cancelA = browser.querySelector('a#cancel');
     await browser.clickLink(cancelA);
 

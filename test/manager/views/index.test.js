@@ -62,8 +62,8 @@ describe('views.manager.index', () => {
   })
 
   describe('patron links', () => {
-    it('it should have a link to /patrons?page=1&limit=10', async () => {
-      const extractRoute = url => url?.match(/\/patrons\?page=1&limit=10/g);
+    it('it should have a link to /patrons/all?page=1&limit=10', async () => {
+      const extractRoute = url => url?.match(/\/patrons\/all\?page=1&limit=10/g);
       const allPatronsA = browser.querySelector('#all-patrons'),
             [ allPatronsARoute ] = extractRoute(allPatronsA.href);
 

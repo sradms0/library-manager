@@ -32,11 +32,11 @@ describe('controllers.patron.create', () => {
     expect(await patronService.readByPk(id)).to.not.be.null;
   });
 
-  it('it should redirect the user to /patrons after a patron is created', async () => {
+  it('it should redirect the user to /patrons/all?page=1&limit=10 after a patron is created', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: patronData() });
     await patronController.create(req, res);
-    expect(res.redirect).to.have.been.calledWith('/patrons');
+    expect(res.redirect).to.have.been.calledWith('/patrons/all?page=1&limit=10');
   });
 
   describe('validation errors', () => {
