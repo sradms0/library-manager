@@ -27,6 +27,9 @@ router.get('/new', patronController.readNew);
 /* POST one patron. */
 router.post('/new', patronController.create);
 
+/* GET patrons of overdue loans listing. */
+router.get('/overdue', patronController.readOverdue);
+
 /* GET searched patrons. */
 router.get('/search', patronController.readByAttrs);
 
