@@ -42,7 +42,7 @@ module.exports = class {
    * @return {Promise} zombie.Browser.visit
   */
   static visitLoans(browser) {
-   return this.visit(browser, 'loans');
+    return this.visit(browser, 'loans/all');
   }
 
   /**
@@ -71,7 +71,7 @@ module.exports = class {
    * @return {Promise} zombie.Browser.visit
   */
   static visitPaginatedLoans(browser, { page, limit, query=null }) {
-    return this.visit(browser, `loans${query ? `/search?q=${query}&` : '?'}page=${page}&limit=${limit}`);
+    return this.visit(browser, `loans${query ? `/search?q=${query}&` : '/all?'}page=${page}&limit=${limit}`);
   }
 
   /**
