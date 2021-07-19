@@ -1,7 +1,8 @@
 extends ../layout
 
 block content
-  - const title = 'Library Manager'
+  - const title = 'Library Manager';
+  - const paginationT = `?page=${page}&limit=${limit}`;
   title=title
   h1=title
   p=`Welcome to ${title}`
@@ -10,14 +11,18 @@ block content
     li Books
     ul
       li: a#new-book(href='/books/new') New Book
-      li: a#all-books(href=`/books/all?page=${page}&limit=${limit}`) List All
+      li: a#all-books(href=`/books/all${paginationT}`) List All
+      li: a#checked-out-books(href=`/books/checked-out${paginationT}`) List Checked Out
+      li: a#overdue-books(href=`/books/overdue${paginationT}`) List Overdue
 
     li Loans
     ul
       li: a#new-loan(href='/loans/new') New Loan
-      li: a#all-loans(href=`/loans/all?page=${page}&limit=${limit}`) List All
+      li: a#all-loans(href=`/loans/all${paginationT}`) List All
+      li: a#checked-out-loans(href=`/loans/checked-out${paginationT}`) List Checked Out
+      li: a#overdue-loans(href=`/loans/overdue${paginationT}`) List Overdue
 
     li Patrons
     ul
       li: a#new-patron(href='/patrons/new') New Patron
-      li: a#all-patrons(href=`/patrons?page=${page}&limit=${limit}`) List All
+      li: a#all-patrons(href=`/patrons${paginationT}`) List All
