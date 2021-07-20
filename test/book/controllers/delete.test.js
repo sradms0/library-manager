@@ -42,10 +42,10 @@ describe('controllers.book.delete', () => {
     expect(await bookService.readByPk(id)).to.be.null;
   });
 
-  it('it should redirect the user to /books after a book is deleted', async () => {
+  it('it should redirect the user to /books/all?page=1&limit=10 after a book is deleted', async () => {
     const res = mockResponse(),
           req = mockRequest({ params: {id} });
     await bookController.delete(req, res);
-    expect(res.redirect).to.have.been.calledWith('/books/all');
+    expect(res.redirect).to.have.been.calledWith('/books/all?page=1&limit=10');
   });
 });

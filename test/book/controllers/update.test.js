@@ -60,11 +60,11 @@ describe('controllers.book.update', async () => {
     );
   });
 
-  it('it should redirect the user to /books after a book is updated', async () => {
+  it('it should redirect the user to /books/all?page=1&limit=10 after a book is updated', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: updated, params: {id} });
     await bookController.update(req, res);
-    expect(res.redirect).to.have.been.calledWith('/books/all');
+    expect(res.redirect).to.have.been.calledWith('/books/all?page=1&limit=10');
   })
 
   it('it should call res.render with prev. data when only a title is given (from validation error)', async () => {

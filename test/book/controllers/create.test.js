@@ -50,11 +50,11 @@ describe('controllers.book.create', () => {
     expect(await bookService.readByPk(id)).to.not.be.null;
   });
 
-  it('it should redirect the user to /books after a book is created', async () => {
+  it('it should redirect the user to /books?page=1&limit=10 after a book is created', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: {title: 'title', author: 'author'} });
     await bookController.create(req, res);
-    expect(res.redirect).to.have.been.calledWith('/books/all');
+    expect(res.redirect).to.have.been.calledWith('/books/all?page=1&limit=10');
   });
 
   it('it should call res.render with prev. data when only a title is given (from validation error)', async () => {
