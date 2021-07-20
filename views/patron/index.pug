@@ -8,7 +8,9 @@ block header
 
 block content
   p: a(class='button' href='/patrons/new') Create New Patron 
-  br
+
+  include ../includes/filters
+  +filters('/patrons')
 
   include ../includes/search
   +search('/patrons/search', 'patron')
