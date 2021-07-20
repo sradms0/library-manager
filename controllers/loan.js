@@ -54,7 +54,7 @@ async function returnValErrBuild({ body: {book_id, patron_id} }) {
 exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
   await loanService.create(body);
-  res.redirect('/loans/all');
+  res.redirect('/loans/all?page=1&limit=10');
 }, { 
   errorView: 'loan/new', 
   model: bookService.model, 
@@ -69,7 +69,7 @@ exports.delete = asyncHandler(async function(req, res) {
   const loan = await loanService.readByPk(id);
   assertFind(loan, 'Loan', id);
   await loanService.delete(loan);
-  res.redirect('/loans/all');
+  res.redirect('/loans/all?page=1&limit=10');
 });
 
 /**
@@ -170,7 +170,7 @@ exports.update = asyncHandler(async function(req, res) {
   const loan = await loanService.readByPk(id);
   assertFind(loan, 'Loan', id);
   await loanService.update(loan, body);
-  res.redirect('/loans/all');
+  res.redirect('/loans/all?page=1&limit=10');
 }, { 
   errorView: 'loan/update', 
   model: loanService.model, 
@@ -186,7 +186,7 @@ exports.return = asyncHandler(async function(req, res) {
   assertFind(loan, 'Loan', id);
   assertLoanReturn(loan);
   await loanService.update(loan, body);
-  res.redirect('/loans/all');
+  res.redirect('/loans/all?page=1&limit=10');
 }, { 
   errorView: 'loan/return', 
   model: loanService.model, 
