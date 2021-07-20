@@ -42,10 +42,10 @@ describe('controllers.loan.delete', () => {
     expect(await loanService.readByPk(id)).to.be.null;
   });
 
-  it('it should redirect the user to /loans/all after a loan is deleted', async () => {
+  it('it should redirect the user to /loans/all?page=1&limit=10 after a loan is deleted', async () => {
     const res = mockResponse(),
           req = mockRequest({ params: {id} });
     await loanController.delete(req, res);
-    expect(res.redirect).to.have.been.calledWith('/loans/all');
+    expect(res.redirect).to.have.been.calledWith('/loans/all?page=1&limit=10');
   });
 });

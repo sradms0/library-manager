@@ -68,11 +68,11 @@ describe('controllers.loan.return', () => {
     expect((await loanService.readByPk(id)).returned_on).to.eql(postData.returned_on);
   });
 
-  it('it should redirect the user to /loans/all after a loan is returned', async () => {
+  it('it should redirect the user to /loans/all?page=1&limit=10 after a loan is returned', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: postData, params: {id} });
     await loanController.return(req, res);
-    expect(res.redirect).to.have.been.calledWith('/loans/all');
+    expect(res.redirect).to.have.been.calledWith('/loans/all?page=1&limit=10');
   });
 
   describe('validation errors', () => {

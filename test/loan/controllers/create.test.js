@@ -39,11 +39,11 @@ describe('controllers.loan.create', () => {
     expect(await loanService.readByPk(id)).to.not.be.null;
   });
 
-  it('it should redirect the user to /loans/all after a loan is created', async () => {
+  it('it should redirect the user to /loans/all?page=1&limit=10 after a loan is created', async () => {
     const res = mockResponse(),
           req = mockRequest({ body: (await loanData()) });
     await loanController.create(req, res);
-    expect(res.redirect).to.have.been.calledWith('/loans/all');
+    expect(res.redirect).to.have.been.calledWith('/loans/all?page=1&limit=10');
   });
 
   describe('validation errors', () => {
