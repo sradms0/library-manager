@@ -7,9 +7,10 @@ block header
   h1='Loans'
 
 block content
-  - console.log(data);
   p: a(class='button' href='/loans/new') Create New Loan
-  br
+
+  include ../includes/filters
+  +filters('/loans')
 
   include ../includes/pagination
   +paginate(page, totalPages, paginationRoot)
