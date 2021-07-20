@@ -8,7 +8,9 @@ block header
 
 block content
   p: a(class='button' href='/books/new') Create New Book 
-  br
+
+  include ../includes/filters
+  +filters('/books')
 
   include ../includes/search
   +search('/books/search', 'book')

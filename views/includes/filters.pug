@@ -1,0 +1,9 @@
+mixin filters(root)
+  - const pagination = '?page=1&limit=10';
+  p Filters 
+    a#filter-all(href= `${root}/all${pagination}`) All 
+    | | 
+    a#filter-checked-out(href=`${root}/checked-out${pagination}`) Checked Out 
+    | | 
+    a#filter-overdue(href=`${root}/overdue${pagination}`) Overdue 
+
