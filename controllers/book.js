@@ -16,7 +16,7 @@ const {
 exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
   await bookService.create(body);
-  res.redirect('/books/all');
+  res.redirect('/books/all?page=1&limit=10');
 }, { errorView: 'book/new', model: bookService.model });
 
 /**
@@ -27,7 +27,7 @@ exports.delete = asyncHandler(async function(req, res) {
   const book = await bookService.readByPk(id);
   assertFind(book, 'Book', id);
   await bookService.delete(book);
-  res.redirect('/books/all');
+  res.redirect('/books/all?page=1&limit=10');
 });
 
 /**
@@ -112,7 +112,7 @@ exports.update = asyncHandler(async function(req, res) {
   const book = await bookService.readByPk(id);
   assertFind(book, 'Book', id);
   await bookService.update(book, body);
-  res.redirect('/books/all');
+  res.redirect('/books/all?page=1&limit=10');
 }, { 
   errorView: 'book/update', 
   model: bookService.model, 
