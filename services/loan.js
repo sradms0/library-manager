@@ -4,8 +4,8 @@
  * @module services/loan
 */
 
-const { Book, Loan, Patron } = require('$database/models');
-const { Op: {and, lt} } = require('sequelize');
+const { Book, Loan, Patron, sequelize } = require('$database/models');
+const { Op: {and, like, lt, or} } = require('sequelize');
 
 /**
  * Create one loan
@@ -54,7 +54,26 @@ exports.readAll = function({ limit, offset }={}) {
  * @returns { Promise }
  *
 */
-exports.readByAttrs = function({ query, limit, offset }={}) {}
+exports.readByAttrs = function({ query, limit, offset }={}) {
+  const where = {
+    [or]: [
+      sequelize.where(
+        sequelize.fn('date', sequelize.col('loaned_on')), 
+        { [like]: `%${query}%` }
+      ),
+      sequelize.where(
+        sequelize.fn('date', sequelize.col('return_by')), 
+        { [like]: `%${query}%` }
+      ),
+      sequelize.where(
+        sequelize.fn('date', sequelize.col('returned_on')), 
+        { [like]: `%${query}%` }
+      ),
+    ]
+  }, include = [ Book, Patron ];
+
+  return Loan.findAndCountAll({ where, include, limit, offset, subQuery: false });
+}
 
 /**
  * Read checked-out loans.
