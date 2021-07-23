@@ -75,18 +75,12 @@ module.exports = class {
    * @param {number} total - the amount of books to add
    * @return {object} array of books
   */
-  static async addBooks(creator, total) {
+  static async addBooks(creator, total, bookDataSetter={}) {
+    const _bookData = this.bookData();
+
     const books = [];
-    for (let i = 0; i < total; i++) {
-      books.push(
-        await creator({ 
-          title: `title ${i}`,
-          author: `author ${i}`,
-          genre: `genre ${i}`,
-          year: i
-        })
-      );
-    }
+    for (let i = 0; i < total; i++) 
+      books.push( await creator(_bookData({ ...bookDataSetter })) );
     return books;
   }
 
