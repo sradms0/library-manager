@@ -215,6 +215,38 @@ module.exports = class {
     return loans;
   }
 
+  static bookData() {
+    let counter = 1;
+    return ({ set=null, del=null, pause=null }={}) => {
+
+      let title = `title ${counter}`,
+          author = `author ${counter}`,
+          genre = `genre ${counter}`,
+          year = counter,
+          data = { 
+            title,
+            author,
+            genre,
+            year,
+          };
+
+      if (set) {
+        if ('all' in set)
+          Object.keys(data).forEach(key => data[key] = set.all);
+        else
+          data = { ...data, ...set };
+      }
+
+      if (del) {
+        const delKeys = del === 'all' ? Object.keys(data) : del;
+        delKeys.forEach(key => delete data[key])
+      }
+
+      !pause && counter++;
+      return data;
+    }
+  }
+
   static patronData() {
     let counter = 1;
     return ({ prop=null, allProps=false, val=null, del=false, pause=false }={}) => {

@@ -49,6 +49,14 @@ exports.readAll = function({ limit, offset }={}) {
 };
 
 /**
+ * Read loans based on attributes and association attributes
+ * @param { string } query - the search term to find loans by
+ * @returns { Promise }
+ *
+*/
+exports.readByAttrs = function({ query, limit, offset }={}) {}
+
+/**
  * Read checked-out loans.
  * @param { object } [config] - configuration for loan reading.
  * @param { number } config.limit - the amount of checked-out loans to read.
