@@ -27,7 +27,7 @@ describe('controllers.patron.create', () => {
   it('it should create one patron when all required attributes are given', async () => {
     const id = 100,
           res = mockResponse(),
-          req = mockRequest({ body: patronData({ prop: 'id', val: id }) });
+          req = mockRequest({ body: patronData({ set: {id} }) });
     await patronController.create(req, res);
     expect(await patronService.readByPk(id)).to.not.be.null;
   });

@@ -99,20 +99,12 @@ module.exports = class {
    * @param {number} total - the amount of patrons to add
    * @return {object} array of patrons
   */
-  static async addPatrons(creator, total) {
+  static async addPatrons(creator, total, patronDataSetter={}) {
+    const _patronData = this.patronData();
+
     const patrons = [];
-    for (let i = 1; i <= total; i++) {
-      patrons.push(
-        await creator({ 
-          first_name: `first`,
-          last_name: `last`,
-          address: `address ${i}`,
-          email: `user${i}@mail.com`,
-          library_id: `library_id${i}`,
-          zip_code: (''+i).repeat(5).substring(0,5)
-        })
-      );
-    }
+    for (let i = 1; i <= total; i++) 
+      patrons.push( await creator( _patronData({ ...patronDataSetter })) );
     return patrons;
   }
 
@@ -243,22 +235,34 @@ module.exports = class {
 
   static patronData() {
     let counter = 1;
-    return ({ prop=null, allProps=false, val=null, del=false, pause=false }={}) => {
-      const data = {
-        first_name: `first`, 
-        last_name: `last`,
-        name: `first last`,
-        email: `user${counter}@mail.com`,
-        address: `street${counter}`,
-        zip_code: `${ (''+counter).repeat(5).substring(0,5) }`,
-        library_id: `library_id${counter}`
-      };
+    return ({ set=null, del=null, pause=null }={}) => {
+      let first_name = `first`, 
+          last_name = `last`,
+          name = `first last`,
+          email = `user${counter}@mail.com`,
+          address = `street${counter}`,
+          zip_code = `${ (''+counter).repeat(5).substring(0,5) }`,
+          library_id = `library_id${counter}`,
 
-      if (prop) {
-        if (val !== null) data[prop] = val;
-        else if (del) delete data[prop];
-      } else if(allProps && val !== null) {
-        Object.keys(data).forEach(key => data[key] = val)
+          data = {
+            first_name,
+            last_name,
+            email,
+            address,
+            zip_code,
+            library_id
+          };
+
+      if (set) {
+        if ('all' in set)
+          Object.keys(data).forEach(key => data[key] = set.all);
+        else
+          data = { ...data, ...set };
+      }
+
+      if (del) {
+        const delKeys = del === 'all' ? Object.keys(data) : del;
+        delKeys.forEach(key => delete data[key])
       }
 
       !pause && counter++;
@@ -317,6 +321,6 @@ module.exports = class {
    * @return {object} patron
   */
   static emptyPatron() {
-    return this.patronData()({ allProps:true, val:'' });;
+    return this.patronData()({ set: {'all': ''} });
   }
 }

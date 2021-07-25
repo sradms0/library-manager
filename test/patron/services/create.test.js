@@ -44,99 +44,99 @@ describe('services.patron.create', () => {
 
   it('it should throw an error when a first_name of non-alpha chars is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'first_name', val: '1'}))
+      patronService.create(patronData({ set: {first_name: '1'} }))
     ).to.be.rejectedWith('Validation error: Valid First Name is required: letters only');
   });
 
   it('it should throw an error when an empty first_name is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'first_name', val: ''}))
+      patronService.create(patronData({ set: {first_name: ''} }))
     ).to.be.rejectedWith('"First Name" is required');
   });
 
   it('it should throw an error when a first_name property doesn\'t exist', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'first_name', del: true}))
+      patronService.create(patronData({ del: ['first_name'] }))
     ).to.be.rejectedWith('"First Name" field is required');
   });
 
   it('it should throw an error when a last_name of non-alpha chars is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'last_name', val: '1'}))
+      patronService.create(patronData({ set: {last_name: '1'}}))
     ).to.be.rejectedWith('Valid Last Name is required: letters only');
   });
 
   it('it should throw an error when an empty last_name is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'last_name', val: ''}))
+      patronService.create(patronData({ set: {last_name: ''}}))
     ).to.be.rejectedWith('"Last Name" is required');
   });
 
   it('it should throw an error when a last_name property doesn\'t exist', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'last_name', del: true}))
+      patronService.create(patronData({ del: ['last_name']}))
     ).to.be.rejectedWith('"Last Name" field is required');
   });
 
   it('it should throw an error when a duplicate email is given', async () => {
     await patronService.model.create(patronData({ pause: true }));
     await expect(
-      patronService.create(patronData({ prop: 'library_id', val: '#####' }))
+      patronService.create(patronData({ set: {library_id: '#####'} }))
     ).to.be.rejectedWith('Email already exists');
   });
 
   it('it should throw an error when an non-email is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'email', val: 'email'}))
+      patronService.create(patronData({ set: {email: 'email'}}))
     ).to.be.rejectedWith('Validation error: Valid Email is required');
   });
 
   it('it should throw an error when an empty email is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'email', val: ''}))
+      patronService.create(patronData({ set: {email: ''}}))
     ).to.be.rejectedWith('"Email" is required');
   });
 
   it('it should throw an error when a email property doesn\'t exist', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'email', del: true}))
+      patronService.create(patronData({ del: ['email'] }))
     ).to.be.rejectedWith('"Email" field is required');
   });
 
   it('it should throw an error when a duplicate library_id is given', async () => {
     await patronService.model.create(patronData({ pause: true }));
     await expect(
-      patronService.create(patronData({ prop: 'email', val: 'uniqueuser@mail.com' }))
+      patronService.create(patronData({ set: {email: 'uniqueuser@mail.com'} }))
     ).to.be.rejectedWith('Library ID already exists');
   });
 
   it('it should throw an error when an empty library_id is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'library_id', val: ''}))
+      patronService.create(patronData({ set: {library_id: ''} }))
     ).to.be.rejectedWith('"Library ID" is required');
   });
 
   it('it should throw an error when a library_id property doesn\'t exist', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'library_id', del: true}))
+      patronService.create(patronData({ del: ['library_id'] }))
     ).to.be.rejectedWith('"Library ID" field is required');
   });
 
   it('it should throw an error when a zip_code with non-int chars is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'zip_code', val: 'abcde'}))
+      patronService.create(patronData({ set: {zip_code: 'abcde'} }))
     ).to.be.rejectedWith('Validation error: Valid Zip Code is required');
   });
 
   it('it should throw an error when an empty zip_code is given', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'zip_code', val: ''}))
+      patronService.create(patronData({ set: {zip_code: ''} }))
     ).to.be.rejectedWith('"Zip Code" is required');
   });
 
   it('it should throw an error when a zip_code property doesn\'t exist', async () => {
     await expect(
-      patronService.create(patronData({ prop: 'zip_code', del: true}))
+      patronService.create(patronData({ del: ['zip_code'] }))
     ).to.be.rejectedWith('"Zip Code" field is required');
   });
 

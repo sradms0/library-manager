@@ -75,7 +75,7 @@ describe('views.patron.update', () => {
     expect(urlRoute).to.equal(deleteAHrefRoute);
   });
 
-  it('it should submit the form, updating the existing book', async () => {
+  it('it should submit the form, updating the existing patron', async () => {
     const updated = testOps.Data.patronData()();
     testOps.PatronForm.fillAllWith(browser, updated);
     form.submit();
@@ -83,11 +83,12 @@ describe('views.patron.update', () => {
     await testOps.Route.visitPatrons(browser);
     const updatedPatronTds = [...testOps.DOM.fetchTrs(browser)]
                             .find(tr => tr.firstChild.textContent === (updated.first_name+' '+updated.last_name))?.children;
-
-    const [first_name, last_name,...updatedVals] = Object.values(updated);
+    let [first_name, last_name,...updatedVals] = Object.values(updated);
     // order of table values differ; these should be changed at some point anyway
-    [updatedVals[1], updatedVals[2]] = [updatedVals[2], updatedVals[1]];
-    [updatedVals[3], updatedVals[4]] = [updatedVals[4], updatedVals[3]];
+    [updatedVals[0], updatedVals[1]] = [updatedVals[1], updatedVals[0]];
+    [updatedVals[2], updatedVals[3]] = [updatedVals[3], updatedVals[2]];
+    updatedVals = [`${first_name} ${last_name}`, ...updatedVals];
+
     let found = 0;
     [...updatedPatronTds ]?.forEach((td, idx) => {
       found++;

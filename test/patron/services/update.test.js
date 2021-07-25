@@ -25,12 +25,14 @@ describe('services.patron.update', () => {
   });
 
   it('it should update one patron', async () => {
-    const patron = await patronService.readByPk(2);
-    const updatedPatronData = { ...patron.toJSON(), ...patronData() };
+    const modelAttrs = testOps.Data.getModelAttrs(patronService.model, { without: ['createdAt', 'name', 'updatedAt'] }),
+          patron = await patronService.readByPk(2),
+          updatedPatronData = { ...patron.toJSON(), ...patronData() },
+          updated = (await patronService.update(patron, updatedPatronData))?.toJSON();
 
-    const updated = (await patronService.update(patron, updatedPatronData))?.toJSON();
-    const wasUpdated = Object.keys(updatedPatronData)
-      .forEach(key => expect(updated?.[key]+'').to.equal(updatedPatronData[key]+''));
+    modelAttrs.forEach(key => 
+      expect(updated?.[key]+'').to.equal(updatedPatronData[key]+'')
+    );
   });
 
   const { messages: valMsgs} = testOps.Data.getModelValidationErrorMessages('patron');
@@ -67,44 +69,44 @@ describe('services.patron.update', () => {
   it('it should throw an error when a duplicate email is given', async () => {
     await patronService.model.create(patronData({ pause: true }));
     await expect(
-      patronService.update(errPatron, patronData({ prop: 'library_id', val: '#####' }))
+      patronService.update(errPatron, patronData({ set: {library_id: '#####'} }))
     ).to.be.rejectedWith(valMsgs.email.unique);
   });
 
   it('it should throw an error when an non-email is given', async () => {
     await expect(
-      patronService.update(errPatron, patronData({ prop: 'email', val: 'email'}))
+      patronService.update(errPatron, patronData({ set: {email: 'email'} }))
     ).to.be.rejectedWith(valMsgs.email.isEmail);
   });
 
   it('it should throw an error when an empty email is given', async () => {
     await expect(
-      patronService.update(errPatron, patronData({ prop: 'email', val: ''}))
+      patronService.update(errPatron, patronData({ set: {'email': ''} }))
     ).to.be.rejectedWith(valMsgs.email.notEmpty);
   });
 
   it('it should throw an error when a duplicate library_id is given', async () => {
     await patronService.model.create(patronData({ pause: true }));
     await expect(
-      patronService.update(errPatron, patronData({ prop: 'email', val: 'uniqueuser@mail.com' }))
+      patronService.update(errPatron, patronData({ set: {email: 'uniqueuser@mail.com'} }))
     ).to.be.rejectedWith(valMsgs.library_id.unique);
   });
 
   it('it should throw an error when an empty library_id is given', async () => {
     await expect(
-      patronService.update(errPatron, patronData({ prop: 'library_id', val: ''}))
+      patronService.update(errPatron, patronData({ set: {library_id: ''} }))
     ).to.be.rejectedWith(valMsgs.library_id.notEmpty);
   });
 
   it('it should throw an error when a zip_code with non-int chars is given', async () => {
     await expect(
-      patronService.update(errPatron, patronData({ prop: 'zip_code', val: 'abcde'}))
+      patronService.update(errPatron, patronData({ set: {zip_code: 'abcde'} }))
     ).to.be.rejectedWith(valMsgs.zip_code.isInt);
   });
 
   it('it should throw an error when an empty zip_code is given', async () => {
     await expect(
-      patronService.update(errPatron, patronData({ prop: 'zip_code', val: ''}))
+      patronService.update(errPatron, patronData({ set: {zip_code: ''} }))
     ).to.be.rejectedWith(valMsgs.zip_code.notEmpty);
   });
 
