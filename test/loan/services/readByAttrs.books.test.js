@@ -15,7 +15,7 @@ const {
 } = require('$services');
 
 
-describe('services.loan.readByAttrs', async () => {
+describe('services.loan.readByAttrs.books', async () => {
   const bookModelAttrs = testOps.Data.getModelAttrs(bookService.model, { without: [
     'author', 
     'createdAt', 
