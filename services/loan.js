@@ -69,7 +69,12 @@ exports.readByAttrs = function({ query, limit, offset }={}) {
         sequelize.fn('date', sequelize.col('returned_on')), 
         { [like]: `%${query}%` }
       ),
+
       {'$Book.title$': { [like]: `%${query}%` }},
+
+      sequelize.literal(`first_name || " " || last_name LIKE "${query}"`),
+      {'$Patron.first_name$': { [like]: `%${query}%`}},
+      {'$Patron.last_name$': { [like]: `%${query}%`}}
     ]
   }, include = [ Book, Patron ];
 
