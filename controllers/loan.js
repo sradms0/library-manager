@@ -87,7 +87,12 @@ exports.readAll = asyncHandler(async function(req, res) {
  * Reads Loans by attribute values based on querystring and renders matches to '/views/loan/index'.
  *
 */
-exports.readByAttrs = asyncHandler(async function(req, res) {});
+exports.readByAttrs = asyncHandler(async function(req, res) {
+  const { query: {q} } = req;
+  assertParams('loans/search', res, req);
+  const renderConf = await readDataAndCreateRenderConf('loans', loanService.readByAttrs, req, `/loans/search?q=${q}&`);
+  res.render('loan/index', renderConf);
+});
 
 /**
  * Reads all checked-out loans and renders all checked-out loans to '/views/loan/index'
