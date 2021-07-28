@@ -12,6 +12,9 @@ block content
   include ../includes/filters
   +filters('/loans')
 
+  include ../includes/search
+  +search('/loans/search', 'loan')
+
   include ../includes/pagination
   +paginate(page, totalPages, paginationRoot)
 
