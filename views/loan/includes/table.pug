@@ -10,13 +10,14 @@ mixin loanHistory(loans)
         th.action(colspan='2' scope='colgroup') Action
 
     tbody
+      - const dateToStr = date => date.toLocaleDateString('en-CA', { timeZone: 'UTC' });
       each loan in loans
         tr
           td: a(href=`/books/${loan.Book.id}/update`)=loan.Book.title
           td: a(href=`/patrons/${loan.Patron.id}/update`)=loan.Patron.name
-          td=`${loan.loaned_on.toLocaleDateString('en-CA')}`
-          td=`${loan.return_by.toLocaleDateString('en-CA')}`
-          td=`${loan.returned_on ? loan.returned_on.toLocaleDateString('en-CA') : ''}`
+          td=`${dateToStr(loan.loaned_on)}`
+          td=`${dateToStr(loan.return_by)}`
+          td=`${loan.returned_on ? dateToStr(loan.returned_on) : ''}`
           td.action: a.button(href=`/loans/${loan.id}/update`) Update
 
           if !loan.returned_on
