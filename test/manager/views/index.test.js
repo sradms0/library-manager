@@ -62,28 +62,34 @@ describe('views.manager.index', () => {
   })
 
   describe('patron links', () => {
-    it('it should have a link to /patrons/all?page=1&limit=10', async () => {
-      const extractRoute = url => url?.match(/\/patrons\/all\?page=1&limit=10/g);
-      const allPatronsA = browser.querySelector('#all-patrons'),
-            [ allPatronsARoute ] = extractRoute(allPatronsA.href);
+    describe('filters', () => {
+      dataFilters.forEach(filter => {
+        it(`it should have a link to /patrons/${filter}?page=1&limit=10`, async () => {
+          const routeRe = new RegExp(`/patrons/${filter}\\?page=1&limit=10`, 'g'),
+                extractRoute = url => url?.match(routeRe);
 
-      await browser.clickLink(allPatronsA);
-      const [ urlRoute ] = extractRoute(browser.location._url);
+          const filterPatronsA = browser.querySelector(`#${filter}-patrons`),
+                [ filterPatronsARoute ] = extractRoute(filterPatronsA.href);
 
-      expect(allPatronsARoute).to.equal(urlRoute);
+          await browser.clickLink(filterPatronsA);
+          const [ urlRoute ] = extractRoute(browser.location._url);
+
+          expect(filterPatronsARoute).to.equal(urlRoute);
+        });
+      });
+
+      it('it should have a link to /patrons/new', async () => {
+        const extractRoute = url => url?.match(/\/patrons\/new/g);
+        const newPatronA = browser.querySelector('#new-patron'),
+              [ newPatronAHref ] = extractRoute(newPatronA.href);
+
+        await browser.clickLink(newPatronA);
+        const [ urlRoute ] = extractRoute(browser.location._url);
+
+        expect(newPatronAHref).to.equal(urlRoute);
+      });
     });
-
-    it('it should have a link to /patrons/new', async () => {
-      const extractRoute = url => url?.match(/\/patrons\/new/g);
-      const newPatronA = browser.querySelector('#new-patron'),
-            [ newPatronAHref ] = extractRoute(newPatronA.href);
-
-      await browser.clickLink(newPatronA);
-      const [ urlRoute ] = extractRoute(browser.location._url);
-
-      expect(newPatronAHref).to.equal(urlRoute);
-    });
-  })
+  });
 
   describe('loan links', () => {
     describe('filters', () => {
