@@ -112,8 +112,16 @@ describe('views.loan.index.search', () => {
 
   describe('one loan result', () => {
     const searchOneAndFound = async (browser, form, loan, attr) => {
-      const currLoanAttrVal = loan[attr],
-            searchAttrVal = currLoanAttrVal instanceof Date ?  dateToStr(currLoanAttrVal) : currLoanAttrVal;
+      const currLoanAttrVal = loan[attr];
+
+      let searchAttrVal = currLoanAttrVal;
+      if (currLoanAttrVal instanceof Date)
+        searchAttrVal = dateToStr(currLoanAttrVal);
+      else if (attr === 'Book')
+        searchAttrVal = currLoanAttrVal.title;
+      else if (attr === 'Patron')
+        searchAttrVal = currLoanAttrVal.name;
+
 
       testOps.LoanForm.fillSearch(browser, searchAttrVal);
       form?.submit();
