@@ -39,4 +39,7 @@ router.post('/new', loanController.create);
 /* GET overdue loans listing. */
 router.get('/overdue', loanController.readOverdue);
 
+/* GET searched loans. */
+router.get('/search', loanController.readByAttrs);
+
 module.exports = router;

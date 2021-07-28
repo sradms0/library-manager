@@ -17,6 +17,15 @@ module.exports= class {
   } 
 
   /**
+   * Fills the loan-search field
+   * @param {Browser} browser - zombie instance
+   * @param {string} val - value to fill search field
+  */
+  static fillSearch(browser, val=null) {
+    browser.fill('input[name=q]', val);
+  } 
+
+  /**
    * Fills the loans book field.
    * @param {Browser} browser - zombie instance
    * @param {string} val - value to fill book field
