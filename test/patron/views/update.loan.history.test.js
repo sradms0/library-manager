@@ -60,7 +60,8 @@ describe('views.patron.update.loan.history', async () => {
       };
     });
 
-    const { Loans } = await patronService.readByPk(patronId);
+    const { Loans } = await patronService.readByPk(patronId),
+          dateToStr = date => date.toLocaleDateString('en-CA', { timeZone: 'UTC' });
     Loans.forEach((loan, idx)=> {
       const { Book, Patron } = loan,
             loanTxt = tdTxt[idx];
@@ -68,10 +69,10 @@ describe('views.patron.update.loan.history', async () => {
       expect(
         loanTxt.tdBook === Book.title &&
         loanTxt.tdPatron === Patron.name &&
-        loan.loaned_on.toLocaleDateString('en-CA') === loanTxt.tdLoanedOn &&
-        loan.return_by.toLocaleDateString('en-CA') === loanTxt.tdReturnBy && (
+        dateToStr(loan.loaned_on) === loanTxt.tdLoanedOn &&
+        dateToStr(loan.return_by) === loanTxt.tdReturnBy && (
           loan.returned_on ? 
-            loan.returned_on.toLocaleDataString('en-CA') === loanTxt.tdReturnedOn :
+            dateToStr(loan.returned_on) === loanTxt.tdReturnedOn :
             true
         )
       ).to.be.true;

@@ -73,7 +73,7 @@ describe('views.book.update.loan.history', async () => {
         dateToStr(loan.loaned_on) === loanTxt.tdLoanedOn &&
         dateToStr(loan.return_by) === loanTxt.tdReturnBy && (
           loan.returned_on ? 
-            loan.returned_on.toLocaleDataString('en-CA') === loanTxt.tdReturnedOn :
+            dateToStr(loan.returned_on) === loanTxt.tdReturnedOn :
             true
         )
       ).to.be.true;
