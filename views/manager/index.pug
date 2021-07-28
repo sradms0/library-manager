@@ -26,3 +26,5 @@ block content
     ul
       li: a#new-patron(href='/patrons/new') New Patron
       li: a#all-patrons(href=`/patrons/all${paginationT}`) List All
+      li: a#checked-out-patrons(href=`/patrons/checked-out${paginationT}`) List Checked Out
+      li: a#overdue-patrons(href=`/patrons/overdue${paginationT}`) List Overdue
