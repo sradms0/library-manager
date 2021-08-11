@@ -13,8 +13,9 @@ const { loan: {
 
 /**
  * Checks for a Date instance.
- * @param {object} date - an expected date object.
- * @return {boolean} - based on `date` being a Date instance.
+ * @private
+ * @param   {Date} date - an expected date object.
+ * @return  {Boolean}   - based on `date` being a Date instance.
 */
 function isDate(date) {
   return date instanceof Date;
@@ -22,9 +23,10 @@ function isDate(date) {
 
 /**
  * Checks if date is of today, or before.
- * @param {string} field - the fieldname the date belongs to.
- * @param {object} date - the date to assert.
- * @throws Error - if the given date exceeds todays date.
+ * @private
+ * @param {String}  field - The fieldname the date belongs to.
+ * @param {Date}    date  - The date to assert.
+ * @throws          Error - if the given date exceeds todays date.
 */
 function assertTodayOrBefore(errMsg, date) {
   if (isDate(date) && date > new Date())
@@ -33,21 +35,32 @@ function assertTodayOrBefore(errMsg, date) {
 
 /**
  * Checks if one date is the same as, or after, another date.
- * @param {string} startField - the fieldname of the start date.
- * @param {string} endField - the fieldname of the end date.
- * @param {object} startDate - the date to compare the end date to.
- * @param {object} endDate - the date that is compared to the start date.
- * @throws Error - if the end date is before the start date
+ * @private
+ * @param   {String} startField - The fieldname of the start date.
+ * @param   {String} endField   - The fieldname of the end date.
+ * @param   {Object} startDate  - The date to compare the end date to.
+ * @param   {Object} endDate    - The date that is compared to the start date.
+ * @throws  {Error}             - If the end date is before the start date
 */
 function assertSameOrAfter(errMsg, startDate, endDate) {
   if (isDate(startDate) && isDate(endDate) && endDate < startDate)
     throw new Error(errMsg);
 }
 
-
+/**
+ * A model that represents a loan. A Loan belongs to one Book and one Patron.
+ * @class Loan
+ * @memberof module:models
+ * @extends external:sequelize.Model
+*/
 module.exports = sequelize => {
   class Loan extends Sequelize.Model {};
   Loan.init({
+    /**
+     * @memberof module:models.Loan
+     * @instance
+     * @type {Date}
+    */
     loaned_on: {
       type: Sequelize.DATE,
       allowNull: false,
@@ -58,6 +71,11 @@ module.exports = sequelize => {
         requiredDate: value => assertTodayOrBefore(loaned_on.requiredDate, value)
       }
     },
+    /**
+     * @memberof module:models.Loan
+     * @instance
+     * @type {Date}
+    */
     return_by: {
       type: Sequelize.DATE,
       allowNull: false,
@@ -70,6 +88,11 @@ module.exports = sequelize => {
         }
       }
     },
+    /**
+     * @memberof module:models.Loan
+     * @instance
+     * @type {Date}
+    */
     returned_on: {
       type: Sequelize.DATE,
       validate: {

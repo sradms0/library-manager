@@ -2,6 +2,7 @@
 
 /**
  * @module validationMessages
+ * @ignore
 */
 
 module.exports = {

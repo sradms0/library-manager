@@ -1,45 +1,98 @@
 'use strict';
 
+/**
+ * Loan routes.
+ * @module routes/loan
+*/
+
 const express = require('express');
 const { loan: loanController } = require('$controllers');
 
 const router = express.Router();
 
 
-/* GET loans listing. */
+/**
+ * A route for viewing all loans.
+ * @name get/all
+ * @function
+*/
 router.get('/all', loanController.readAll);
 
-/* GET checked-out loans listing. */
+/**
+ * A route for viewing unreturned loans.
+ * @name get/checked-out
+ * @function
+*/
 router.get('/checked-out', loanController.readCheckedOut);
 
-/* GET one loan for deletion. */
+/**
+ * A route for loan-deletion confirmation.
+ * @name get/:id/delete
+ * @function
+*/
 router.get('/:id/delete', loanController.readDelete);
 
-/* POST loan for deletion. */
+/**
+ * A route for deleting a loan.
+ * @name post/:id/delete
+ * @function
+*/
 router.post('/:id/delete', loanController.delete);
 
-/* GET one unreturned loan. */
+/**
+ * A route for loan-returning confirmation.
+ * @name get/:id/return
+ * @function
+*/
 router.get('/:id/return', loanController.readReturn);
 
-/* POST update existing loan. */
+/**
+ * A route for returning a loan.
+ * @name post/:id/return
+ * @function
+*/
 router.post('/:id/return', loanController.return);
 
-/* GET one loan. */
+/**
+ * A route for viewing a loan to update.
+ * @name get/:id/update
+ * @function
+*/
 router.get('/:id/update', loanController.readByPk);
 
-/* POST update existing loan. */
+/**
+ * A route to update a loan.
+ * @name post/:id/update
+ * @function
+*/
 router.post('/:id/update', loanController.update);
 
-/* GET new loan. */
+/**
+ * A route for entering properties for a new loan.
+ * @name get/new
+ * @function
+*/
 router.get('/new', loanController.readNew);
 
-/* POST one loan. */
+/**
+ * A route to create a loan.
+ * @name post/new
+ * @function
+*/
 router.post('/new', loanController.create);
 
-/* GET overdue loans listing. */
+/**
+ * A route for viewing overdue loans.
+ * @name get/overdue
+ * @function
+*/
 router.get('/overdue', loanController.readOverdue);
 
-/* GET searched loans. */
+/**
+ * A route to view searched loans.
+ * @name get/overdue
+ * @function
+*/
 router.get('/search', loanController.readByAttrs);
 
 module.exports = router;

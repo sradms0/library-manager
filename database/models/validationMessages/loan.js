@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Loan validation messages
+ * Loan validation messages.
+ * @ignore
 */
 exports.messages = {
   loaned_on: {

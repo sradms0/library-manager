@@ -1,39 +1,84 @@
 'use strict';
 
+/**
+ * Book routes.
+ * @module routes/book
+*/
+
 const express = require('express');
 const { book: bookController } = require('$controllers');
 
 const router = express.Router();
 
 
-/* GET books listing. */
+/**
+ * A route for viewing all books.
+ * @name get/all
+ * @function
+*/
 router.get('/all', bookController.readAll);
 
-/* GET checked out books listing. */
+/**
+ * A route for viewing checked-out books.
+ * @name get/checked-out
+ * @function
+*/
 router.get('/checked-out', bookController.readCheckedOut);
 
-/* GET one book for deletion. */
+/**
+ * A route for book-deletion confirmation.
+ * @name get/:id/delete
+ * @function
+*/
 router.get('/:id/delete', bookController.readDelete);
 
-/* POST book for deletion. */
+/**
+ * A route for deleting a book.
+ * @name post/:id/delete
+ * @function
+*/
 router.post('/:id/delete', bookController.delete);
 
-/* GET one book. */
+/**
+ * A route for viewing a book to update.
+ * @name get/:id/update
+ * @function
+*/
 router.get('/:id/update', bookController.readByPk);
 
-/* POST update existing book. */
+/**
+ * A route to update a book.
+ * @name post/:id/update
+ * @function
+*/
 router.post('/:id/update', bookController.update);
 
-/* GET new book. */
+/**
+ * A route for entering properties for a new book.
+ * @name get/new
+ * @function
+*/
 router.get('/new', bookController.readNew);
 
-/* POST one book. */
+/**
+ * A route to create a book.
+ * @name post/new
+ * @function
+*/
 router.post('/new', bookController.create);
 
-/* GET overue books listing. */
+/**
+ * A route for viewing overdue books.
+ * @name get/overdue
+ * @function
+*/
 router.get('/overdue', bookController.readOverdue);
 
-/* GET searched books. */
+/**
+ * A route to view searched books.
+ * @name get/search
+ * @function
+*/
 router.get('/search', bookController.readByAttrs);
 
 module.exports = router;

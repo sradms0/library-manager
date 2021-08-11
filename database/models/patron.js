@@ -11,10 +11,20 @@ const { patron: {
     zip_code 
 }}} = require('./validationMessages');
 
-
+/**
+ * A model that represents a patron. A Patron can have many Loans.
+ * @class Patron
+ * @memberof module:models
+ * @extends external:sequelize.Model
+*/
 module.exports = sequelize => {
   class Patron extends Sequelize.Model {};
   Patron.init({
+    /**
+     * @memberof module:models.Patron
+     * @instance
+     * @type {String}
+    */
     first_name: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -27,6 +37,11 @@ module.exports = sequelize => {
         }
       }
     },
+    /**
+     * @memberof module:models.Patron
+     * @instance
+     * @type {String}
+    */
     last_name: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -39,10 +54,20 @@ module.exports = sequelize => {
         }
       }
     },
+    /**
+     * @memberof module:models.Patron
+     * @instance
+     * @type {String}
+    */
     name: {
       type: Sequelize.VIRTUAL,
       get() { return `${this.first_name} ${this.last_name}`; }
     },
+    /**
+     * @memberof module:models.Patron
+     * @instance
+     * @type {String}
+    */
     address: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -51,6 +76,11 @@ module.exports = sequelize => {
         notNull: {msg: address.notNull}
       }
     },
+    /**
+     * @memberof module:models.Patron
+     * @instance
+     * @type {String}
+    */
     email: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -61,7 +91,11 @@ module.exports = sequelize => {
       },
       unique: {msg: email.unique}
     },
-
+    /**
+     * @memberof module:models.Patron
+     * @instance
+     * @type {String}
+    */
     library_id: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -72,7 +106,11 @@ module.exports = sequelize => {
       },
       unique: {msg: library_id.unique}
     },
-
+    /**
+     * @memberof module:models.Patron
+     * @instance
+     * @type {Number}
+    */
     zip_code: {
       type: Sequelize.INTEGER,
       allowNull: false,

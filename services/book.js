@@ -1,37 +1,72 @@
 'use strict';
 
 /**
+ * Book service for running CRUD related operations for Book instances.
  * @module services/book
 */
 
 const { Book, Patron, Loan } = require('$database/models');
 const { Op } = require('sequelize');
 
+
 /**
- * Create one book
- * @param { data } - book data
- * @returns { Promise }
+ * Creates one book.
  *
+ * @example
+ * <caption>Passing all properties.</caption>
+ * const book = await bookService.create({
+ *   title:  'The Epic of Gilgamesh',
+ *   author: 'Unknown',
+ *   genre:  'Classics',
+ *   year:   -1700
+ * });
+ *
+ * @example
+ * <caption>Passing only required properties.</caption>
+ * const book = await create({ 
+ *   title:  'The Epic of Gilgamesh',
+ *   author: 'Unknown'
+ * });
+ *
+ * @param   {BookLiteral} data - The {@link BookLiteral} data to be saved.
+ * @returns {Promise<(Book|Error)>}
 */
 exports.create = function(data) {
   return Book.create(data);
 }
 
 /**
- * Delete one book
- * @param { object } - the book instance to delete
- * @returns { Promise }
+ * Deletes one book.
  *
+ * @example
+ * const book = await bookService.delete(bookInstance);
+ *
+ * @param   {Book} book - The Book instance to delete.
+ * @returns {Promise<Book>}
 */
 exports.delete = function(book) {
   return book.destroy();
 }
 
 /**
- * Read books based on attributes
- * @param { string } query - the search term to find books by
- * @returns { Promise }
+ * Reads books based on attributes.
  *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readByAttrs({ 
+ *   query: 'The Book of Job' 
+ *   limit: 1,
+ *   offset: 10
+ * });
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readByAttrs({ query: 'Unknown' });
+ *
+ * @param   {Object}          [options={}]   - Options for reading searched books with pagination.
+ * @param   {String}          options.query  - Attribute value of a book to search for.
+ * @param   {Number|String}   options.limit  - How many searched books to read.
+ * @param   {Number|String}   options.offset - Where in the database of searched books to start reading.
+ * @returns {Promise<{count: Number, rows: Book[]}>}
 */
 exports.readByAttrs = function({ query, limit, offset }={}) {
   const where = {
@@ -46,10 +81,13 @@ exports.readByAttrs = function({ query, limit, offset }={}) {
 }
 
 /**
- * Read one book by primary key
- * @param pk - the primary key of the book to read
- * @returns { Promise }
+ * Reads one book by primary key.
  *
+ * @example
+ * const book = await bookService.readByPk(1);
+ *
+ * @param {Number} pk - The primary key of the book to read.
+ * @returns {Promise<Book>}
 */
 exports.readByPk = function(pk) {
   return Book.findOne({ 
@@ -62,24 +100,40 @@ exports.readByPk = function(pk) {
 }
 
 /**
- * Read all books.
- * @param { object } [config] - configuration for book reading.
- * @param { number } config.limit - the amount of books to read.
- * @param { number } config.offset - where the book-reading should begin.
- * @returns { Promise }
+ * Reads all books.
  *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readAll({ limit:1, offset: 10 });
+ *
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readAll();
+ *
+ * @param   {Object}        [options={}]   - Options for reading all books with pagination.
+ * @param   {Number|String} options.limit  - How many books to read.
+ * @param   {Number|String} options.offset - Where in the database of all books to start reading.
+ * @returns {Promise<{count: Number, rows: Book[]}>}
 */
 exports.readAll = function({ limit, offset }={}) {
   return Book.findAndCountAll({ limit, offset });
 }
 
 /**
- * Read checked out books.
- * @param { object } [config] - configuration for book reading.
- * @param { number } config.limit - the amount of checked out books to read.
- * @param { number } config.offset - where the checked out book-reading should begin.
- * @returns { Promise }
+ * Reads checked-out books.
  *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readCheckedOut({ limit:1, offset: 10 });
+ *
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readCheckedOut();
+ *
+ * @param   {Object}        [options={}]   - Options for reading checked-out books with pagination.
+ * @param   {Number|String} options.limit  - How many checked-out-books to read.
+ * @param   {Number|String} options.offset - Where in the database of checked-out books to start reading.
+ * @returns {Promise<{count: Number, rows: Book[]}>}
 */
 exports.readCheckedOut = function({ limit, offset }={}) {
   const where = { 
@@ -94,11 +148,19 @@ exports.readCheckedOut = function({ limit, offset }={}) {
 
 /**
  * Read overdue books.
- * @param { object } [config] - configuration for book reading.
- * @param { number } config.limit - the amount of overdue books to read.
- * @param { number } config.offset - where the overdue book-reading should begin.
- * @returns { Promise }
  *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readOverdue({ limit:1, offset: 10 });
+ *
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readOverdue();
+ *
+ * @param   {Object}          [options={}]   - Options for reading overdue books with pagination.
+ * @param   {Number|String}   options.limit  - How many overdue books to read.
+ * @param   {Number|String}   options.offset - Where in the database of overdue books to start reading.
+ * @returns {Promise<{count: Number, rows: Book[]}>}
 */
 exports.readOverdue = function({ limit, offset }={}) {
   const where = { 
@@ -112,14 +174,31 @@ exports.readOverdue = function({ limit, offset }={}) {
 }
 
 /**
- * Updates one book
- * @param { Book } book - the book instance to update.
- * @param { Object } data - the data to update the book instance with.
- * @returns { Promise }
+ * Updates one book.
+ *
+ * @example
+ * <caption>Passing all properties.</caption>
+ * const book = await update(bookInstance, {
+ *   title:  'Essays', 
+ *   author: 'Michel de Montaigne'
+ *   genre:  'Middle-grade',
+ *   year:   1595
+ * });
+ *
+ * @example
+ * <caption>Passing some properties.</caption>
+ * const book = await update(bookInstance, { 
+ *   title:  'Essays', 
+ *   author: 'Michel de Montaigne'
+ * });
+ *
+ * @param {Book}        book - The book instance to update.
+ * @param {BookLiteral} data - The {@link BookLiteral}-data to be saved.
+ * @returns {Promise<(Book|Error)>}
 */
 exports.update = function(book, data) {
   return book.update(data);
 }
 
-/** Quick access to model */
+/** @type {Book} */
 exports.model = Book;

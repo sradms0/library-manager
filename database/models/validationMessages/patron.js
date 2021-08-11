@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Patron validation messages
+ * Patron validation messages.
+ * @ignore
 */
 exports.messages = {
   first_name: {

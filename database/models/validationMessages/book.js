@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Book validation messages
+ * Book validation messages.
+ * @ignore
 */
 exports.messages = {
   title: {

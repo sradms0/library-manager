@@ -1,6 +1,8 @@
 'use strict';
 
 /**
+ * Loan controller that uses a Loan service to run CRUD operations 
+ * and render data via loan related pug-templates.
  * @module controllers/loan
 */
 
@@ -19,10 +21,11 @@ const {
 /**
  * Helper to add Book and Patron associations 
  * and all Book and Patron instances for creating or updating after validation-errors occur.
- * @param {object} [associationIds] - associative ids of a loan.
- * @param {number} associationIds.book_id - associative id of loans book.
- * @param {number} associationIds.patron_id - associative id of loans patron.
- * @returns {object} the loans associated book and patron, and access to all books and patrons.
+ * @param   {Request} req                 - The request object from a route.
+ * @param   {Object}  req.body            - The requests body contain associated book and patron ids.
+ * @param   {Number}  req.body.book_id    - The loans associated book id.
+ * @param   {Number}  req.body.patron_id  - The loans associated patron id.
+ * @returns {Object}                      - The loans associated book and patron, and access to all books and patrons.
 */
 async function createUpdateValErrBuild({ body: {book_id, patron_id} }) { 
   return {
@@ -35,10 +38,11 @@ async function createUpdateValErrBuild({ body: {book_id, patron_id} }) {
 
 /**
  * Helper to add Book and Patron associations after validation-errors occur.
- * @param {object} [associationIds] - associative ids of a loan.
- * @param {number} associationIds.book_id - associative id of loans book.
- * @param {number} associationIds.patron_id - associative id of loans patron.
- * @returns {object} the loans associated book and patron.
+ * @param   {Request} req                 - The request object from a route.
+ * @param   {Object}  req.body            - The requests body contain associated book and patron ids.
+ * @param   {Number}  req.body.book_id    - The loans associated book id.
+ * @param   {Number}  req.body.patron_id  - The loans associated patron id.
+ * @returns {Object}                      - The loans associated book and patron.
  */
 async function returnValErrBuild({ body: {book_id, patron_id} }) {
   return {
@@ -49,7 +53,19 @@ async function returnValErrBuild({ body: {book_id, patron_id} }) {
 
 
 /**
- * Creates a new loan
+ * Creates a new loan and redirects to `/loans/all` with pagination.
+ * `RenderOptions` are enabled for errored-data, re-rendering `/views/loan/new`.
+ *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.post('/loans/new', create);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.create = asyncHandler(async function(req, res) {
   const { body } = req;
@@ -62,7 +78,18 @@ exports.create = asyncHandler(async function(req, res) {
 });
 
 /**
- * Deletes a loan
+ * Deletes a loan and redirects to `/loans/all` with pagination.
+ *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.post('/loans/:id/delete', delete);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.delete = asyncHandler(async function(req, res) {
   const { id } = req.params;
@@ -73,8 +100,18 @@ exports.delete = asyncHandler(async function(req, res) {
 });
 
 /**
- * Reads all loans and renders all loans to '/views/loan/index'
+ * Reads all loans and renders all loans to '/views/loan/index'.
  *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/all', readAll);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readAll = asyncHandler(async function(req, res) {
   assertParams('loans/all', res, req);
@@ -84,8 +121,18 @@ exports.readAll = asyncHandler(async function(req, res) {
 
 
 /**
- * Reads Loans by attribute values based on querystring and renders matches to '/views/loan/index'.
+ * Reads loans by attribute values based on a query-string and renders matches to '/views/loan/index'.
  *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/search', readByAttrs);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readByAttrs = asyncHandler(async function(req, res) {
   const { query: {q} } = req;
@@ -95,8 +142,18 @@ exports.readByAttrs = asyncHandler(async function(req, res) {
 });
 
 /**
- * Reads all checked-out loans and renders all checked-out loans to '/views/loan/index'
+ * Reads all unreturned loans and renders loans to '/views/loan/index'.
  *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/checked-out', readCheckedOut);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readCheckedOut = asyncHandler(async function(req, res) {
   assertParams('loans/checked-out', res, req);
@@ -105,9 +162,19 @@ exports.readCheckedOut = asyncHandler(async function(req, res) {
 });
 
 /**
- * Reads one loan by primary key and renders loan to '/views/loan/delete' for deletion confirmation.
- * Sets `res.status` to 404 when a loan is not found.
+ * Reads one loan by primary key and renders the book to '/views/loan/delete' for deletion confirmation.
+ * `res.status` is set to `404` if the loan is not found.
  *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/:id/delete', readDelete);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readDelete = asyncHandler(async function(req, res) {
   const { id } = req.params;
@@ -117,7 +184,18 @@ exports.readDelete = asyncHandler(async function(req, res) {
 });
 
 /**
- * Reads a new loan, rendering '/views/loan/new'
+ * Creates a `LoanLiteral` with empty values to render to '/views/loan/new'.
+ *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/new', readNew);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readNew = asyncHandler(async function(req, res) {
   const attrs = Object.keys(loanService.model.tableAttributes);
@@ -135,8 +213,18 @@ exports.readNew = asyncHandler(async function(req, res) {
 });
 
 /**
- * Reads all overdue loans and renders all loans to '/views/loan/index'
+ * Reads all overdue loans and renders loans to '/views/loan/index'.
  *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/overdue', readOverdue);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readOverdue = asyncHandler(async function(req, res) {
   assertParams('loans/overdue', res, req);
@@ -145,9 +233,19 @@ exports.readOverdue = asyncHandler(async function(req, res) {
 });
 
 /**
- * Reads one loan by primary key and renders loan to '/views/loan/update'.
- * Sets `res.status` to 404 when a loan is not found.
+ * Reads one loan by primary key and renders the loan to '/views/loan/update'.
+ * `res.status` is set to `404` if the loan is not found.
  *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/:id/update', readByPk);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readByPk = asyncHandler(async function(req, res) {
   const { id } = req.params;
@@ -163,8 +261,19 @@ exports.readByPk = asyncHandler(async function(req, res) {
 });
 
 /**
- * Reads one loan by primary key and renders loan to '/views/loan/return' for return confirmation.
- * Sets `res.status` to 404 when a loan is not found.
+ * Reads one loan by primary key and renders the loan to '/views/loan/return' for return confirmation.
+ * `res.status` is set to `404` if the loan is not found.
+ *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.get('/loans/:id/return', readReturn);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.readReturn = asyncHandler(async function(req, res) {
   const { id } = req.params;
@@ -175,7 +284,20 @@ exports.readReturn = asyncHandler(async function(req, res) {
 });
 
 /**
- * Updates an existing loan, redirecting to /loans after.
+ * Updates an existing loan and redirects to `/loans/all` with pagination.
+ * `res.status` is set to `404` if the loan is not found.
+ * `RenderOptions` are enabled for errored-data, re-rendering `/views/loan/update`.
+ *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.post('/loans/:id/update', update);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.update = asyncHandler(async function(req, res) {
   const { id } = req.params, { body } = req;
@@ -190,7 +312,20 @@ exports.update = asyncHandler(async function(req, res) {
 });
 
 /**
- * Returns an existing loan, redirecting to /loans after.
+ * Returns an existing loan and redirects to `/loans/all` with pagination.
+ * `res.status` is set to `404` if the loan is not found.
+ * `RenderOptions` are enabled for errored-data, re-rendering `/views/loan/update`.
+ *
+ * @see [Request]{@link external:Request}
+ * @see [Response]{@link external:Response}
+ *
+ * @example
+ * router.post('/loans/:id/update', update);
+ *
+ * @async
+ * @function
+ * @param {Request}   req - The request object from a route.
+ * @param {Response}  res - The resolve object from a route.
 */
 exports.return = asyncHandler(async function(req, res) {
   const { id } = req.params, { body } = req;

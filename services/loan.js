@@ -8,51 +8,89 @@ const { Book, Loan, Patron, sequelize } = require('$database/models');
 const { Op: {and, like, lt, or} } = require('sequelize');
 
 /**
- * Create one loan
- * @param { data } - loan data
- * @returns { Promise }
+ * Creates one loan.
  *
+ * @example
+ * const loan = await create({
+ *   loaned_on:   loanedOnDate,
+ *   return_by:   returnByDate,
+ *   returned_on: null,
+ *   book_id:     1,
+ *   patron_id:   2
+ * });
+ *
+ * @param {LoanLiteral} data - The {@link LoanLiteral} data to be saved.
+ * @returns {Promise<(Loan|Error)>}
 */
 exports.create = function(data) {
   return Loan.create(data, { include: [Book, Patron] });
 }
 
 /**
- * Delete one loan
- * @param { object } - the loan instance to delete
- * @returns { Promise }
+ * Deletes one loan.
  *
+ * @example
+ * const loan = await delete(loanInstance);
+ *
+ * @param {Loan} loan - The Loan instance to delete.
+ * @returns {Promise<Loan>}
 */
 exports.delete = function(loan) {
   return loan.destroy();
 }
 
 /**
- * Read one loan by primary key
- * @param pk - the primary key of the loan to read
- * @returns { Promise }
+ * Reads one loan by primary key.
  *
+ * @example
+ * const loan = await readByPk(1);
+ *
+ * @param {Number} pk - The primary key of the loan to read.
+ * @returns {Promise<Loan>}
 */
 exports.readByPk = function(pk) {
   return Loan.findOne({ where: {id: pk}, include: [Book, Patron] });
 }
 
 /**
- * Read all loans.
- * @param { object } [config] - configuration for loan reading.
- * @param { number } config.limit - the amount of loans to read.
- * @param { number } config.offset - where the loan-reading should begin.
- * @returns { Promise }
+ * Reads all loans.
+ *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readAll({ limit:1, offset: 10 });
+ *
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readAll();
+ *
+ * @param   {Object}        [options={}]   - Options for reading all loans with pagination.
+ * @param   {Number|String} options.limit  - How many loans to read.
+ * @param   {Number|String} options.offset - Where in the database of all loans to start reading.
+ * @returns {Promise<{count: Number, rows: Loan[]}>}
 */
 exports.readAll = function({ limit, offset }={}) {
   return Loan.findAndCountAll({ include: [Book, Patron], limit, offset });
 };
 
 /**
- * Read loans based on attributes and association attributes
- * @param { string } query - the search term to find loans by
- * @returns { Promise }
+ * Reads loans based on attributes.
  *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readByAttrs({ 
+ *   query: 'The Loan of Job' 
+ *   limit: 1,
+ *   offset: 10
+ * });
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readByAttrs({ query: 'Unknown' })
+ *
+ * @param   {Object}          [options={}]   - Options for reading searched loans with pagination.
+ * @param   {String}          options.query  - Attribute value of a loan to search for.
+ * @param   {Number|String}   options.limit  - How many searched loans to read.
+ * @param   {Number|String}   options.offset - Where in the database of searched loans to start reading.
+ * @returns {Promise<{count: Number, rows: Loan[]}>}
 */
 exports.readByAttrs = function({ query, limit, offset }={}) {
   const where = {
@@ -82,12 +120,20 @@ exports.readByAttrs = function({ query, limit, offset }={}) {
 }
 
 /**
- * Read checked-out loans.
- * @param { object } [config] - configuration for loan reading.
- * @param { number } config.limit - the amount of checked-out loans to read.
- * @param { number } config.offset - where the checked-out loan-reading should begin.
- * @returns { Promise }
+ * Reads unreturned loans.
  *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readCheckedOut({ limit:1, offset: 10 });
+ *
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readCheckedOut();
+ *
+ * @param   {Object}        [options={}]   - Options for reading unreturned loans with pagination.
+ * @param   {Number|String} options.limit  - How many unreturned loans to read.
+ * @param   {Number|String} options.offset - Where in the database of unreturned loans to start reading.
+ * @returns {Promise<{count: Number, rows: Loan[]}>}
 */
 exports.readCheckedOut = function({ limit, offset }={}) {
   const where = { returned_on: null }, 
@@ -97,11 +143,19 @@ exports.readCheckedOut = function({ limit, offset }={}) {
 
 /**
  * Read overdue loans.
- * @param { object } [config] - configuration for loan reading.
- * @param { number } config.limit - the amount of overdue loans to read.
- * @param { number } config.offset - where the overdue loan-reading should begin.
- * @returns { Promise }
  *
+ * @example
+ * <caption>With pagination args.</caption>
+ * const { count, rows } = await readOverdue({ limit:1, offset: 10 });
+ *
+ * @example
+ * <caption>Without pagination args.</caption>
+ * const { count, rows } = await readOverdue();
+ *
+ * @param   {Object}          [options={}]   - Options for reading overdue loans with pagination.
+ * @param   {Number|String}   options.limit  - How many overdue loans to read.
+ * @param   {Number|String}   options.offset - Where in the database of overdue loans to start reading.
+ * @returns {Promise<{count: Number, rows: Loan[]}>}
 */
 exports.readOverdue = function({ limit, offset }={}) {
   const where = {
@@ -115,14 +169,32 @@ exports.readOverdue = function({ limit, offset }={}) {
 }
 
 /**
- * Updates one loan
- * @param { object } loan - the loan instance to update.
- * @param { object } data - the data to update the loan instance with.
- * @returns { Promise }
+ * Updates one loan.
+ *
+ * @example
+ * <caption>Passing all properties.</caption>
+ * const loan = await update(loanInstance, {
+ *   loaned_on:   loanedOnDate,
+ *   return_by:   returnByDate,
+ *   returned_on: null,
+ *   book_id:     1,
+ *   patron_id:   2
+ * });
+ *
+ * @example
+ * <caption>Passing some properties.</caption>
+ * const loan = await update(loanInstance, { 
+ *   loaned_on:   loanedOnDate,
+ *   return_by:   returnByDate,
+ * });
+ *
+ * @param {Loan} loan - The loan instance to update.
+ * @param {LoanLiteral} data - The {@link LoanLiteral}-data to be saved.
+ * @returns {Promise<(Loan|Error)>}
 */
 exports.update = function(loan, data) {
   return loan.update(data).then(() => exports.readByPk(loan.id));
 };
 
-/** Quick access to model */
+/** @type {Loan} */
 exports.model = Loan;
