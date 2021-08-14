@@ -17,8 +17,9 @@ const { sequelize } = require('$database/models');
 exports.load = async function(bookData, genreData, logging=true) {
   sequelize.options.logging = logging;
 
-  await asyncForEach(bookData, async book => {
+  await asyncForEach(bookData, async (book, id) => {
     const idx = Math.floor(Math.random() * genreData.length);
+    book.id = id+1; // ensure that book ids are incremented by 1 (needed for production db)
     book.genre = genreData[idx].genre;
 
     await asyncHandler(async () => {

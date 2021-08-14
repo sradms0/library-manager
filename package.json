@@ -4,9 +4,7 @@
   "scripts": {
     "postinstall": "link-module-alias",
     "start": "nodemon ./bin/www",
-    "seed": "node seed",
-    "test": "mocha --timeout 10000 --exit test/**/*.test.js",
-    "docs": "./node_modules/.bin/jsdoc -c jsdoc.conf.json"
+    "seed": "node seed"
   },
   "_moduleAliases": {
     "$root": ".",
@@ -15,29 +13,16 @@
     "$database": "./database",
     "$routes": "./routes",
     "$seed": "./seed",
-    "$services": "./services",
-    "$test": "./test"
+    "$services": "./services"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
     "link-module-alias": "^1.2.0",
     "morgan": "^1.10.0",
+    "mysql2": "^2.3.0",
     "pug": "^3.0.2",
-    "sequelize": "^6.6.2",
-    "sqlite3": "^5.0.2"
-  },
-  "devDependencies": {
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
-    "chai-http": "^4.3.0",
-    "docdash": "^1.2.0",
-    "jsdoc": "^3.6.7",
-    "mocha": "^8.3.2",
-    "mock-req-res": "^1.2.0",
-    "proxyrequire": "^1.0.21",
-    "sinon": "^10.0.0",
-    "sinon-chai": "^3.6.0",
-    "zombie": "^6.1.4"
+    "sequelize": "^6.6.2"
   }
 }
