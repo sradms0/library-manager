@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "postinstall": "link-module-alias",
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "seed": "node seed"
   },
   "_moduleAliases": {
